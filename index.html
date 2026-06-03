@@ -3,47 +3,24 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>公文承辦 OS v2｜個人公文 Dashboard</title>
+<title>公文承辦 OS v3｜個人公文 Dashboard</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@400;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#f7f5f0;
-  --bg2:#f0ede6;
-  --card:#ffffff;
-  --border:#e2ddd6;
-  --border2:#ccc8bf;
-  --text:#1e1c18;
-  --sub:#6a6560;
-  --muted:#a09890;
-  --primary:#4a6741;
-  --primary2:#384f31;
-  --pbg:#eef1eb;
-  --plight:#d2dac9;
-  --shadow:0 2px 12px rgba(30,28,24,.05);
-  --shadow2:0 8px 28px rgba(30,28,24,.09);
-
-  /* 業務類別色 */
-  --cat-labor:#9b6a1a;     --cat-labor-bg:#fdf3e3;  --cat-labor-bd:#f2d9a0;
-  --cat-youth:#4a4598;     --cat-youth-bg:#eeedf9;  --cat-youth-bd:#c8c6ed;
-  --cat-admin:#1d5c8a;     --cat-admin-bg:#e6f0f8;  --cat-admin-bd:#b8d4eb;
-  --cat-court:#8a3020;     --cat-court-bg:#f8ece9;  --cat-court-bd:#e8bdb5;
-  --cat-policy:#2d7060;    --cat-policy-bg:#e6f3f0; --cat-policy-bd:#b0d9d1;
-  --cat-other:#5f5e5a;     --cat-other-bg:#f1efea;  --cat-other-bd:#ccc9c2;
-
-  /* 燈號 */
-  --red:#b83a35;   --red-bg:#fdf0ef;
-  --orange:#b56320; --orange-bg:#fdf4ea;
-  --yellow:#9a7818; --yellow-bg:#fdf8e6;
-  --blue:#2060a0;  --blue-bg:#e8f0f9;
-  --green:#3a7055; --green-bg:#e8f4ee;
-  --gray:#7a7870;  --gray-bg:#f0efeb;
+  --bg:#f7f5f0;--bg2:#f0ede6;--card:#ffffff;--border:#e2ddd6;--border2:#ccc8bf;
+  --text:#1e1c18;--sub:#6a6560;--muted:#a09890;
+  --primary:#4a6741;--primary2:#384f31;--pbg:#eef1eb;--plight:#d2dac9;
+  --shadow:0 2px 12px rgba(30,28,24,.05);--shadow2:0 8px 28px rgba(30,28,24,.09);
+  --red:#b83a35;--red-bg:#fdf0ef;--orange:#b56320;--orange-bg:#fdf4ea;
+  --yellow:#9a7818;--yellow-bg:#fdf8e6;--blue:#2060a0;--blue-bg:#e8f0f9;
+  --green:#3a7055;--green-bg:#e8f4ee;--gray:#7a7870;--gray-bg:#f0efeb;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{min-height:100vh;background:var(--bg);color:var(--text);font-family:"Noto Sans TC",-apple-system,sans-serif;line-height:1.6;font-size:14px}
 .wrap{max-width:1480px;margin:0 auto;padding:20px 22px 60px}
 
-/* ── HEADER ── */
+/* HEADER */
 .header{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:16px;padding-bottom:14px;border-bottom:1px solid var(--border)}
 .brand{display:flex;align-items:center;gap:10px}
 .brand-mark{width:34px;height:34px;border-radius:8px;background:var(--primary);display:grid;place-items:center;color:#fff;font-family:"Noto Serif TC",serif;font-size:16px;font-weight:700;flex-shrink:0}
@@ -64,7 +41,7 @@ body{min-height:100vh;background:var(--bg);color:var(--text);font-family:"Noto S
 .vbtn.active{background:var(--card);color:var(--text);box-shadow:0 1px 4px rgba(30,28,24,.08)}
 .sync-status{font-size:11px;color:var(--muted);text-align:right;min-height:14px;margin-bottom:14px}
 
-/* ── DASHBOARD ── */
+/* DASHBOARD */
 .dashboard{display:grid;grid-template-columns:1.3fr 1fr;gap:14px;margin-bottom:14px}
 .panel{background:var(--card);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow);padding:18px 20px}
 .kicker{font-size:10px;letter-spacing:.14em;color:var(--primary);font-weight:700;text-transform:uppercase;margin-bottom:5px}
@@ -73,7 +50,7 @@ body{min-height:100vh;background:var(--bg);color:var(--text);font-family:"Noto S
 .progress-wrap{height:5px;background:var(--bg2);border-radius:999px;overflow:hidden;margin-top:14px}
 .progress{height:100%;background:var(--primary);width:0%;transition:.3s}
 .pnote{font-size:11px;color:var(--sub);margin-top:7px}
-.stats-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;height:100%}
+.stats-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}
 .stat{background:var(--bg2);border:1px solid var(--border);border-radius:9px;padding:11px 6px;text-align:center;cursor:pointer;transition:.12s}
 .stat:hover{transform:translateY(-1px);box-shadow:var(--shadow)}
 .stat b{display:block;font-family:"Noto Serif TC",serif;font-size:22px;line-height:1.1;font-weight:700}
@@ -82,7 +59,7 @@ body{min-height:100vh;background:var(--bg);color:var(--text);font-family:"Noto S
 .stat.s-yellow b{color:var(--yellow)}.stat.s-blue b{color:var(--blue)}
 .stat.s-green b{color:var(--green)}.stat.s-all b{color:var(--text)}
 
-/* ── INSIGHT ── */
+/* INSIGHT */
 .insight{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:14px}
 .insight-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px 16px;box-shadow:var(--shadow)}
 .insight-card h3{font-size:11px;font-weight:700;color:var(--sub);letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px}
@@ -92,62 +69,52 @@ body{min-height:100vh;background:var(--bg);color:var(--text);font-family:"Noto S
 .bar-fill{height:100%;border-radius:999px;background:var(--primary);transition:.3s}
 .bar-num{width:20px;text-align:right;font-size:11px;color:var(--muted);flex-shrink:0}
 
-/* ── TOOLBAR ── */
+/* TOOLBAR */
 .toolbar{display:flex;gap:7px;align-items:center;flex-wrap:wrap;margin-bottom:14px;position:sticky;top:0;z-index:30;background:rgba(247,245,240,.92);backdrop-filter:blur(10px);padding:10px 0}
 .toolbar input,.toolbar select{border:1px solid var(--border2);background:var(--card);border-radius:7px;padding:7px 10px;color:var(--text);font-size:12px;outline:none;font-family:inherit;transition:.12s}
 .toolbar input:focus,.toolbar select:focus{border-color:var(--primary)}
-.toolbar input{flex:1;min-width:160px}
+.toolbar input{flex:1;min-width:140px}
 .tbtn{border:none;background:var(--primary);color:#fff;border-radius:7px;padding:7px 14px;font-weight:500;cursor:pointer;font-size:12px;font-family:inherit;white-space:nowrap;transition:.12s}
 .tbtn:hover{background:var(--primary2)}
 .tbtn.sec{background:var(--card);color:var(--sub);border:1px solid var(--border2)}
 .tbtn.sec:hover{border-color:var(--primary);color:var(--primary)}
 
-/* ── KANBAN ── */
-.kanban{display:grid;grid-template-columns:repeat(8,minmax(160px,1fr));gap:10px;align-items:start}
+/* KANBAN */
+.kanban{display:grid;grid-template-columns:repeat(8,minmax(155px,1fr));gap:10px;align-items:start}
 .kb-col{background:rgba(240,237,230,.45);border:1px solid var(--border);border-radius:10px;padding:10px;min-height:200px}
 .kb-head{display:flex;align-items:center;justify-content:space-between;padding-bottom:8px;margin-bottom:8px;border-bottom:1px solid var(--border)}
 .kb-name{font-size:11px;font-weight:700;color:var(--sub)}
 .kb-count{font-size:10px;background:var(--card);color:var(--primary);border-radius:999px;padding:1px 7px;border:1px solid var(--plight);font-weight:700}
 
-/* ── DOC CARD ── */
-.doc-card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:10px 11px;margin-bottom:8px;cursor:pointer;transition:.12s;border-left:3px solid var(--border2);border-radius:0 8px 8px 0}
+/* DOC CARD */
+.doc-card{background:var(--card);border:1px solid var(--border);border-left:3px solid var(--border2);border-radius:0 8px 8px 0;padding:10px 11px;margin-bottom:8px;cursor:pointer;transition:.12s}
 .doc-card:hover{box-shadow:var(--shadow2);transform:translateY(-1px)}
-.doc-card.cat-勞動檢查{border-left-color:var(--cat-labor)}
-.doc-card.cat-青少年勞動{border-left-color:var(--cat-youth)}
-.doc-card.cat-一般行政{border-left-color:var(--cat-admin)}
-.doc-card.cat-行政訴訟{border-left-color:var(--cat-court)}
-.doc-card.cat-政策研析{border-left-color:var(--cat-policy)}
-.doc-card.cat-其他{border-left-color:var(--cat-other)}
 .doc-card.done{opacity:.7}
 .card-top{display:flex;justify-content:space-between;align-items:center;gap:6px;margin-bottom:5px}
 .doc-no{font-size:10px;color:var(--muted);font-weight:700;letter-spacing:.04em}
 .light{font-size:10px;border-radius:4px;padding:1px 6px;font-weight:700;flex-shrink:0}
-.light.red{background:var(--red-bg);color:var(--red)}
-.light.orange{background:var(--orange-bg);color:var(--orange)}
-.light.yellow{background:var(--yellow-bg);color:var(--yellow)}
-.light.blue{background:var(--blue-bg);color:var(--blue)}
-.light.green{background:var(--green-bg);color:var(--green)}
-.light.gray{background:var(--gray-bg);color:var(--gray)}
-.doc-title{font-size:12.5px;font-weight:500;line-height:1.45;margin-bottom:7px;color:var(--text);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.light.red{background:var(--red-bg);color:var(--red)}.light.orange{background:var(--orange-bg);color:var(--orange)}
+.light.yellow{background:var(--yellow-bg);color:var(--yellow)}.light.blue{background:var(--blue-bg);color:var(--blue)}
+.light.green{background:var(--green-bg);color:var(--green)}.light.gray{background:var(--gray-bg);color:var(--gray)}
+.doc-title{font-size:12.5px;font-weight:500;line-height:1.45;margin-bottom:6px;color:var(--text);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .doc-tags{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:6px}
-.cat-tag{font-size:10px;border-radius:3px;padding:1px 5px;font-weight:500}
-.cat-tag.勞動檢查{background:var(--cat-labor-bg);color:var(--cat-labor)}
-.cat-tag.青少年勞動{background:var(--cat-youth-bg);color:var(--cat-youth)}
-.cat-tag.一般行政{background:var(--cat-admin-bg);color:var(--cat-admin)}
-.cat-tag.行政訴訟{background:var(--cat-court-bg);color:var(--cat-court)}
-.cat-tag.政策研析{background:var(--cat-policy-bg);color:var(--cat-policy)}
-.cat-tag.其他{background:var(--cat-other-bg);color:var(--cat-other)}
+.cat-tag{font-size:10px;border-radius:3px;padding:1px 5px;font-weight:500;background:var(--bg2);color:var(--sub)}
 .src-tag{font-size:10px;border-radius:3px;padding:1px 5px;background:var(--bg2);color:var(--sub);border:1px solid var(--border)}
 .speed-tag{font-size:10px;border-radius:3px;padding:1px 5px;font-weight:700}
 .speed-tag.最速件{background:#fce9e7;color:#b83a35}
 .speed-tag.速件{background:#fdf3e3;color:#9b6a1a}
 .speed-tag.普通件{background:var(--pbg);color:var(--primary)}
-.doc-next{margin-top:6px;font-size:10px;color:var(--primary);background:var(--pbg);border-radius:5px;padding:4px 7px;line-height:1.4}
-.doc-meta-row{display:flex;align-items:center;justify-content:space-between;font-size:10px;color:var(--muted);border-top:1px dashed var(--border);padding-top:6px;margin-top:4px}
-.doc-owner{font-size:10px;color:var(--sub)}
-.empty-col{text-align:center;color:var(--muted);font-size:11px;border:1px dashed var(--border);border-radius:7px;padding:14px 6px;background:rgba(255,255,255,.4)}
+.doc-next{margin-top:5px;font-size:10px;color:var(--primary);background:var(--pbg);border-radius:5px;padding:4px 7px;line-height:1.4}
+.doc-meta-row{display:flex;align-items:center;justify-content:space-between;font-size:10px;color:var(--muted);border-top:1px dashed var(--border);padding-top:5px;margin-top:5px}
+.pill{display:inline-flex;border-radius:999px;padding:2px 7px;background:var(--pbg);color:var(--primary);border:1px solid var(--plight);font-size:10px;font-weight:700}
 
-/* ── LIST VIEW ── */
+/* WORKFLOW MINI */
+.wf-mini{margin-top:5px;display:flex;gap:3px;flex-wrap:wrap}
+.wf-dot{width:8px;height:8px;border-radius:50%;background:var(--border2);flex-shrink:0;transition:.1s}
+.wf-dot.done-step{background:var(--primary)}
+.wf-progress{font-size:10px;color:var(--muted);margin-left:4px}
+
+/* LIST VIEW */
 .list-view{display:none}
 .table-wrap{overflow-x:auto;background:var(--card);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow)}
 table{border-collapse:collapse;width:100%;min-width:1100px}
@@ -155,9 +122,8 @@ th{background:var(--bg2);color:var(--sub);font-size:11px;letter-spacing:.05em;pa
 td{padding:10px 12px;border-bottom:1px solid var(--border);font-size:12px;vertical-align:middle}
 tr:last-child td{border-bottom:none}
 .row-click{cursor:pointer}.row-click:hover td{background:#faf9f5}
-.pill{display:inline-flex;border-radius:999px;padding:2px 8px;background:var(--pbg);color:var(--primary);border:1px solid var(--plight);font-size:10px;font-weight:700}
 
-/* ── TEMPLATE VIEW ── */
+/* TEMPLATE VIEW */
 .templates-view{display:none}
 .tpl-section{margin-bottom:22px}
 .tpl-section-head{display:flex;align-items:center;gap:8px;margin-bottom:10px}
@@ -165,27 +131,46 @@ tr:last-child td{border-bottom:none}
 .tpl-divider{flex:1;height:1px;background:var(--border)}
 .tpl-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
 .tpl-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px;box-shadow:var(--shadow)}
-.tpl-card h3{font-size:14px;font-weight:700;margin-bottom:4px;color:var(--text)}
-.tpl-card .tpl-meta{font-size:11px;color:var(--sub);margin-bottom:10px}
-.tpl-card .tpl-state{font-size:10px;border-radius:3px;padding:1px 6px;font-weight:700;margin-left:6px}
-.tpl-state.已迭代{background:#e8f4ee;color:#3a7055}
-.tpl-state.可套用{background:#e8f0f9;color:#2060a0}
-.tpl-state.需微調{background:#fdf8e6;color:#9a7818}
-.tpl-state.需新建{background:#fdf0ef;color:#b83a35}
+.tpl-card h3{font-size:14px;font-weight:700;margin-bottom:3px;color:var(--text)}
+.tpl-meta{font-size:11px;color:var(--sub);margin-bottom:8px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.tpl-state{font-size:10px;border-radius:3px;padding:1px 6px;font-weight:700}
+.tpl-state.已迭代{background:#e8f4ee;color:#3a7055}.tpl-state.可套用{background:#e8f0f9;color:#2060a0}
+.tpl-state.需微調{background:#fdf8e6;color:#9a7818}.tpl-state.需新建{background:#fdf0ef;color:#b83a35}
 .tpl-state.未分類{background:var(--bg2);color:var(--sub)}
-.tpl-card textarea{width:100%;min-height:90px;border:1px solid var(--border);border-radius:7px;padding:8px 10px;background:var(--bg2);color:var(--text);font-family:inherit;font-size:12px;resize:vertical;outline:none}
+.tpl-tabs{display:flex;gap:4px;margin-bottom:8px}
+.tpl-tab{border:1px solid var(--border2);background:var(--bg2);border-radius:5px;padding:3px 9px;font-size:11px;color:var(--sub);cursor:pointer;font-family:inherit;transition:.12s}
+.tpl-tab.on{background:var(--primary);color:#fff;border-color:var(--primary)}
+.tpl-card textarea{width:100%;min-height:80px;border:1px solid var(--border);border-radius:7px;padding:8px 10px;background:var(--bg2);color:var(--text);font-family:inherit;font-size:12px;resize:vertical;outline:none}
 .tpl-card textarea:focus{border-color:var(--primary)}
-.tpl-actions{display:flex;gap:6px;margin-top:8px}
+.tpl-actions{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
 .small-btn{border:1px solid var(--border2);background:var(--card);color:var(--sub);border-radius:6px;padding:5px 10px;font-size:11px;font-weight:500;cursor:pointer;font-family:inherit;transition:.12s}
 .small-btn:hover{border-color:var(--primary);color:var(--primary)}
 .small-btn.pri{background:var(--primary);color:#fff;border-color:var(--primary)}
 .small-btn.pri:hover{background:var(--primary2)}
 
-/* ── MODAL ── */
+/* CHANGELOG */
+.changelog{margin-top:8px;max-height:120px;overflow-y:auto;font-size:11px;color:var(--sub);background:var(--bg2);border-radius:6px;padding:7px 9px;line-height:1.7}
+.changelog-entry{border-bottom:1px dashed var(--border);padding-bottom:4px;margin-bottom:4px}
+.changelog-entry:last-child{border:none;margin:0;padding:0}
+.changelog-ver{font-weight:700;color:var(--primary);margin-right:6px}
+
+/* SOP steps in template */
+.sop-wrap{margin-top:6px}
+.sop-step{display:flex;align-items:center;gap:7px;padding:4px 0;border-bottom:1px dashed var(--border)}
+.sop-step:last-child{border:none}
+.sop-num{width:18px;height:18px;border-radius:50%;background:var(--pbg);border:1px solid var(--plight);display:grid;place-items:center;font-size:10px;font-weight:700;color:var(--primary);flex-shrink:0}
+.sop-text{flex:1;font-size:12px;color:var(--text)}
+.sop-del{border:none;background:none;color:var(--muted);cursor:pointer;font-size:14px;padding:0 2px;line-height:1}
+.sop-del:hover{color:var(--red)}
+.sop-add-row{display:flex;gap:6px;margin-top:8px}
+.sop-add-row input{flex:1;border:1px solid var(--border2);border-radius:6px;padding:6px 9px;font-size:12px;color:var(--text);outline:none;background:var(--card);font-family:inherit}
+.sop-add-row input:focus{border-color:var(--primary)}
+
+/* MODAL */
 .modal-bg{display:none;position:fixed;inset:0;background:rgba(20,18,14,.4);z-index:100;backdrop-filter:blur(4px);padding:16px;align-items:center;justify-content:center}
 .modal-bg.show{display:flex}
-.modal{background:var(--card);border-radius:14px;padding:22px 24px;width:100%;max-width:720px;box-shadow:0 24px 64px rgba(20,18,14,.18);max-height:92vh;overflow-y:auto}
-.modal.small{max-width:500px}
+.modal{background:var(--card);border-radius:14px;padding:22px 24px;width:100%;max-width:740px;box-shadow:0 24px 64px rgba(20,18,14,.18);max-height:92vh;overflow-y:auto}
+.modal.small{max-width:540px}
 .modal-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:16px}
 .modal-head h2{font-family:"Noto Serif TC",serif;font-size:20px;font-weight:700}
 .modal-head p{font-size:12px;color:var(--sub);margin-top:3px}
@@ -202,20 +187,49 @@ tr:last-child td{border-bottom:none}
 .mbtn.sec{background:var(--bg2);color:var(--sub);border:1px solid var(--border2)}.mbtn.sec:hover{border-color:var(--primary);color:var(--primary)}
 .mbtn.danger{background:#fdf0ef;color:var(--red);border:1px solid #f0c8c4}
 
-/* ── SETUP ── */
+/* WORKFLOW in modal */
+.wf-section{margin-top:14px;border-top:1px solid var(--border);padding-top:14px}
+.wf-section-title{font-size:11px;font-weight:700;color:var(--sub);letter-spacing:.06em;margin-bottom:8px;text-transform:uppercase}
+.wf-step{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px dashed var(--border)}
+.wf-step:last-child{border:none}
+.wf-check{width:16px;height:16px;cursor:pointer;accent-color:var(--primary);flex-shrink:0}
+.wf-step-text{flex:1;font-size:13px;color:var(--text)}
+.wf-step-text.checked{text-decoration:line-through;color:var(--muted)}
+.wf-step-del{border:none;background:none;color:var(--muted);cursor:pointer;font-size:14px;padding:0 2px}
+.wf-step-del:hover{color:var(--red)}
+.wf-add-row{display:flex;gap:6px;margin-top:8px}
+.wf-add-row input{flex:1;border:1px solid var(--border2);border-radius:6px;padding:6px 9px;font-size:12px;color:var(--text);outline:none;background:var(--bg2);font-family:inherit}
+.wf-add-row input:focus{border-color:var(--primary)}
+
+/* CAPSULE TAG MANAGER */
+.cap-manager{display:flex;flex-wrap:wrap;gap:6px;padding:6px 0;min-height:32px}
+.cap-tag{display:flex;align-items:center;gap:4px;border-radius:999px;padding:4px 10px;font-size:12px;border:1px solid var(--plight);background:var(--pbg);color:var(--primary)}
+.cap-tag button{border:none;background:none;color:var(--muted);cursor:pointer;font-size:13px;line-height:1;padding:0 0 0 2px}
+.cap-tag button:hover{color:var(--red)}
+.cap-add-row{display:flex;gap:6px;margin-top:6px}
+.cap-add-row input{flex:1;border:1px solid var(--border2);border-radius:7px;padding:6px 10px;font-size:12px;color:var(--text);outline:none;font-family:inherit;background:var(--bg2)}
+.cap-add-row input:focus{border-color:var(--primary)}
+.setup-section{font-size:11px;font-weight:700;color:var(--sub);letter-spacing:.06em;text-transform:uppercase;margin:16px 0 8px;padding-top:14px;border-top:1px solid var(--border)}
 .step-box{font-size:12px;color:var(--sub);background:var(--pbg);border-radius:8px;padding:11px 14px;margin-bottom:12px;line-height:1.8;border:1px solid var(--plight)}
 .step-box b{color:var(--primary)}
 .gas-test{font-size:11px;color:var(--sub);margin-top:6px;min-height:16px}
 
-/* ── TOAST ── */
+/* TOAST */
 .toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:#1e1c18;color:#fff;padding:9px 18px;border-radius:8px;font-size:13px;opacity:0;pointer-events:none;transition:.2s;z-index:300;white-space:nowrap;box-shadow:0 8px 24px rgba(0,0,0,.2)}
 .toast.show{opacity:1}
 .footer{margin-top:36px;color:var(--muted);font-size:11px;text-align:center;letter-spacing:.04em}
 
-/* ── RESPONSIVE ── */
+/* RESPONSIVE */
 @media(max-width:1280px){.kanban{grid-template-columns:repeat(4,1fr)}.insight{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:960px){.dashboard{grid-template-columns:1fr}.stats-grid{grid-template-columns:repeat(3,1fr)}.kanban{grid-template-columns:repeat(2,1fr)}.tpl-grid{grid-template-columns:1fr 1fr}.form{grid-template-columns:1fr}}
-@media(max-width:640px){.kanban{grid-template-columns:1fr}.wrap{padding:14px 12px 50px}.header{flex-direction:column;align-items:flex-start}.tpl-grid{grid-template-columns:1fr}.stats-grid{grid-template-columns:repeat(2,1fr)}.insight{grid-template-columns:1fr}.toolbar{position:static}.hero-title{font-size:18px}}
+@media(max-width:640px){
+  .kanban{grid-template-columns:1fr}.wrap{padding:14px 12px 50px}
+  .header{flex-direction:column;align-items:flex-start}.header-right{width:100%;justify-content:space-between}
+  .tpl-grid{grid-template-columns:1fr}.stats-grid{grid-template-columns:repeat(2,1fr)}
+  .insight{grid-template-columns:1fr}.hero-title{font-size:18px}
+  .toolbar{overflow-x:auto;flex-wrap:nowrap;padding-bottom:6px}
+  .toolbar input{min-width:120px}.toolbar select{min-width:100px}
+}
 </style>
 </head>
 <body>
@@ -226,13 +240,13 @@ tr:last-child td{border-bottom:none}
     <div class="brand-mark">文</div>
     <div>
       <div class="brand-name">公文承辦 OS</div>
-      <div class="brand-sub">職業安全衛生署・個人承辦版 v2</div>
+      <div class="brand-sub">職業安全衛生署・個人承辦版 v3</div>
     </div>
   </div>
   <div class="header-right">
     <div class="sync-group">
-      <button class="sync-btn" onclick="syncPull()"><div class="sync-dot" id="syncDot"></div>☁ 讀取雲端</button>
-      <button class="sync-btn push" onclick="syncPush()">↑ 同步雲端</button>
+      <button class="sync-btn" onclick="syncPull()"><div class="sync-dot" id="syncDot"></div>☁ 讀取</button>
+      <button class="sync-btn push" onclick="syncPush()">↑ 同步</button>
       <button class="sync-btn" onclick="openSetup()">⚙ 設定</button>
     </div>
     <div class="view-toggle">
@@ -244,12 +258,11 @@ tr:last-child td{border-bottom:none}
 </header>
 <div class="sync-status" id="syncStatus"></div>
 
-<!-- 儀表板 -->
 <section class="dashboard">
   <div class="panel">
-    <div class="kicker">Official Document OS · v2</div>
+    <div class="kicker">Official Document OS · v3</div>
     <div class="hero-title">把每件公文，沉澱成下次可複用的例稿。</div>
-    <p class="hero-sub">業務類別為主分類、對象為卡片標籤。第一版重點不只是追進度，而是將案件類型與承辦例稿逐步迭代成知識庫。</p>
+    <p class="hero-sub">業務類別主分類・來文單位對象標籤・Workflow 子任務・例稿版本迭代紀錄</p>
     <div class="progress-wrap"><div class="progress" id="progress"></div></div>
     <div class="pnote" id="progressText">載入中…</div>
   </div>
@@ -258,14 +271,13 @@ tr:last-child td{border-bottom:none}
       <div class="stat s-all" onclick="filterStat('all')"><b id="stAll">0</b><span>全部案件</span></div>
       <div class="stat s-red" onclick="filterStat('red')"><b id="stLate">0</b><span>⚠ 已逾期</span></div>
       <div class="stat s-orange" onclick="filterStat('orange')"><b id="stToday">0</b><span>今日到期</span></div>
-      <div class="stat s-yellow" onclick="filterStat('yellow')"><b id="stSoon">0</b><span>3日內到期</span></div>
-      <div class="stat s-blue" onclick="filterStat('blue')"><b id="stWait">0</b><span>等外部回復</span></div>
-      <div class="stat s-green" onclick="filterStat('iterate')"><b id="stIter">0</b><span>待例稿迭代</span></div>
+      <div class="stat s-yellow" onclick="filterStat('yellow')"><b id="stSoon">0</b><span>3日內</span></div>
+      <div class="stat s-blue" onclick="filterStat('blue')"><b id="stWait">0</b><span>等回復</span></div>
+      <div class="stat s-green" onclick="filterStat('iterate')"><b id="stIter">0</b><span>待迭代</span></div>
     </div>
   </div>
 </section>
 
-<!-- Insight -->
 <section class="insight">
   <div class="insight-card"><h3>業務類別</h3><div id="catBars"></div></div>
   <div class="insight-card"><h3>例稿迭代狀態</h3><div id="iterBars"></div></div>
@@ -273,68 +285,57 @@ tr:last-child td{border-bottom:none}
   <div class="insight-card"><h3>承辦負荷</h3><div id="ownerBars"></div></div>
 </section>
 
-<!-- 工具列 -->
 <div class="toolbar">
-  <input id="search" placeholder="搜尋主旨、文號、來文單位、下一步…" oninput="render()"/>
-  <select id="catFilter" onchange="render()"><option value="all">全部業務類別</option></select>
-  <select id="tplFilter" onchange="render()"><option value="all">全部例稿分類</option></select>
-  <select id="statusFilter" onchange="render()"><option value="all">全部狀態</option></select>
+  <input id="search" placeholder="搜尋主旨、文號、來文單位…" oninput="render()"/>
+  <select id="catFilter" onchange="render()"></select>
+  <select id="tplFilter" onchange="render()"></select>
+  <select id="statusFilter" onchange="render()"></select>
   <select id="lightFilter" onchange="render()">
     <option value="all">全部燈號</option>
-    <option value="red">🔴 逾期</option>
-    <option value="orange">🟠 今日到期</option>
-    <option value="yellow">🟡 3日內</option>
-    <option value="blue">🔵 等回復</option>
-    <option value="green">🟢 正常</option>
-    <option value="gray">⚫ 結案</option>
+    <option value="red">🔴 逾期</option><option value="orange">🟠 今日到期</option>
+    <option value="yellow">🟡 3日內</option><option value="blue">🔵 等回復</option>
+    <option value="green">🟢 正常</option><option value="gray">⚫ 結案</option>
   </select>
   <button class="tbtn" onclick="openDoc()">＋ 新增公文</button>
   <button class="tbtn sec" onclick="exportCSV()">匯出 CSV</button>
-  <button class="tbtn sec" onclick="importSample()">載入範例</button>
+  <button class="tbtn sec" onclick="importSample()">範例</button>
 </div>
 
-<!-- 看板 -->
 <main id="kanbanView"><div class="kanban" id="kanban"></div></main>
-
-<!-- 清單 -->
 <main id="listView" class="list-view">
   <div class="table-wrap">
     <table>
-      <thead>
-        <tr>
-          <th>燈號</th><th>主旨</th><th>文號</th><th>業務類別</th>
-          <th>例稿分類</th><th>例稿狀態</th><th>流程狀態</th>
-          <th>速別</th><th>期限</th><th>下一步</th><th>承辦</th>
-        </tr>
-      </thead>
+      <thead><tr>
+        <th>燈號</th><th>主旨</th><th>文號</th><th>業務類別</th>
+        <th>例稿</th><th>例稿狀態</th><th>流程</th><th>速別</th>
+        <th>期限</th><th>WF</th><th>下一步</th><th>承辦</th>
+      </tr></thead>
       <tbody id="tableBody"></tbody>
     </table>
   </div>
 </main>
-
-<!-- 例稿庫 -->
 <main id="templatesView" class="templates-view"></main>
 
-<div class="footer">公文承辦 OS v2｜localStorage 本機儲存 · 支援 GAS 雙向同步 · 個人承辦 × 例稿迭代知識庫</div>
-</div><!-- /wrap -->
+<div class="footer">公文承辦 OS v3｜localStorage + GAS 雙向同步・例稿迭代知識庫・Workflow 子任務</div>
+</div>
 
-<!-- 公文新增/編輯 Modal -->
+<!-- 公文 Modal -->
 <div class="modal-bg" id="docBg" onclick="bgClose(event,'docBg')">
   <div class="modal">
     <div class="modal-head">
-      <div>
-        <h2 id="docModalTitle">新增公文</h2>
-        <p>建議先填「例稿分類」與「下一步」，這兩欄最能累積承辦知識。</p>
-      </div>
+      <div><h2 id="docModalTitle">新增公文</h2><p>填「例稿分類」與「下一步」最能累積承辦知識。</p></div>
       <button class="mbtn sec" onclick="closeId('docBg')">關閉</button>
     </div>
     <div class="form">
       <div class="field full"><label>主旨 / 案名</label><input id="fTitle" placeholder="例：建教合作機構過往違反勞動法令紀錄查復案"/></div>
-      <div class="field"><label>文號 / 編號</label><input id="fDocNo" placeholder="如：1153100123 或 A-001"/></div>
-      <div class="field"><label>來文單位（對象標籤）</label><input id="fSource" placeholder="如：教育部、立法院、地方政府"/></div>
+      <div class="field"><label>文號 / 編號</label><input id="fDocNo" placeholder="如：1153100123"/></div>
+      <div class="field"><label>來文單位（對象標籤）</label>
+        <input id="fSource" placeholder="可輸入或選擇" list="sourceList"/>
+        <datalist id="sourceList"></datalist>
+      </div>
       <div class="field"><label>收文日期</label><input type="date" id="fReceived"/></div>
       <div class="field"><label>辦理期限</label><input type="date" id="fDue"/></div>
-      <div class="field"><label>業務類別（主分類）</label><select id="fCat"></select></div>
+      <div class="field"><label>業務類別</label><select id="fCat" onchange="updateTplOptions()"></select></div>
       <div class="field"><label>例稿分類</label><select id="fTemplate"></select></div>
       <div class="field"><label>流程狀態</label><select id="fStatus"></select></div>
       <div class="field"><label>例稿狀態</label><select id="fTemplateState"></select></div>
@@ -347,15 +348,24 @@ tr:last-child td{border-bottom:none}
       </div>
       <div class="field"><label>承辦人</label><input id="fOwner" placeholder="個人版預設「我」"/></div>
       <div class="field"><label>等外部回復</label>
-        <select id="fWaiting">
-          <option value="no">否</option>
-          <option value="yes">是，等他人／外部回復</option>
-        </select>
+        <select id="fWaiting"><option value="no">否</option><option value="yes">是，等他人／外部回復</option></select>
       </div>
-      <div class="field full"><label>下一步行動</label><input id="fNext" placeholder="例：補上近三年違規紀錄查詢結果，確認是否列入補助審議"/></div>
+      <div class="field full"><label>下一步行動</label><input id="fNext" placeholder="例：補上近三年違規紀錄查詢結果"/></div>
       <div class="field full"><label>連結</label><input id="fLink" placeholder="公文系統、雲端資料夾或參考文件連結"/></div>
-      <div class="field full"><label>備註 / 迭代紀錄</label><textarea id="fNote" placeholder="記錄本案可回饋到例稿的修正點、常用法規依據、版本差異…"></textarea></div>
+      <div class="field full"><label>備註 / 迭代紀錄</label><textarea id="fNote" placeholder="記錄本案可回饋到例稿的修正點、常用法規依據…"></textarea></div>
     </div>
+
+    <!-- Workflow 子任務 -->
+    <div class="wf-section">
+      <div class="wf-section-title">Workflow 子任務</div>
+      <div id="wfStepList"></div>
+      <div class="wf-add-row">
+        <input id="wfNewStep" placeholder="新增步驟…" onkeydown="if(event.key==='Enter')addWfStep()"/>
+        <button class="small-btn pri" onclick="addWfStep()">＋ 新增</button>
+        <button class="small-btn" onclick="loadSopSteps()">套用例稿 SOP</button>
+      </div>
+    </div>
+
     <div class="modal-actions">
       <button class="mbtn danger" id="deleteBtn" onclick="deleteDoc()" style="display:none">刪除</button>
       <button class="mbtn sec" onclick="copyBrief()">複製摘要</button>
@@ -364,30 +374,41 @@ tr:last-child td{border-bottom:none}
   </div>
 </div>
 
-<!-- GAS 設定 Modal -->
+<!-- 設定 Modal -->
 <div class="modal-bg" id="setupBg" onclick="bgClose(event,'setupBg')">
   <div class="modal small">
     <div class="modal-head">
-      <div>
-        <h2>Google Sheet 同步設定</h2>
-        <p>第一版可先本機使用；需要跨裝置時再貼上 GAS Web App 網址。</p>
-      </div>
+      <div><h2>系統設定</h2><p>管理分類標籤與 GAS 同步設定</p></div>
+      <button class="mbtn sec" onclick="closeId('setupBg')">關閉</button>
     </div>
+
+    <div class="setup-section">業務類別</div>
+    <div class="cap-manager" id="capCats"></div>
+    <div class="cap-add-row">
+      <input id="newCatInput" placeholder="新增業務類別…" onkeydown="if(event.key==='Enter')addCap('cat')"/>
+      <button class="small-btn pri" onclick="addCap('cat')">新增</button>
+    </div>
+
+    <div class="setup-section">來文單位</div>
+    <div class="cap-manager" id="capSources"></div>
+    <div class="cap-add-row">
+      <input id="newSourceInput" placeholder="新增來文單位…" onkeydown="if(event.key==='Enter')addCap('source')"/>
+      <button class="small-btn pri" onclick="addCap('source')">新增</button>
+    </div>
+
+    <div class="setup-section">GAS 雲端同步</div>
     <div class="step-box">
-      <b>部署快速指南</b><br>
-      1. 開新 Google Sheet → 擴充功能 → Apps Script<br>
-      2. 貼上 GAS 後端腳本，儲存<br>
-      3. 部署 → 新增部署 → 網頁應用程式<br>
-      4. 執行身分：<b>我</b>｜存取權限：<b>任何人</b><br>
-      5. 複製網址貼入下方
+      <b>部署指南</b><br>
+      1. Google Sheet → 擴充功能 → Apps Script → 貼上 GAS 腳本<br>
+      2. 部署 → 新增部署 → 網頁應用程式<br>
+      3. 執行身分：<b>我</b>｜存取：<b>任何人</b> → 複製網址貼入下方
     </div>
     <div class="field" style="margin-bottom:10px"><label>GAS Web App URL</label><input id="gasUrl" placeholder="https://script.google.com/macros/s/.../exec"/></div>
-    <div class="field" style="margin-bottom:10px"><label>Token（驗證密碼）</label><input id="gasToken" placeholder="與 GAS 腳本中設定的 ACCESS_TOKEN 一致" autocomplete="off"/></div>
+    <div class="field" style="margin-bottom:6px"><label>Token（驗證密碼）</label><input id="gasToken" placeholder="與 GAS 腳本 ACCESS_TOKEN 一致" autocomplete="off"/></div>
     <div class="gas-test" id="gasTestResult"></div>
     <div class="modal-actions">
       <button class="mbtn sec" onclick="testGas()">測試連線</button>
-      <button class="mbtn sec" onclick="closeId('setupBg')">取消</button>
-      <button class="mbtn pri" onclick="saveSetup()">儲存設定</button>
+      <button class="mbtn sec" onclick="saveSetup()">儲存設定</button>
     </div>
   </div>
 </div>
@@ -395,12 +416,12 @@ tr:last-child td{border-bottom:none}
 <div class="toast" id="toast"></div>
 
 <script>
-// ══════════════════════════════════════
-//  設定：可依業務調整
-// ══════════════════════════════════════
-const CATEGORIES = ['勞動檢查','青少年勞動','一般行政','行政訴訟','政策研析','其他'];
-
-const TEMPLATES_BY_CAT = {
+// ══════════════════════════════════
+//  預設資料
+// ══════════════════════════════════
+const DEFAULT_CATS = ['勞動檢查','青少年勞動','一般行政','行政訴訟','政策研析','其他'];
+const DEFAULT_SOURCES = ['勞動部','立法院','地方政府','教育部','衛福部','事業單位','民眾陳情','內部交辦','跨司處會辦'];
+const DEFAULT_TPLS_BY_CAT = {
   '勞動檢查':['勞檢處理原則稿','勞檢行政處分書','高風險行業稽查說明稿','勞動條件說明稿'],
   '青少年勞動':['童工/兒少勞動權益稿','建教合作查復稿','申訴/1955管道說明稿','青少年職場安全說明稿'],
   '一般行政':['一般函復說明稿','跨部會協作回復稿','地方政府權責說明稿','存查/不予處理說明稿'],
@@ -408,125 +429,137 @@ const TEMPLATES_BY_CAT = {
   '政策研析':['政策精進說明稿','法規疑義函復稿','會議資料標準包'],
   '其他':['轉請權責機關處理稿','待建立新例稿']
 };
-
 const STATUSES = [
   {id:'new',label:'收文待判'},{id:'research',label:'查核/蒐資'},
   {id:'draft',label:'擬稿中'},{id:'consult',label:'會辦中'},
   {id:'revise',label:'退修/補正'},{id:'approve',label:'陳核中'},
   {id:'ready',label:'待發/待存'},{id:'done',label:'結案/追蹤'}
 ];
-
 const TEMPLATE_STATES = ['未分類','可套用','需微調','需新建','已迭代'];
+const CAT_COLORS = [
+  '#9b6a1a','#4a4598','#1d5c8a','#8a3020','#2d7060','#5f5e5a',
+  '#7a5a20','#3a6080','#6a3570','#3a7050','#8a5a30','#4a5060'
+];
 
-const KEY = 'govdoc-os-v2';
+// ══════════════════════════════════
+//  Storage keys
+// ══════════════════════════════════
+const KEY = 'govdoc-os-v3';
 const GAS_KEY = 'govdoc-os-gas-url';
 const TOKEN_KEY = 'govdoc-os-gas-token';
-const TPL_NOTES_KEY = 'govdoc-os-tpl-notes';
+const TPL_KEY = 'govdoc-os-tpl';      // { notes:{}, sop:{}, changelog:{} }
+const CATS_KEY = 'govdoc-os-cats';
+const SRCS_KEY = 'govdoc-os-sources';
 
-// ══════════════════════════════════════
-//  狀態
-// ══════════════════════════════════════
+// ══════════════════════════════════
+//  State
+// ══════════════════════════════════
 let docs = loadDocs();
+let tplData = loadTplData();
+let cats = JSON.parse(localStorage.getItem(CATS_KEY)||'null') || DEFAULT_CATS.slice();
+let sources = JSON.parse(localStorage.getItem(SRCS_KEY)||'null') || DEFAULT_SOURCES.slice();
 let editId = null;
 let curView = 'kanban';
-let tplNotes = JSON.parse(localStorage.getItem(TPL_NOTES_KEY)||'{}');
+let wfSteps = []; // current editing steps [{text,done}]
 
-// ══════════════════════════════════════
-//  工具函式
-// ══════════════════════════════════════
+// ══════════════════════════════════
+//  Helpers
+// ══════════════════════════════════
 function todayISO(){ return new Date().toISOString().slice(0,10) }
 function addDays(n){ const d=new Date(); d.setDate(d.getDate()+n); return d.toISOString().slice(0,10) }
 function esc(s){ return String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])) }
 function closeId(id){ document.getElementById(id).classList.remove('show') }
 function bgClose(e,id){ if(e.target===document.getElementById(id)) closeId(id) }
 function statusLabel(id){ return STATUSES.find(s=>s.id===id)?.label||id }
-
-function allTemplates(){
-  return Object.values(TEMPLATES_BY_CAT).flat();
+function allTemplates(){ return cats.flatMap(c=>(DEFAULT_TPLS_BY_CAT[c]||[])) }
+function catColor(cat){
+  const i = cats.indexOf(cat);
+  return CAT_COLORS[i % CAT_COLORS.length] || '#5f5e5a';
 }
 
-// 燈號計算
 function lightOf(d){
   if(d.status==='done') return {id:'gray',label:'結案'};
   if(d.waiting==='yes') return {id:'blue',label:'等回復'};
   if(!d.due) return {id:'green',label:'正常'};
-  const today = new Date(todayISO()), due = new Date(d.due);
-  const diff = Math.ceil((due-today)/86400000);
-  if(diff<0) return {id:'red',label:'逾期'+(Math.abs(diff))+'日'};
+  const diff = Math.ceil((new Date(d.due)-new Date(todayISO()))/86400000);
+  if(diff<0) return {id:'red',label:'逾期'+Math.abs(diff)+'日'};
   if(diff===0) return {id:'orange',label:'今日到期'};
   if(diff<=3) return {id:'yellow',label:diff+'日後'};
   return {id:'green',label:diff+'日後'};
 }
 
-// ══════════════════════════════════════
-//  資料
-// ══════════════════════════════════════
+// ══════════════════════════════════
+//  Data load/save
+// ══════════════════════════════════
 function loadDocs(){
   try{ const s=localStorage.getItem(KEY); if(s) return JSON.parse(s); } catch(e){}
   return sampleDocs();
 }
+function saveDocs(){ localStorage.setItem(KEY, JSON.stringify(docs)); }
 
-function saveLocal(){
-  localStorage.setItem(KEY, JSON.stringify(docs));
+function loadTplData(){
+  try{ const s=localStorage.getItem(TPL_KEY); if(s) return JSON.parse(s); } catch(e){}
+  return {notes:{}, sop:{}, changelog:{}};
 }
+function saveTplData(){ localStorage.setItem(TPL_KEY, JSON.stringify(tplData)); }
+
+function saveCats(){ localStorage.setItem(CATS_KEY, JSON.stringify(cats)); }
+function saveSources(){ localStorage.setItem(SRCS_KEY, JSON.stringify(sources)); }
 
 function sampleDocs(){
   return [
-    {id:1,title:'建教合作機構過往違反勞動法令紀錄查復案',docNo:'A-001',source:'教育部',received:addDays(-3),due:addDays(2),cat:'青少年勞動',template:'建教合作查復稿',status:'research',templateState:'需微調',speed:'速件',owner:'我',waiting:'no',next:'補上近三年違規紀錄查詢結果，確認是否列入補助審議參考。',link:'',note:'可沉澱成「建教合作＋違規紀錄＋跨部會協作」例稿。'},
-    {id:2,title:'兒少勞動權益小組第二次工作小組會議資料彙整案',docNo:'A-002',source:'內部交辦',received:addDays(-5),due:addDays(0),cat:'青少年勞動',template:'會議資料標準包',status:'draft',templateState:'需新建',speed:'速件',owner:'我',waiting:'no',next:'整理三部會分工、紅黃綠燈評比與會前攻防稿。',link:'',note:'適合建立會議資料標準包：議程、分工表、攻防稿、行動追蹤。'},
-    {id:3,title:'地方政府查處疑義函復案',docNo:'A-003',source:'臺北市政府',received:addDays(-10),due:addDays(-1),cat:'一般行政',template:'地方政府權責說明稿',status:'revise',templateState:'需微調',speed:'普通件',owner:'我',waiting:'no',next:'依最新法規用語修正權責分工段落。',link:'',note:'逾期案件，先處理核稿版本。'},
-    {id:4,title:'1955 申訴管道兒少友善話務說明案',docNo:'A-004',source:'跨司處會辦',received:addDays(-2),due:addDays(5),cat:'政策研析',template:'申訴/1955管道說明稿',status:'consult',templateState:'可套用',speed:'普通件',owner:'我',waiting:'yes',next:'等待相關單位確認話務訓練內容與保密流程。',link:'',note:'藍燈：等外部/他人回復。'},
-    {id:5,title:'勞動條件專案檢查計畫第三季執行情形說明稿',docNo:'A-005',source:'勞動部',received:addDays(-4),due:addDays(7),cat:'勞動檢查',template:'勞檢處理原則稿',status:'approve',templateState:'已迭代',speed:'普通件',owner:'我',waiting:'no',next:'等科長核閱後，補上新聞稿口徑。',link:'',note:'例稿已補入「選列原則、檢查對象、後續處理」三段。'},
-    {id:6,title:'民眾陳情工讀生加班費疑義案',docNo:'A-006',source:'民眾陳情',received:addDays(-1),due:addDays(9),cat:'勞動檢查',template:'勞動條件說明稿',status:'new',templateState:'可套用',speed:'普通件',owner:'我',waiting:'no',next:'確認陳情內容是否具體，必要時補請地方主管機關查處。',link:'',note:'可套用勞基法工時與加班費基礎說明稿。'},
-    {id:7,title:'職災認定行政訴訟案準備書狀撰擬',docNo:'A-007',source:'事業單位',received:addDays(-8),due:addDays(3),cat:'行政訴訟',template:'準備書狀',status:'draft',templateState:'需新建',speed:'速件',owner:'我',waiting:'no',next:'確認行政法院要求補充事項，草擬第二段事實陳述。',link:'',note:'需會辦法制單位，注意舉證責任分配。'}
+    {id:1,title:'建教合作機構過往違反勞動法令紀錄查復案',docNo:'A-001',source:'教育部',received:addDays(-3),due:addDays(2),cat:'青少年勞動',template:'建教合作查復稿',status:'research',templateState:'需微調',speed:'速件',owner:'我',waiting:'no',next:'補上近三年違規紀錄查詢結果。',link:'',note:'可沉澱成「建教合作＋違規紀錄」例稿。',steps:[{text:'調閱近三年違規紀錄',done:true},{text:'確認跨部會協作權責',done:false},{text:'撰擬函復初稿',done:false}]},
+    {id:2,title:'兒少勞動權益小組工作小組會議資料彙整案',docNo:'A-002',source:'內部交辦',received:addDays(-5),due:addDays(0),cat:'青少年勞動',template:'會議資料標準包',status:'draft',templateState:'需新建',speed:'速件',owner:'我',waiting:'no',next:'整理三部會分工與攻防稿。',link:'',note:'',steps:[{text:'議程草擬',done:true},{text:'三部會分工表',done:true},{text:'攻防稿初稿',done:false},{text:'陳核',done:false}]},
+    {id:3,title:'地方政府查處疑義函復案',docNo:'A-003',source:'臺北市政府',received:addDays(-10),due:addDays(-1),cat:'一般行政',template:'地方政府權責說明稿',status:'revise',templateState:'需微調',speed:'普通件',owner:'我',waiting:'no',next:'依最新法規用語修正。',link:'',note:'逾期案件。',steps:[]},
+    {id:4,title:'1955 申訴管道兒少友善話務說明案',docNo:'A-004',source:'跨司處會辦',received:addDays(-2),due:addDays(5),cat:'政策研析',template:'申訴/1955管道說明稿',status:'consult',templateState:'可套用',speed:'普通件',owner:'我',waiting:'yes',next:'等待相關單位確認話務訓練內容。',link:'',note:'',steps:[]},
+    {id:5,title:'勞動條件專案檢查計畫第三季執行情形說明',docNo:'A-005',source:'勞動部',received:addDays(-4),due:addDays(7),cat:'勞動檢查',template:'勞檢處理原則稿',status:'approve',templateState:'已迭代',speed:'普通件',owner:'我',waiting:'no',next:'等科長核閱後補新聞稿口徑。',link:'',note:'',steps:[{text:'初稿完成',done:true},{text:'補統計數據',done:true},{text:'陳核',done:true},{text:'發文',done:false}]},
+    {id:6,title:'民眾陳情工讀生加班費疑義案',docNo:'A-006',source:'民眾陳情',received:addDays(-1),due:addDays(9),cat:'勞動檢查',template:'勞動條件說明稿',status:'new',templateState:'可套用',speed:'普通件',owner:'我',waiting:'no',next:'確認陳情內容是否具體。',link:'',note:'',steps:[]}
   ];
 }
 
-// ══════════════════════════════════════
-//  篩選
-// ══════════════════════════════════════
+// ══════════════════════════════════
+//  Filter
+// ══════════════════════════════════
 function filtered(){
-  const q = (document.getElementById('search')?.value||'').trim();
-  const cf = document.getElementById('catFilter')?.value||'all';
-  const tf = document.getElementById('tplFilter')?.value||'all';
-  const sf = document.getElementById('statusFilter')?.value||'all';
-  const lf = document.getElementById('lightFilter')?.value||'all';
+  const q=(document.getElementById('search')?.value||'').trim();
+  const cf=document.getElementById('catFilter')?.value||'all';
+  const tf=document.getElementById('tplFilter')?.value||'all';
+  const sf=document.getElementById('statusFilter')?.value||'all';
+  const lf=document.getElementById('lightFilter')?.value||'all';
   return docs.filter(d=>{
-    const hay = [d.title,d.docNo,d.source,d.cat,d.template,d.next,d.note,d.owner].join(' ');
-    const l = lightOf(d);
-    const iterFlag = ['需微調','需新建'].includes(d.templateState);
-    return (!q || hay.includes(q))
-      && (cf==='all'||d.cat===cf)
-      && (tf==='all'||d.template===tf)
-      && (sf==='all'||d.status===sf)
-      && (lf==='all'||(lf==='iterate'?iterFlag:l.id===lf));
+    const hay=[d.title,d.docNo,d.source,d.cat,d.template,d.next,d.note,d.owner].join(' ');
+    const l=lightOf(d);
+    const iter=['需微調','需新建'].includes(d.templateState);
+    return (!q||hay.includes(q))
+      &&(cf==='all'||d.cat===cf)
+      &&(tf==='all'||d.template===tf)
+      &&(sf==='all'||d.status===sf)
+      &&(lf==='all'||(lf==='iterate'?iter:l.id===lf));
   });
 }
-
 function filterStat(key){
-  const lf = document.getElementById('lightFilter');
-  const sf = document.getElementById('statusFilter');
-  if(key==='all'){ lf.value='all'; sf.value='all'; }
-  else if(key==='iterate'){ lf.value='iterate'; }
-  else { lf.value=key; }
+  const lf=document.getElementById('lightFilter');
+  if(key==='all'){lf.value='all';document.getElementById('statusFilter').value='all';}
+  else if(key==='iterate') lf.value='iterate';
+  else lf.value=key;
   render();
 }
 
-// ══════════════════════════════════════
-//  視圖切換
-// ══════════════════════════════════════
+// ══════════════════════════════════
+//  View
+// ══════════════════════════════════
 function setView(v){
   curView=v;
   document.querySelectorAll('.vbtn').forEach(b=>b.classList.toggle('active',b.dataset.view===v));
-  document.getElementById('kanbanView').style.display = v==='kanban'?'block':'none';
-  document.getElementById('listView').style.display = v==='list'?'block':'none';
-  document.getElementById('templatesView').style.display = v==='templates'?'block':'none';
+  document.getElementById('kanbanView').style.display=v==='kanban'?'block':'none';
+  document.getElementById('listView').style.display=v==='list'?'block':'none';
+  document.getElementById('templatesView').style.display=v==='templates'?'block':'none';
   render();
 }
 
-// ══════════════════════════════════════
-//  渲染
-// ══════════════════════════════════════
+// ══════════════════════════════════
+//  Render
+// ══════════════════════════════════
 function render(){
   if(curView==='kanban') renderKanban();
   if(curView==='list') renderList();
@@ -535,122 +568,149 @@ function render(){
 }
 
 function renderStats(){
-  const all = docs;
-  const lights = all.map(lightOf);
-  document.getElementById('stAll').textContent = all.length;
-  document.getElementById('stLate').textContent = lights.filter(l=>l.id==='red').length;
-  document.getElementById('stToday').textContent = lights.filter(l=>l.id==='orange').length;
-  document.getElementById('stSoon').textContent = lights.filter(l=>l.id==='yellow').length;
-  document.getElementById('stWait').textContent = lights.filter(l=>l.id==='blue').length;
-  document.getElementById('stIter').textContent = all.filter(d=>['需微調','需新建'].includes(d.templateState)).length;
-  const done = all.filter(d=>d.status==='done').length;
-  document.getElementById('progress').style.width = all.length ? Math.round(done/all.length*100)+'%' : '0%';
-  document.getElementById('progressText').textContent =
-    `已結案 ${done}/${all.length} 件｜待例稿迭代 ${all.filter(d=>['需微調','需新建'].includes(d.templateState)).length} 件`;
-  bars('catBars', countBy(all, d=>d.cat));
-  bars('iterBars', countBy(all, d=>d.templateState));
-  bars('statusBars', countBy(all, d=>statusLabel(d.status)));
-  bars('ownerBars', countBy(all, d=>d.owner||'我'));
+  const all=docs, lights=all.map(lightOf);
+  document.getElementById('stAll').textContent=all.length;
+  document.getElementById('stLate').textContent=lights.filter(l=>l.id==='red').length;
+  document.getElementById('stToday').textContent=lights.filter(l=>l.id==='orange').length;
+  document.getElementById('stSoon').textContent=lights.filter(l=>l.id==='yellow').length;
+  document.getElementById('stWait').textContent=lights.filter(l=>l.id==='blue').length;
+  document.getElementById('stIter').textContent=all.filter(d=>['需微調','需新建'].includes(d.templateState)).length;
+  const done=all.filter(d=>d.status==='done').length;
+  document.getElementById('progress').style.width=all.length?Math.round(done/all.length*100)+'%':'0%';
+  document.getElementById('progressText').textContent=`已結案 ${done}/${all.length} 件｜待例稿迭代 ${all.filter(d=>['需微調','需新建'].includes(d.templateState)).length} 件`;
+  bars('catBars',countBy(all,d=>d.cat));
+  bars('iterBars',countBy(all,d=>d.templateState));
+  bars('statusBars',countBy(all,d=>statusLabel(d.status)));
+  bars('ownerBars',countBy(all,d=>d.owner||'我'));
 }
 
-function countBy(arr, fn){
+function countBy(arr,fn){
   const m={};
-  arr.forEach(x=>{ const k=fn(x)||'未填'; m[k]=(m[k]||0)+1; });
+  arr.forEach(x=>{const k=fn(x)||'未填';m[k]=(m[k]||0)+1;});
   return Object.entries(m).sort((a,b)=>b[1]-a[1]);
 }
-
-function bars(id, data){
-  const max = Math.max(1,...data.map(x=>x[1]));
-  document.getElementById(id).innerHTML = data.slice(0,5).map(([k,v])=>
+function bars(id,data){
+  const max=Math.max(1,...data.map(x=>x[1]));
+  document.getElementById(id).innerHTML=data.slice(0,5).map(([k,v])=>
     `<div class="bar-line"><div class="bar-label">${esc(k)}</div><div class="bar-bg"><div class="bar-fill" style="width:${Math.round(v/max*100)}%"></div></div><div class="bar-num">${v}</div></div>`
-  ).join('') || '<div class="bar-line"><span class="bar-label" style="color:var(--muted)">尚無資料</span></div>';
+  ).join('')||'<div class="bar-line"><span class="bar-label" style="color:var(--muted)">尚無資料</span></div>';
 }
 
 function renderKanban(){
-  const list = filtered();
-  document.getElementById('kanban').innerHTML = STATUSES.map(s=>{
-    const cards = list.filter(d=>d.status===s.id);
+  const list=filtered();
+  document.getElementById('kanban').innerHTML=STATUSES.map(s=>{
+    const cards=list.filter(d=>d.status===s.id);
     return `<section class="kb-col">
-      <div class="kb-head">
-        <span class="kb-name">${s.label}</span>
-        <span class="kb-count">${cards.length}</span>
-      </div>
-      ${cards.length ? cards.map(cardHTML).join('') : '<div class="empty-col">尚無案件</div>'}
+      <div class="kb-head"><span class="kb-name">${s.label}</span><span class="kb-count">${cards.length}</span></div>
+      ${cards.length?cards.map(cardHTML).join(''):'<div class="empty-col">尚無案件</div>'}
     </section>`;
   }).join('');
 }
 
 function cardHTML(d){
-  const l = lightOf(d);
-  const speedEl = d.speed && d.speed!=='普通件'
-    ? `<span class="speed-tag ${esc(d.speed)}">${esc(d.speed)}</span>` : '';
-  return `<article class="doc-card cat-${esc(d.cat||'其他')} ${d.status==='done'?'done':''}" onclick="openDoc(${d.id})">
+  const l=lightOf(d);
+  const color=catColor(d.cat||'其他');
+  const steps=d.steps||[];
+  const doneSteps=steps.filter(s=>s.done).length;
+  const speedEl=d.speed&&d.speed!=='普通件'?`<span class="speed-tag ${esc(d.speed)}">${esc(d.speed)}</span>`:'';
+  const wfEl=steps.length?`<div class="wf-mini">${steps.map(s=>`<div class="wf-dot${s.done?' done-step':''}"></div>`).join('')}<span class="wf-progress">${doneSteps}/${steps.length}</span></div>`:'';
+  return `<article class="doc-card ${d.status==='done'?'done':''}" style="border-left-color:${color}" onclick="openDoc(${d.id})">
     <div class="card-top">
       <span class="doc-no">${esc(d.docNo||('#'+d.id))}</span>
       <span class="light ${l.id}">${l.label}</span>
     </div>
     <div class="doc-title">${esc(d.title)}</div>
     <div class="doc-tags">
-      <span class="cat-tag ${esc(d.cat||'其他')}">${esc(d.cat||'其他')}</span>
+      <span class="cat-tag" style="background:${color}18;color:${color}">${esc(d.cat||'其他')}</span>
       ${d.source?`<span class="src-tag">${esc(d.source)}</span>`:''}
       ${speedEl}
     </div>
     ${d.next?`<div class="doc-next">▶ ${esc(d.next)}</div>`:''}
+    ${wfEl}
     <div class="doc-meta-row">
-      <span>${esc(d.template||'')}</span>
+      <span style="max-width:90px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(d.template||'')}</span>
       <span class="pill">${esc(d.templateState||'未分類')}</span>
     </div>
   </article>`;
 }
 
 function renderList(){
-  document.getElementById('tableBody').innerHTML = filtered().map(d=>{
-    const l = lightOf(d);
+  document.getElementById('tableBody').innerHTML=filtered().map(d=>{
+    const l=lightOf(d); const color=catColor(d.cat||'其他');
+    const steps=d.steps||[]; const ds=steps.filter(s=>s.done).length;
     return `<tr class="row-click" onclick="openDoc(${d.id})">
       <td><span class="light ${l.id}">${l.label}</span></td>
-      <td style="max-width:260px;font-size:12px;font-weight:500">${esc(d.title)}</td>
+      <td style="max-width:240px;font-size:12px;font-weight:500">${esc(d.title)}</td>
       <td>${esc(d.docNo)}</td>
-      <td><span class="cat-tag ${esc(d.cat||'其他')}">${esc(d.cat||'其他')}</span></td>
+      <td><span class="cat-tag" style="background:${color}18;color:${color}">${esc(d.cat||'')}</span></td>
       <td>${esc(d.template)}</td>
       <td><span class="pill">${esc(d.templateState)}</span></td>
       <td>${esc(statusLabel(d.status))}</td>
-      <td>${d.speed?`<span class="speed-tag ${esc(d.speed)}">${esc(d.speed)}</span>`:''}</td>
+      <td>${d.speed&&d.speed!=='普通件'?`<span class="speed-tag ${esc(d.speed)}">${esc(d.speed)}</span>`:esc(d.speed||'')}</td>
       <td>${esc(d.due||'')}</td>
-      <td style="max-width:180px;font-size:11px;color:var(--primary)">${esc(d.next||'')}</td>
+      <td style="white-space:nowrap">${steps.length?`${ds}/${steps.length}`:'-'}</td>
+      <td style="max-width:160px;font-size:11px;color:var(--primary)">${esc(d.next||'')}</td>
       <td>${esc(d.owner||'')}</td>
     </tr>`;
   }).join('');
 }
 
 function renderTemplates(){
-  const root = document.getElementById('templatesView');
-  root.innerHTML = CATEGORIES.map(cat=>{
-    const tpls = TEMPLATES_BY_CAT[cat]||[];
-    const cards = tpls.map(t=>{
-      const used = docs.filter(d=>d.template===t).length;
-      const needIter = docs.filter(d=>d.template===t && ['需微調','需新建'].includes(d.templateState)).length;
-      const states = docs.filter(d=>d.template===t).map(d=>d.templateState);
-      const topState = states.length ? (
-        states.includes('需新建')?'需新建':
-        states.includes('需微調')?'需微調':
-        states.includes('已迭代')?'已迭代':
-        states.includes('可套用')?'可套用':'未分類'
-      ) : '未分類';
-      const tid = 'tn_' + t.replace(/[^a-zA-Z0-9]/g,'_');
+  const root=document.getElementById('templatesView');
+  root.innerHTML=cats.map(cat=>{
+    const tpls=DEFAULT_TPLS_BY_CAT[cat]||[];
+    if(!tpls.length) return '';
+    const cards=tpls.map(t=>{
+      const used=docs.filter(d=>d.template===t).length;
+      const needIter=docs.filter(d=>d.template===t&&['需微調','需新建'].includes(d.templateState)).length;
+      const stateArr=docs.filter(d=>d.template===t).map(d=>d.templateState);
+      const topState=stateArr.length?(
+        stateArr.includes('需新建')?'需新建':stateArr.includes('需微調')?'需微調':
+        stateArr.includes('已迭代')?'已迭代':stateArr.includes('可套用')?'可套用':'未分類'
+      ):'未分類';
+      const tid='tn_'+t.replace(/[^\w]/g,'_');
+      const sopId='sop_'+t.replace(/[^\w]/g,'_');
+      const sop=tplData.sop[t]||[];
+      const cl=tplData.changelog[t]||[];
       return `<div class="tpl-card">
-        <h3>${esc(t)}<span class="tpl-state ${esc(topState)}">${esc(topState)}</span></h3>
+        <h3>${esc(t)}<span class="tpl-state ${esc(topState)}" style="margin-left:6px">${esc(topState)}</span></h3>
         <div class="tpl-meta">使用 ${used} 件｜待迭代 ${needIter} 件</div>
-        <textarea id="${tid}" placeholder="記錄常用開頭、法規依據、標準段落、版本差異…">${esc(tplNotes[t]||'')}</textarea>
+        <div class="tpl-tabs">
+          <button class="tpl-tab on" onclick="tplTab(this,'note','${tid}','${sopId}')">筆記</button>
+          <button class="tpl-tab" onclick="tplTab(this,'sop','${tid}','${sopId}')">SOP 步驟</button>
+          <button class="tpl-tab" onclick="tplTab(this,'log','${tid}','${sopId}')">迭代紀錄</button>
+        </div>
+        <div id="${tid}_note">
+          <textarea id="${tid}" placeholder="記錄常用開頭、法規依據、標準段落…">${esc(tplData.notes[t]||'')}</textarea>
+        </div>
+        <div id="${tid}_sop" style="display:none">
+          <div class="sop-wrap" id="${sopId}">
+            ${sop.map((s,i)=>`<div class="sop-step"><div class="sop-num">${i+1}</div><div class="sop-text">${esc(s)}</div><button class="sop-del" onclick="delSopStep('${esc(t)}',${i})">×</button></div>`).join('')}
+          </div>
+          <div class="sop-add-row">
+            <input id="${sopId}_input" placeholder="新增 SOP 步驟…" onkeydown="if(event.key==='Enter')addSopStep('${esc(t)}','${sopId}')"/>
+            <button class="small-btn pri" onclick="addSopStep('${esc(t)}','${sopId}')">＋</button>
+          </div>
+        </div>
+        <div id="${tid}_log" style="display:none">
+          <div class="changelog" id="${tid}_loglist">
+            ${cl.length?cl.map(e=>`<div class="changelog-entry"><span class="changelog-ver">${esc(e.ver)}</span>${esc(e.date)}｜${esc(e.note)}</div>`).join(''):'<span style="color:var(--muted)">尚無迭代紀錄</span>'}
+          </div>
+          <div class="sop-add-row" style="margin-top:8px">
+            <input id="${tid}_lognote" placeholder="記錄本次修改摘要…"/>
+            <button class="small-btn pri" onclick="addChangelog('${esc(t)}','${tid}')">＋ 記錄</button>
+          </div>
+        </div>
         <div class="tpl-actions">
           <button class="small-btn pri" onclick="saveTplNote('${esc(t)}','${tid}')">儲存筆記</button>
-          <button class="small-btn" onclick="copyTplNote('${tid}')">複製</button>
+          <button class="small-btn" onclick="copyTplNote('${tid}')">複製筆記</button>
           <button class="small-btn" onclick="filterByTpl('${esc(t)}')">篩選案件</button>
         </div>
       </div>`;
     }).join('');
     return `<div class="tpl-section">
       <div class="tpl-section-head">
-        <span class="tpl-section-title">${esc(cat)}</span>
+        <span class="tpl-section-title" style="color:${catColor(cat)}">${esc(cat)}</span>
         <div class="tpl-divider"></div>
       </div>
       <div class="tpl-grid">${cards}</div>
@@ -658,233 +718,288 @@ function renderTemplates(){
   }).join('');
 }
 
-function saveTplNote(t, tid){
-  tplNotes[t] = document.getElementById(tid)?.value||'';
-  localStorage.setItem(TPL_NOTES_KEY, JSON.stringify(tplNotes));
-  toast('已儲存例稿筆記');
+function tplTab(btn,tab,tid,sopId){
+  const card=btn.closest('.tpl-card');
+  card.querySelectorAll('.tpl-tab').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  card.querySelector('#'+tid+'_note').style.display=tab==='note'?'block':'none';
+  card.querySelector('#'+tid+'_sop').style.display=tab==='sop'?'block':'none';
+  card.querySelector('#'+tid+'_log').style.display=tab==='log'?'block':'none';
+}
+
+function saveTplNote(t,tid){
+  tplData.notes[t]=document.getElementById(tid)?.value||'';
+  saveTplData(); toast('已儲存筆記');
 }
 function copyTplNote(tid){
   navigator.clipboard.writeText(document.getElementById(tid)?.value||'').then(()=>toast('已複製'));
 }
 function filterByTpl(t){
-  document.getElementById('tplFilter').value = t;
-  setView('list');
-  render();
+  document.getElementById('tplFilter').value=t; setView('list');
 }
 
-// ══════════════════════════════════════
-//  新增/編輯 Modal
-// ══════════════════════════════════════
+function addSopStep(t,sopId){
+  const inp=document.getElementById(sopId+'_input');
+  const text=inp?.value.trim(); if(!text) return;
+  if(!tplData.sop[t]) tplData.sop[t]=[];
+  tplData.sop[t].push(text); saveTplData(); inp.value='';
+  renderTemplates();
+}
+function delSopStep(t,i){
+  tplData.sop[t].splice(i,1); saveTplData(); renderTemplates();
+}
+
+function addChangelog(t,tid){
+  const inp=document.getElementById(tid+'_lognote');
+  const note=inp?.value.trim(); if(!note) return;
+  if(!tplData.changelog[t]) tplData.changelog[t]=[];
+  const ver='v'+(tplData.changelog[t].length+1);
+  tplData.changelog[t].push({ver, date:todayISO(), note});
+  saveTplData(); inp.value=''; renderTemplates(); toast('已記錄迭代紀錄');
+}
+
+// ══════════════════════════════════
+//  Selects / Datalist
+// ══════════════════════════════════
 function initSelects(){
-  fillSel('catFilter', CATEGORIES, '全部業務類別');
-  fillSel('tplFilter', allTemplates(), '全部例稿分類');
-  fillSel('statusFilter', STATUSES.map(s=>({v:s.id,t:s.label})), '全部狀態');
-  fillSel('fCat', CATEGORIES);
-  fillSel('fTemplate', allTemplates());
-  fillSel('fStatus', STATUSES.map(s=>({v:s.id,t:s.label})));
-  fillSel('fTemplateState', TEMPLATE_STATES);
+  fillSel('catFilter',cats,'全部業務類別');
+  fillSel('tplFilter',allTemplates(),'全部例稿分類');
+  fillSel('statusFilter',STATUSES.map(s=>({v:s.id,t:s.label})),'全部狀態');
+  fillSel('fCat',cats);
+  fillSel('fStatus',STATUSES.map(s=>({v:s.id,t:s.label})));
+  fillSel('fTemplateState',TEMPLATE_STATES);
+  updateTplOptions();
+  updateSourceDatalist();
+}
+function fillSel(id,arr,first){
+  const el=document.getElementById(id); if(!el) return;
+  const cur=el.value;
+  el.innerHTML=(first?`<option value="all">${first}</option>`:'')+arr.map(x=>
+    typeof x==='string'?`<option value="${esc(x)}">${esc(x)}</option>`:`<option value="${esc(x.v)}">${esc(x.t)}</option>`
+  ).join('');
+  if(cur) el.value=cur;
+}
+function updateTplOptions(){
+  const cat=document.getElementById('fCat')?.value||cats[0];
+  const tpls=DEFAULT_TPLS_BY_CAT[cat]||allTemplates();
+  fillSel('fTemplate',tpls);
+}
+function updateSourceDatalist(){
+  const dl=document.getElementById('sourceList'); if(!dl) return;
+  dl.innerHTML=sources.map(s=>`<option value="${esc(s)}">`).join('');
 }
 
-function fillSel(id, arr, first){
-  const el = document.getElementById(id);
-  if(!el) return;
-  const cur = el.value;
-  el.innerHTML = (first?`<option value="all">${first}</option>`:'')
-    + arr.map(x=>typeof x==='string'
-      ? `<option value="${esc(x)}">${esc(x)}</option>`
-      : `<option value="${esc(x.v)}">${esc(x.t)}</option>`
-    ).join('');
-  if(cur) el.value = cur;
+// ══════════════════════════════════
+//  Workflow steps (in modal)
+// ══════════════════════════════════
+function renderWfSteps(){
+  document.getElementById('wfStepList').innerHTML=wfSteps.map((s,i)=>
+    `<div class="wf-step">
+      <input type="checkbox" class="wf-check" ${s.done?'checked':''} onchange="wfSteps[${i}].done=this.checked"/>
+      <span class="wf-step-text ${s.done?'checked':''}">${esc(s.text)}</span>
+      <button class="wf-step-del" onclick="wfSteps.splice(${i},1);renderWfSteps()">×</button>
+    </div>`
+  ).join('');
+}
+function addWfStep(){
+  const inp=document.getElementById('wfNewStep');
+  const text=inp?.value.trim(); if(!text) return;
+  wfSteps.push({text,done:false}); inp.value=''; renderWfSteps();
+}
+function loadSopSteps(){
+  const tpl=document.getElementById('fTemplate')?.value;
+  const sop=tplData.sop[tpl]||[];
+  if(!sop.length){ toast('此例稿尚未設定 SOP 步驟'); return; }
+  if(wfSteps.length && !confirm('套用 SOP 將覆蓋目前步驟，確定嗎？')) return;
+  wfSteps=sop.map(s=>({text:s,done:false}));
+  renderWfSteps(); toast('已套用例稿 SOP');
 }
 
+// ══════════════════════════════════
+//  Doc Modal
+// ══════════════════════════════════
 function openDoc(id){
-  editId = id||null;
-  const d = id ? docs.find(x=>x.id===id)
-    : {title:'',docNo:'',source:'',received:todayISO(),due:'',cat:CATEGORIES[0],
-       template:TEMPLATES_BY_CAT[CATEGORIES[0]][0],status:'new',templateState:'未分類',
-       speed:'普通件',owner:'我',waiting:'no',next:'',link:'',note:''};
-  document.getElementById('docModalTitle').textContent = id?'編輯公文':'新增公文';
-  document.getElementById('deleteBtn').style.display = id?'inline-block':'none';
+  editId=id||null;
+  const d=id?docs.find(x=>x.id===id):{
+    title:'',docNo:'',source:'',received:todayISO(),due:'',
+    cat:cats[0],template:'',status:'new',templateState:'未分類',
+    speed:'普通件',owner:'我',waiting:'no',next:'',link:'',note:'',steps:[]
+  };
+  document.getElementById('docModalTitle').textContent=id?'編輯公文':'新增公文';
+  document.getElementById('deleteBtn').style.display=id?'inline-block':'none';
   ['Title','DocNo','Source','Received','Due','Next','Link','Note','Owner'].forEach(k=>{
-    const el = document.getElementById('f'+k);
-    if(el) el.value = d[k.charAt(0).toLowerCase()+k.slice(1)]||'';
+    const el=document.getElementById('f'+k); if(el) el.value=d[k.charAt(0).toLowerCase()+k.slice(1)]||'';
   });
-  document.getElementById('fCat').value = d.cat||CATEGORIES[0];
-  document.getElementById('fTemplate').value = d.template||'';
-  document.getElementById('fStatus').value = d.status||'new';
-  document.getElementById('fTemplateState').value = d.templateState||'未分類';
-  document.getElementById('fSpeed').value = d.speed||'普通件';
-  document.getElementById('fWaiting').value = d.waiting||'no';
+  document.getElementById('fCat').value=d.cat||cats[0];
+  updateTplOptions();
+  document.getElementById('fTemplate').value=d.template||'';
+  document.getElementById('fStatus').value=d.status||'new';
+  document.getElementById('fTemplateState').value=d.templateState||'未分類';
+  document.getElementById('fSpeed').value=d.speed||'普通件';
+  document.getElementById('fWaiting').value=d.waiting||'no';
+  wfSteps=(d.steps||[]).map(s=>({...s}));
+  renderWfSteps();
   document.getElementById('docBg').classList.add('show');
 }
 
 function formDoc(){
   return {
-    id: editId||Date.now(),
-    title: document.getElementById('fTitle').value.trim(),
-    docNo: document.getElementById('fDocNo').value.trim(),
-    source: document.getElementById('fSource').value.trim(),
-    received: document.getElementById('fReceived').value,
-    due: document.getElementById('fDue').value,
-    cat: document.getElementById('fCat').value,
-    template: document.getElementById('fTemplate').value,
-    status: document.getElementById('fStatus').value,
-    templateState: document.getElementById('fTemplateState').value,
-    speed: document.getElementById('fSpeed').value,
-    owner: document.getElementById('fOwner').value.trim()||'我',
-    waiting: document.getElementById('fWaiting').value,
-    next: document.getElementById('fNext').value.trim(),
-    link: document.getElementById('fLink').value.trim(),
-    note: document.getElementById('fNote').value.trim()
+    id:editId||Date.now(),
+    title:document.getElementById('fTitle').value.trim(),
+    docNo:document.getElementById('fDocNo').value.trim(),
+    source:document.getElementById('fSource').value.trim(),
+    received:document.getElementById('fReceived').value,
+    due:document.getElementById('fDue').value,
+    cat:document.getElementById('fCat').value,
+    template:document.getElementById('fTemplate').value,
+    status:document.getElementById('fStatus').value,
+    templateState:document.getElementById('fTemplateState').value,
+    speed:document.getElementById('fSpeed').value,
+    owner:document.getElementById('fOwner').value.trim()||'我',
+    waiting:document.getElementById('fWaiting').value,
+    next:document.getElementById('fNext').value.trim(),
+    link:document.getElementById('fLink').value.trim(),
+    note:document.getElementById('fNote').value.trim(),
+    steps:wfSteps.map(s=>({...s}))
   };
 }
 
 function saveDoc(){
-  const d = formDoc();
-  if(!d.title){ toast('請輸入主旨'); return; }
-  if(editId){
-    const i = docs.findIndex(x=>x.id===editId);
-    if(i>=0) docs[i]=d;
-  } else {
-    docs.push(d);
-  }
-  saveLocal();
-  closeId('docBg');
-  toast('已儲存');
-  render();
+  const d=formDoc(); if(!d.title){ toast('請輸入主旨'); return; }
+  if(editId){ const i=docs.findIndex(x=>x.id===editId); if(i>=0) docs[i]=d; }
+  else docs.push(d);
+  saveDocs(); closeId('docBg'); toast('已儲存'); render();
 }
-
 function deleteDoc(){
   if(!editId) return;
   if(!confirm('確定刪除此件公文？')) return;
-  docs = docs.filter(d=>d.id!==editId);
-  saveLocal();
-  closeId('docBg');
-  toast('已刪除');
-  render();
+  docs=docs.filter(d=>d.id!==editId);
+  saveDocs(); closeId('docBg'); toast('已刪除'); render();
 }
-
 function copyBrief(){
-  const d = formDoc();
-  const txt = `${d.title}\n文號：${d.docNo||'未填'}\n業務類別：${d.cat}\n例稿：${d.template}（${d.templateState}）\n狀態：${statusLabel(d.status)}\n期限：${d.due||'未填'}\n下一步：${d.next||'未填'}`;
+  const d=formDoc();
+  const steps=d.steps.length?'\nWorkflow：\n'+d.steps.map((s,i)=>`  ${s.done?'☑':'☐'} ${s.text}`).join('\n'):'';
+  const txt=`${d.title}\n文號：${d.docNo||'未填'}\n業務類別：${d.cat}\n例稿：${d.template}（${d.templateState}）\n狀態：${statusLabel(d.status)}\n期限：${d.due||'未填'}\n下一步：${d.next||'未填'}${steps}`;
   navigator.clipboard.writeText(txt).then(()=>toast('已複製摘要'));
 }
 
-// ══════════════════════════════════════
-//  匯出/載入
-// ══════════════════════════════════════
-function exportCSV(){
-  const rows = [
-    ['主旨','文號','來文單位','收文日期','辦理期限','業務類別','例稿分類','例稿狀態','流程狀態','速別','承辦人','等回復','下一步','連結','備註'],
-    ...docs.map(d=>[d.title,d.docNo,d.source,d.received,d.due,d.cat,d.template,d.templateState,statusLabel(d.status),d.speed,d.owner,d.waiting==='yes'?'是':'否',d.next,d.link,d.note])
-  ];
-  const csv = '\ufeff' + rows.map(r=>r.map(v=>'"'+String(v??'').replaceAll('"','""')+'"').join(',')).join('\n');
-  const url = URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));
-  const a = document.createElement('a');
-  a.href=url; a.download=`公文承辦OS_${todayISO()}.csv`;
-  document.body.appendChild(a); a.click();
-  setTimeout(()=>{ a.remove(); URL.revokeObjectURL(url); },200);
-  toast('CSV 已匯出');
-}
-
-function importSample(){
-  if(!confirm('載入範例資料會覆蓋目前本機資料，確定嗎？')) return;
-  docs = sampleDocs();
-  saveLocal();
-  toast('已載入範例資料');
-  render();
-}
-
-// ══════════════════════════════════════
-//  GAS 同步
-// ══════════════════════════════════════
-function syncDotState(state){
-  const d = document.getElementById('syncDot');
-  d.className = 'sync-dot' + (state==='ok'?' ok':state==='err'?' err':state==='ing'?' ing':'');
-}
-
+// ══════════════════════════════════
+//  Capsule tag manager
+// ══════════════════════════════════
 function openSetup(){
-  document.getElementById('gasUrl').value = localStorage.getItem(GAS_KEY)||'';
-  document.getElementById('gasToken').value = localStorage.getItem(TOKEN_KEY)||'';
-  document.getElementById('gasTestResult').textContent = '';
+  document.getElementById('gasUrl').value=localStorage.getItem(GAS_KEY)||'';
+  document.getElementById('gasToken').value=localStorage.getItem(TOKEN_KEY)||'';
+  document.getElementById('gasTestResult').textContent='';
+  renderCapManager();
   document.getElementById('setupBg').classList.add('show');
 }
+function renderCapManager(){
+  document.getElementById('capCats').innerHTML=cats.map((c,i)=>
+    `<div class="cap-tag">${esc(c)}<button onclick="removeCap('cat',${i})">×</button></div>`
+  ).join('');
+  document.getElementById('capSources').innerHTML=sources.map((s,i)=>
+    `<div class="cap-tag">${esc(s)}<button onclick="removeCap('source',${i})">×</button></div>`
+  ).join('');
+}
+function addCap(type){
+  const inp=document.getElementById(type==='cat'?'newCatInput':'newSourceInput');
+  const val=inp?.value.trim(); if(!val) return;
+  if(type==='cat'){ if(!cats.includes(val)){ cats.push(val); saveCats(); } }
+  else { if(!sources.includes(val)){ sources.push(val); saveSources(); } }
+  inp.value=''; renderCapManager(); initSelects();
+}
+function removeCap(type,i){
+  if(type==='cat'){ cats.splice(i,1); saveCats(); }
+  else { sources.splice(i,1); saveSources(); }
+  renderCapManager(); initSelects();
+}
 
+// ══════════════════════════════════
+//  Export / Import
+// ══════════════════════════════════
+function exportCSV(){
+  const rows=[
+    ['主旨','文號','來文單位','收文日期','辦理期限','業務類別','例稿分類','例稿狀態','流程狀態','速別','承辦人','等回復','下一步','連結','備註','Workflow進度'],
+    ...docs.map(d=>{
+      const steps=d.steps||[]; const done=steps.filter(s=>s.done).length;
+      return [d.title,d.docNo,d.source,d.received,d.due,d.cat,d.template,d.templateState,statusLabel(d.status),d.speed,d.owner,d.waiting==='yes'?'是':'否',d.next,d.link,d.note,steps.length?`${done}/${steps.length}`:''];
+    })
+  ];
+  const csv='\ufeff'+rows.map(r=>r.map(v=>'"'+String(v??'').replaceAll('"','""')+'"').join(',')).join('\n');
+  const url=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));
+  const a=document.createElement('a'); a.href=url; a.download=`公文承辦OS_${todayISO()}.csv`;
+  document.body.appendChild(a); a.click(); setTimeout(()=>{ a.remove(); URL.revokeObjectURL(url); },200);
+  toast('CSV 已匯出');
+}
+function importSample(){
+  if(!confirm('載入範例資料會覆蓋目前本機資料，確定嗎？')) return;
+  docs=sampleDocs(); saveDocs(); toast('已載入範例資料'); render();
+}
+
+// ══════════════════════════════════
+//  GAS 同步（雙表：docs + templates）
+// ══════════════════════════════════
+function syncDotState(state){
+  const d=document.getElementById('syncDot');
+  d.className='sync-dot'+(state==='ok'?' ok':state==='err'?' err':state==='ing'?' ing':'');
+}
 function saveSetup(){
-  localStorage.setItem(GAS_KEY, document.getElementById('gasUrl').value.trim());
-  localStorage.setItem(TOKEN_KEY, document.getElementById('gasToken').value.trim());
-  closeId('setupBg');
+  localStorage.setItem(GAS_KEY,document.getElementById('gasUrl').value.trim());
+  localStorage.setItem(TOKEN_KEY,document.getElementById('gasToken').value.trim());
   syncDotState('ok');
-  document.getElementById('syncStatus').textContent = '已儲存同步設定';
+  document.getElementById('syncStatus').textContent='已儲存同步設定';
   toast('設定已儲存');
 }
-
 async function testGas(){
-  const url = document.getElementById('gasUrl').value.trim();
+  const url=document.getElementById('gasUrl').value.trim();
   if(!url){ toast('請先輸入 GAS URL'); return; }
-  document.getElementById('gasTestResult').textContent = '連線測試中…';
+  document.getElementById('gasTestResult').textContent='連線測試中…';
   try{
-    const u = new URL(url);
-    u.searchParams.set('action','ping');
-    const r = await fetch(u.toString());
-    const j = await r.json();
-    document.getElementById('gasTestResult').textContent = j.ok ? '✅ 連線成功！' : '❌ 格式異常：'+JSON.stringify(j);
-  } catch(e){
-    document.getElementById('gasTestResult').textContent = '❌ 連線失敗：'+e.message;
-  }
+    const u=new URL(url); u.searchParams.set('action','ping');
+    const r=await fetch(u.toString()); const j=await r.json();
+    document.getElementById('gasTestResult').textContent=j.ok?'✅ 連線成功！':'❌ 格式異常：'+JSON.stringify(j);
+  } catch(e){ document.getElementById('gasTestResult').textContent='❌ 連線失敗：'+e.message; }
 }
-
 async function syncPush(){
-  const url = localStorage.getItem(GAS_KEY);
-  if(!url){ openSetup(); return; }
+  const url=localStorage.getItem(GAS_KEY); if(!url){ openSetup(); return; }
   if(!confirm('將本機資料推送至 Google Sheet（覆蓋寫入）？')) return;
-  syncDotState('ing');
-  document.getElementById('syncStatus').textContent = '同步中…';
+  syncDotState('ing'); document.getElementById('syncStatus').textContent='同步中…';
   try{
-    const r = await fetch(url,{method:'POST',headers:{'Content-Type':'text/plain'},body:JSON.stringify({action:'push',token:localStorage.getItem(TOKEN_KEY)||'',data:docs})});
-    const j = await r.json();
+    const r=await fetch(url,{method:'POST',headers:{'Content-Type':'text/plain'},
+      body:JSON.stringify({action:'push',token:localStorage.getItem(TOKEN_KEY)||'',data:docs,tplData})});
+    const j=await r.json();
     if(j.ok){ syncDotState('ok'); document.getElementById('syncStatus').textContent='已同步至雲端 · '+new Date().toLocaleTimeString(); toast('雲端同步完成'); }
-    else{ syncDotState('err'); toast('同步失敗：'+(j.error||'未知錯誤')); }
+    else{ syncDotState('err'); toast('同步失敗：'+(j.error||'未知')); }
   } catch(e){ syncDotState('err'); toast('連線失敗'); }
 }
-
 async function syncPull(){
-  const url = localStorage.getItem(GAS_KEY);
-  if(!url){ openSetup(); return; }
+  const url=localStorage.getItem(GAS_KEY); if(!url){ openSetup(); return; }
   if(!confirm('從 Google Sheet 讀取並覆蓋本機資料？')) return;
-  syncDotState('ing');
-  document.getElementById('syncStatus').textContent = '讀取中…';
+  syncDotState('ing'); document.getElementById('syncStatus').textContent='讀取中…';
   try{
-    const u = new URL(url);
-    u.searchParams.set('action','pull');
-    u.searchParams.set('token', localStorage.getItem(TOKEN_KEY)||'');
-    const r = await fetch(u.toString());
-    const j = await r.json();
-    if(j.ok && Array.isArray(j.data)){
-      docs = j.data;
-      saveLocal();
-      syncDotState('ok');
-      document.getElementById('syncStatus').textContent='已讀取雲端資料 · '+new Date().toLocaleTimeString();
-      toast(`已讀取 ${docs.length} 筆公文`);
-      render();
+    const u=new URL(url); u.searchParams.set('action','pull'); u.searchParams.set('token',localStorage.getItem(TOKEN_KEY)||'');
+    const r=await fetch(u.toString()); const j=await r.json();
+    if(j.ok&&Array.isArray(j.data)){
+      docs=j.data; saveDocs();
+      if(j.tplData){ tplData=j.tplData; saveTplData(); }
+      syncDotState('ok'); document.getElementById('syncStatus').textContent='已讀取雲端資料 · '+new Date().toLocaleTimeString();
+      toast(`已讀取 ${docs.length} 筆公文`); render();
     } else { syncDotState('err'); toast('讀取失敗：'+(j.error||'格式不符')); }
   } catch(e){ syncDotState('err'); toast('連線失敗'); }
 }
 
-// ══════════════════════════════════════
+// ══════════════════════════════════
 //  Toast
-// ══════════════════════════════════════
+// ══════════════════════════════════
 function toast(msg){
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  clearTimeout(t._t);
-  t._t = setTimeout(()=>t.classList.remove('show'), 2300);
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove('show'),2300);
 }
 
-// ══════════════════════════════════════
-//  初始化
-// ══════════════════════════════════════
+// ══════════════════════════════════
+//  Init
+// ══════════════════════════════════
 initSelects();
 if(localStorage.getItem(GAS_KEY)) syncDotState('ok');
 render();
