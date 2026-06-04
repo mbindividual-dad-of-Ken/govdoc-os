@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>公文承辦 OS v3｜個人公文 Dashboard</title>
+<title>公文承辦 OS v3</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@400;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#f7f5f0;--bg2:#f0ede6;--card:#ffffff;--border:#e2ddd6;--border2:#ccc8bf;
+  --bg:#f7f5f0;--bg2:#f0ede6;--card:#fff;--border:#e2ddd6;--border2:#ccc8bf;
   --text:#1e1c18;--sub:#6a6560;--muted:#a09890;
   --primary:#4a6741;--primary2:#384f31;--pbg:#eef1eb;--plight:#d2dac9;
-  --shadow:0 2px 12px rgba(30,28,24,.05);--shadow2:0 8px 28px rgba(30,28,24,.09);
+  --sh:0 2px 12px rgba(30,28,24,.05);--sh2:0 8px 28px rgba(30,28,24,.09);
   --red:#b83a35;--red-bg:#fdf0ef;--orange:#b56320;--orange-bg:#fdf4ea;
   --yellow:#9a7818;--yellow-bg:#fdf8e6;--blue:#2060a0;--blue-bg:#e8f0f9;
   --green:#3a7055;--green-bg:#e8f4ee;--gray:#7a7870;--gray-bg:#f0efeb;
@@ -19,57 +19,60 @@
 *{box-sizing:border-box;margin:0;padding:0}
 body{min-height:100vh;background:var(--bg);color:var(--text);font-family:"Noto Sans TC",-apple-system,sans-serif;line-height:1.6;font-size:14px}
 .wrap{max-width:1480px;margin:0 auto;padding:20px 22px 60px}
-
-/* HEADER */
-.header{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:16px;padding-bottom:14px;border-bottom:1px solid var(--border)}
+.hd{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:16px;padding-bottom:14px;border-bottom:1px solid var(--border)}
 .brand{display:flex;align-items:center;gap:10px}
-.brand-mark{width:34px;height:34px;border-radius:8px;background:var(--primary);display:grid;place-items:center;color:#fff;font-family:"Noto Serif TC",serif;font-size:16px;font-weight:700;flex-shrink:0}
-.brand-name{font-family:"Noto Serif TC",serif;font-size:20px;font-weight:700;letter-spacing:.02em}
-.brand-sub{font-size:11px;color:var(--muted);letter-spacing:.06em;margin-top:1px}
-.header-right{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.sync-group{display:flex;gap:5px}
-.sync-btn{border:1px solid var(--border2);background:var(--card);border-radius:7px;padding:6px 11px;font-size:12px;font-weight:500;color:var(--sub);cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:5px;transition:.12s;white-space:nowrap}
-.sync-btn:hover{border-color:var(--primary);color:var(--primary)}
-.sync-btn.push{background:var(--primary);color:#fff;border-color:var(--primary)}
-.sync-btn.push:hover{background:var(--primary2)}
-.sync-dot{width:7px;height:7px;border-radius:50%;background:var(--muted);flex-shrink:0}
-.sync-dot.ok{background:#4a8a60}.sync-dot.err{background:#b83a35}
-.sync-dot.ing{background:#c07830;animation:blink .7s infinite}
+.bmark{width:34px;height:34px;border-radius:8px;background:var(--primary);display:grid;place-items:center;color:#fff;font-family:"Noto Serif TC",serif;font-size:16px;font-weight:700}
+.bname{font-family:"Noto Serif TC",serif;font-size:20px;font-weight:700}
+.bsub{font-size:11px;color:var(--muted);margin-top:1px}
+.hd-r{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.sbtn{border:1px solid var(--border2);background:var(--card);border-radius:7px;padding:6px 11px;font-size:12px;font-weight:500;color:var(--sub);cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:5px;transition:.12s;white-space:nowrap}
+.sbtn:hover{border-color:var(--primary);color:var(--primary)}
+.sbtn.push{background:var(--primary);color:#fff;border-color:var(--primary)}
+.sdot{width:7px;height:7px;border-radius:50%;background:var(--muted)}
+.sdot.ok{background:#4a8a60}.sdot.err{background:#b83a35}.sdot.ing{background:#c07830;animation:blink .7s infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
-.view-toggle{display:flex;gap:3px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:3px}
-.vbtn{border:none;background:transparent;border-radius:5px;padding:5px 13px;font-size:12px;font-weight:500;color:var(--sub);cursor:pointer;font-family:inherit;transition:.12s;white-space:nowrap}
-.vbtn.active{background:var(--card);color:var(--text);box-shadow:0 1px 4px rgba(30,28,24,.08)}
-.sync-status{font-size:11px;color:var(--muted);text-align:right;min-height:14px;margin-bottom:14px}
-
-/* DASHBOARD */
-.dashboard{display:grid;grid-template-columns:1.3fr 1fr;gap:14px;margin-bottom:14px}
-.panel{background:var(--card);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow);padding:18px 20px}
+.vtabs{display:flex;gap:3px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:3px}
+.vt{border:none;background:transparent;border-radius:5px;padding:5px 13px;font-size:12px;font-weight:500;color:var(--sub);cursor:pointer;font-family:inherit;transition:.12s;white-space:nowrap}
+.vt.on{background:var(--card);color:var(--text);box-shadow:0 1px 4px rgba(30,28,24,.08)}
+.sync-st{font-size:11px;color:var(--muted);text-align:right;min-height:14px;margin-bottom:14px}
+.dash{display:grid;grid-template-columns:1.3fr 1fr;gap:14px;margin-bottom:14px}
+.panel{background:var(--card);border:1px solid var(--border);border-radius:12px;box-shadow:var(--sh);padding:18px 20px}
 .kicker{font-size:10px;letter-spacing:.14em;color:var(--primary);font-weight:700;text-transform:uppercase;margin-bottom:5px}
-.hero-title{font-family:"Noto Serif TC",serif;font-size:22px;font-weight:700;line-height:1.3;margin-bottom:6px}
+.hero{font-family:"Noto Serif TC",serif;font-size:22px;font-weight:700;line-height:1.3;margin-bottom:6px}
 .hero-sub{color:var(--sub);font-size:12px;line-height:1.7}
-.progress-wrap{height:5px;background:var(--bg2);border-radius:999px;overflow:hidden;margin-top:14px}
-.progress{height:100%;background:var(--primary);width:0%;transition:.3s}
+.prog-wrap{height:5px;background:var(--bg2);border-radius:999px;overflow:hidden;margin-top:14px}
+.prog{height:100%;background:var(--primary);width:0%;transition:.3s}
 .pnote{font-size:11px;color:var(--sub);margin-top:7px}
-.stats-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}
-.stat{background:var(--bg2);border:1px solid var(--border);border-radius:9px;padding:11px 6px;text-align:center;cursor:pointer;transition:.12s}
-.stat:hover{transform:translateY(-1px);box-shadow:var(--shadow)}
-.stat b{display:block;font-family:"Noto Serif TC",serif;font-size:22px;line-height:1.1;font-weight:700}
-.stat span{display:block;font-size:10px;color:var(--sub);margin-top:3px}
-.stat.s-red b{color:var(--red)}.stat.s-orange b{color:var(--orange)}
-.stat.s-yellow b{color:var(--yellow)}.stat.s-blue b{color:var(--blue)}
-.stat.s-green b{color:var(--green)}.stat.s-all b{color:var(--text)}
-
-/* INSIGHT */
+.sg{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}
+.st{background:var(--bg2);border:1px solid var(--border);border-radius:9px;padding:11px 6px;text-align:center;cursor:pointer;transition:.12s}
+.st:hover{transform:translateY(-1px);box-shadow:var(--sh)}
+.st b{display:block;font-family:"Noto Serif TC",serif;font-size:22px;line-height:1.1;font-weight:700}
+.st span{display:block;font-size:10px;color:var(--sub);margin-top:3px}
+.st.s-red b{color:var(--red)}.st.s-orange b{color:var(--orange)}.st.s-yellow b{color:var(--yellow)}
+.st.s-blue b{color:var(--blue)}.st.s-green b{color:var(--green)}.st.s-all b{color:var(--text)}
 .insight{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:14px}
-.insight-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px 16px;box-shadow:var(--shadow)}
-.insight-card h3{font-size:11px;font-weight:700;color:var(--sub);letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px}
-.bar-line{display:flex;align-items:center;gap:7px;margin:6px 0}
-.bar-label{width:90px;font-size:11px;color:var(--sub);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex-shrink:0}
-.bar-bg{flex:1;height:5px;border-radius:999px;background:var(--bg2);overflow:hidden}
-.bar-fill{height:100%;border-radius:999px;background:var(--primary);transition:.3s}
-.bar-num{width:20px;text-align:right;font-size:11px;color:var(--muted);flex-shrink:0}
-
-/* TOOLBAR */
+.ic{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px 16px;box-shadow:var(--sh)}
+.ic h3{font-size:11px;font-weight:700;color:var(--sub);letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px}
+.bl{display:flex;align-items:center;gap:7px;margin:6px 0}
+.bl-lbl{width:90px;font-size:11px;color:var(--sub);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex-shrink:0}
+.bl-bg{flex:1;height:5px;border-radius:999px;background:var(--bg2);overflow:hidden}
+.bl-fill{height:100%;border-radius:999px;background:var(--primary)}
+.bl-n{width:20px;text-align:right;font-size:11px;color:var(--muted);flex-shrink:0}
+.backup-banner{background:#fdf8e6;border:1px solid #f0d87a;border-radius:10px;padding:12px 16px;margin-bottom:14px;display:none;align-items:center;gap:12px;flex-wrap:wrap}
+.backup-banner.show{display:flex}
+.bb-txt{flex:1;font-size:12px;min-width:180px}
+.bb-actions{display:flex;gap:7px;flex-shrink:0}
+.alert-banner{background:#fdf0ef;border:1px solid #f0c8c4;border-radius:10px;padding:12px 16px;margin-bottom:14px;display:none}
+.alert-banner.show{display:block}
+.ab-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.ab-title{font-size:13px;font-weight:700;color:var(--red)}
+.ab-close{border:none;background:none;color:var(--muted);cursor:pointer;font-size:18px;line-height:1}
+.ab-list{display:flex;flex-direction:column;gap:5px}
+.ab-item{font-size:12px;display:flex;align-items:center;gap:7px;cursor:pointer;padding:2px 0}
+.ab-item:hover span:last-child{text-decoration:underline;color:var(--primary)}
+.ab-badge{font-size:10px;border-radius:4px;padding:1px 6px;font-weight:700;flex-shrink:0}
+.ab-badge.red{background:var(--red-bg);color:var(--red)}
+.ab-badge.orange{background:var(--orange-bg);color:var(--orange)}
 .toolbar{display:flex;gap:7px;align-items:center;flex-wrap:wrap;margin-bottom:14px;position:sticky;top:0;z-index:30;background:rgba(247,245,240,.92);backdrop-filter:blur(10px);padding:10px 0}
 .toolbar input,.toolbar select{border:1px solid var(--border2);background:var(--card);border-radius:7px;padding:7px 10px;color:var(--text);font-size:12px;outline:none;font-family:inherit;transition:.12s}
 .toolbar input:focus,.toolbar select:focus{border-color:var(--primary)}
@@ -78,338 +81,234 @@ body{min-height:100vh;background:var(--bg);color:var(--text);font-family:"Noto S
 .tbtn:hover{background:var(--primary2)}
 .tbtn.sec{background:var(--card);color:var(--sub);border:1px solid var(--border2)}
 .tbtn.sec:hover{border-color:var(--primary);color:var(--primary)}
-
-/* KANBAN */
 .kanban{display:grid;grid-template-columns:repeat(8,minmax(155px,1fr));gap:10px;align-items:start}
-.kb-col{background:rgba(240,237,230,.45);border:1px solid var(--border);border-radius:10px;padding:10px;min-height:200px}
-.kb-head{display:flex;align-items:center;justify-content:space-between;padding-bottom:8px;margin-bottom:8px;border-bottom:1px solid var(--border)}
-.kb-name{font-size:11px;font-weight:700;color:var(--sub)}
-.kb-count{font-size:10px;background:var(--card);color:var(--primary);border-radius:999px;padding:1px 7px;border:1px solid var(--plight);font-weight:700}
-
-/* DOC CARD */
-.doc-card{background:var(--card);border:1px solid var(--border);border-left:3px solid var(--border2);border-radius:0 8px 8px 0;padding:10px 11px;margin-bottom:8px;cursor:pointer;transition:.12s}
-.doc-card:hover{box-shadow:var(--shadow2);transform:translateY(-1px)}
-.doc-card.done{opacity:.7}
-.card-top{display:flex;justify-content:space-between;align-items:center;gap:6px;margin-bottom:5px}
-.doc-no{font-size:10px;color:var(--muted);font-weight:700;letter-spacing:.04em}
-.light{font-size:10px;border-radius:4px;padding:1px 6px;font-weight:700;flex-shrink:0}
-.light.red{background:var(--red-bg);color:var(--red)}.light.orange{background:var(--orange-bg);color:var(--orange)}
-.light.yellow{background:var(--yellow-bg);color:var(--yellow)}.light.blue{background:var(--blue-bg);color:var(--blue)}
-.light.green{background:var(--green-bg);color:var(--green)}.light.gray{background:var(--gray-bg);color:var(--gray)}
-.doc-title{font-size:12.5px;font-weight:500;line-height:1.45;margin-bottom:6px;color:var(--text);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.doc-tags{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:6px}
-.cat-tag{font-size:10px;border-radius:3px;padding:1px 5px;font-weight:500;background:var(--bg2);color:var(--sub)}
-.src-tag{font-size:10px;border-radius:3px;padding:1px 5px;background:var(--bg2);color:var(--sub);border:1px solid var(--border)}
-.speed-tag{font-size:10px;border-radius:3px;padding:1px 5px;font-weight:700}
-.speed-tag.最速件{background:#fce9e7;color:#b83a35}
-.speed-tag.速件{background:#fdf3e3;color:#9b6a1a}
-.speed-tag.普通件{background:var(--pbg);color:var(--primary)}
-.doc-next{margin-top:5px;font-size:10px;color:var(--primary);background:var(--pbg);border-radius:5px;padding:4px 7px;line-height:1.4}
-.doc-meta-row{display:flex;align-items:center;justify-content:space-between;font-size:10px;color:var(--muted);border-top:1px dashed var(--border);padding-top:5px;margin-top:5px}
+.kbc{background:rgba(240,237,230,.45);border:1px solid var(--border);border-radius:10px;padding:10px;min-height:200px;transition:.1s}
+.kbc.drag-over{background:rgba(74,103,65,.08);border-color:var(--primary);border-style:dashed}
+.kbh{display:flex;align-items:center;justify-content:space-between;padding-bottom:8px;margin-bottom:8px;border-bottom:1px solid var(--border)}
+.kbn{font-size:11px;font-weight:700;color:var(--sub)}
+.kbcnt{font-size:10px;background:var(--card);color:var(--primary);border-radius:999px;padding:1px 7px;border:1px solid var(--plight);font-weight:700}
+.drop-bar{height:3px;background:var(--primary);border-radius:999px;margin:3px 0;display:none}
+.drop-bar.show{display:block}
+.empty-col{text-align:center;color:var(--muted);font-size:11px;border:1px dashed var(--border);border-radius:7px;padding:14px 6px;background:rgba(255,255,255,.4)}
+.dc{background:var(--card);border:1px solid var(--border);border-left:3px solid var(--border2);border-radius:0 8px 8px 0;padding:10px 11px;margin-bottom:8px;cursor:pointer;transition:.12s;user-select:none}
+.dc:hover{box-shadow:var(--sh2);transform:translateY(-1px)}
+.dc.done{opacity:.7}
+.dc.dragging{opacity:.35;transform:rotate(1.5deg)}
+.ctop{display:flex;justify-content:space-between;align-items:center;gap:6px;margin-bottom:5px}
+.dno{font-size:10px;color:var(--muted);font-weight:700;letter-spacing:.04em}
+.lt{font-size:10px;border-radius:4px;padding:1px 6px;font-weight:700;flex-shrink:0}
+.lt.red{background:var(--red-bg);color:var(--red)}.lt.orange{background:var(--orange-bg);color:var(--orange)}
+.lt.yellow{background:var(--yellow-bg);color:var(--yellow)}.lt.blue{background:var(--blue-bg);color:var(--blue)}
+.lt.green{background:var(--green-bg);color:var(--green)}.lt.gray{background:var(--gray-bg);color:var(--gray)}
+.dtitle{font-size:12.5px;font-weight:500;line-height:1.45;margin-bottom:6px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.dtags{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:6px}
+.ctag{font-size:10px;border-radius:3px;padding:1px 5px;font-weight:500}
+.stag{font-size:10px;border-radius:3px;padding:1px 5px;background:var(--bg2);color:var(--sub);border:1px solid var(--border)}
+.sptag{font-size:10px;border-radius:3px;padding:1px 5px;font-weight:700}
+.sptag.x-fastest{background:#fce9e7;color:#b83a35}
+.sptag.x-fast{background:#fdf3e3;color:#9b6a1a}
+.sptag.x-normal{background:var(--pbg);color:var(--primary)}
+.dnext{margin-top:5px;font-size:10px;color:var(--primary);background:var(--pbg);border-radius:5px;padding:4px 7px;line-height:1.4}
+.dmeta{display:flex;align-items:center;justify-content:space-between;font-size:10px;color:var(--muted);border-top:1px dashed var(--border);padding-top:5px;margin-top:5px}
 .pill{display:inline-flex;border-radius:999px;padding:2px 7px;background:var(--pbg);color:var(--primary);border:1px solid var(--plight);font-size:10px;font-weight:700}
-
-/* WORKFLOW MINI */
-.wf-mini{margin-top:5px;display:flex;gap:3px;flex-wrap:wrap}
-.wf-dot{width:8px;height:8px;border-radius:50%;background:var(--border2);flex-shrink:0;transition:.1s}
-.wf-dot.done-step{background:var(--primary)}
-.wf-progress{font-size:10px;color:var(--muted);margin-left:4px}
-
-
-/* DRAG AND DROP */
-.doc-card[draggable]{cursor:grab}
-.doc-card[draggable]:active{cursor:grabbing}
-.doc-card.dragging{opacity:.35;transform:rotate(1.5deg);box-shadow:var(--shadow2)}
-.kb-col.drag-over{background:rgba(74,103,65,.08);border-color:var(--primary);border-style:dashed}
-.kb-col.drag-over .empty-col{border-color:var(--primary);color:var(--primary)}
-.drag-ghost{position:fixed;pointer-events:none;z-index:9999;opacity:.85;transform:rotate(2deg) scale(1.02);box-shadow:0 12px 32px rgba(30,28,24,.18);border-radius:8px;background:var(--card);padding:10px 12px;width:200px;font-size:12px;font-weight:500;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;border-left:3px solid var(--primary)}
-.kb-drop-indicator{height:3px;background:var(--primary);border-radius:999px;margin:3px 0;display:none}
-.kb-drop-indicator.show{display:block}
-
-/* CARD QUICK ACTIONS */
-.card-quick{display:flex;gap:4px;margin-top:7px;padding-top:6px;border-top:1px dashed var(--border);flex-wrap:wrap}
-.qbtn{border:1px solid var(--border);background:var(--bg2);border-radius:5px;padding:3px 7px;font-size:10px;color:var(--sub);cursor:pointer;font-family:inherit;font-weight:500;white-space:nowrap;transition:.1s;line-height:1.4}
-.qbtn:hover{border-color:var(--primary);color:var(--primary);background:var(--pbg)}
-.qbtn.green-btn{border-color:var(--green);color:var(--green);background:var(--green-bg)}
-.qbtn.blue-btn{border-color:var(--blue);color:var(--blue);background:var(--blue-bg)}
-
-
-/* BACKUP BANNER */
-.backup-banner{background:#fdf8e6;border:1px solid #f0d87a;border-radius:10px;padding:12px 16px;margin-bottom:14px;display:none;align-items:center;gap:12px;flex-wrap:wrap}
-.backup-banner.show{display:flex}
-.backup-banner-text{flex:1;font-size:12px;color:var(--text);min-width:180px}
-.backup-banner-text b{color:var(--amber,#9a7818)}
-.backup-banner-actions{display:flex;gap:7px;flex-shrink:0}
-/* ALERT BANNER */
-.alert-banner{background:#fdf0ef;border:1px solid #f0c8c4;border-radius:10px;padding:12px 16px;margin-bottom:14px;display:none}
-.alert-banner.show{display:block}
-.alert-banner-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
-.alert-banner-title{font-size:13px;font-weight:700;color:var(--red)}
-.alert-close{border:none;background:none;color:var(--muted);cursor:pointer;font-size:18px;line-height:1;padding:0}
-.alert-list{display:flex;flex-direction:column;gap:5px}
-.alert-item{font-size:12px;color:var(--text);display:flex;align-items:center;gap:7px;cursor:pointer;padding:2px 0}
-.alert-item:hover .alert-item-title{text-decoration:underline;color:var(--primary)}
-.alert-badge{font-size:10px;border-radius:4px;padding:1px 6px;font-weight:700;flex-shrink:0}
-.alert-badge.red{background:var(--red-bg);color:var(--red)}
-.alert-badge.orange{background:var(--orange-bg);color:var(--orange)}
-
-/* LIST VIEW */
+.wfmini{margin-top:5px;display:flex;gap:3px;align-items:center}
+.wfdot{width:8px;height:8px;border-radius:50%;background:var(--border2);flex-shrink:0}
+.wfdot.done{background:var(--primary)}
+.wfprog{font-size:10px;color:var(--muted);margin-left:4px}
+.cquick{display:flex;gap:4px;margin-top:7px;padding-top:6px;border-top:1px dashed var(--border);flex-wrap:wrap}
+.qb{border:1px solid var(--border);background:var(--bg2);border-radius:5px;padding:3px 7px;font-size:10px;color:var(--sub);cursor:pointer;font-family:inherit;font-weight:500;white-space:nowrap;transition:.1s;line-height:1.4}
+.qb:hover{border-color:var(--primary);color:var(--primary);background:var(--pbg)}
+.qb.g{border-color:var(--green);color:var(--green);background:var(--green-bg)}
+.qb.b{border-color:var(--blue);color:var(--blue);background:var(--blue-bg)}
 .list-view{display:none}
-.table-wrap{overflow-x:auto;background:var(--card);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow)}
+.tw{overflow-x:auto;background:var(--card);border:1px solid var(--border);border-radius:12px;box-shadow:var(--sh)}
 table{border-collapse:collapse;width:100%;min-width:1100px}
 th{background:var(--bg2);color:var(--sub);font-size:11px;letter-spacing:.05em;padding:10px 12px;border-bottom:1px solid var(--border);font-weight:700;text-align:left;white-space:nowrap}
 td{padding:10px 12px;border-bottom:1px solid var(--border);font-size:12px;vertical-align:middle}
 tr:last-child td{border-bottom:none}
-.row-click{cursor:pointer}.row-click:hover td{background:#faf9f5}
-
-/* TEMPLATE VIEW */
+.tr-c{cursor:pointer}.tr-c:hover td{background:#faf9f5}
+.todo-wrap{max-width:600px;margin:0 auto}
+.tds{margin-bottom:20px}
+.tdsh{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.tdst{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+.tddiv{flex:1;height:1px;background:var(--border)}
+.tdc{background:var(--card);border:1px solid var(--border);border-left:3px solid var(--border2);border-radius:0 10px 10px 0;padding:12px 14px;margin-bottom:8px;display:flex;gap:12px}
+.tdc-l{flex:1;min-width:0;cursor:pointer}
+.tdc-title{font-size:13px;font-weight:600;margin-bottom:5px;line-height:1.4}
+.tdc-meta{display:flex;flex-wrap:wrap;gap:5px;align-items:center;margin-bottom:4px}
+.tdc-next{font-size:11px;color:var(--primary);background:var(--pbg);border-radius:4px;padding:3px 7px;line-height:1.4}
+.tdc-r{display:flex;flex-direction:column;align-items:flex-end;gap:5px;flex-shrink:0}
+.tdc-wf{font-size:11px;color:var(--muted);white-space:nowrap}
+.tdc-btns{display:flex;flex-direction:column;gap:4px}
+.todo-empty{text-align:center;color:var(--muted);font-size:13px;padding:32px 0;line-height:2}
 .templates-view{display:none}
-/* ── OBSIDIAN-STYLE TEMPLATE VAULT ── */
-.vault-wrap{display:grid;grid-template-columns:220px 1fr;gap:0;background:var(--card);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow);min-height:560px;overflow:hidden}
-.vault-sidebar{background:var(--bg2);border-right:1px solid var(--border);padding:12px 0;overflow-y:auto;min-height:560px}
-.vault-sidebar-head{padding:6px 14px 10px;font-size:10px;font-weight:700;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;border-bottom:1px solid var(--border);margin-bottom:6px}
-.vault-folder{margin-bottom:2px}
-.vault-folder-btn{width:100%;border:none;background:none;display:flex;align-items:center;gap:7px;padding:6px 14px;font-size:12px;font-weight:700;color:var(--sub);cursor:pointer;font-family:inherit;text-align:left;transition:.1s}
-.vault-folder-btn:hover{background:var(--border);color:var(--text)}
-.vault-folder-btn.open{color:var(--primary)}
-.vault-folder-icon{font-size:11px;transition:.15s;flex-shrink:0}
-.vault-folder-icon.open{transform:rotate(90deg)}
-.vault-folder-color{width:8px;height:8px;border-radius:50%;flex-shrink:0}
-.vault-file-list{display:none;padding:0 0 4px}
-.vault-file-list.open{display:block}
-.vault-file-btn{width:100%;border:none;background:none;display:flex;align-items:center;gap:7px;padding:5px 14px 5px 32px;font-size:12px;color:var(--sub);cursor:pointer;font-family:inherit;text-align:left;transition:.1s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.vault-file-btn:hover{background:rgba(74,103,65,.08);color:var(--text)}
-.vault-file-btn.active{background:var(--pbg);color:var(--primary);font-weight:600}
-.vault-file-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
-.vault-file-dot.已迭代{background:#3a7055}.vault-file-dot.可套用{background:#2060a0}
-.vault-file-dot.需微調{background:#9a7818}.vault-file-dot.需新建{background:#b83a35}
-.vault-file-dot.未分類{background:var(--muted)}
-.vault-main{display:flex;flex-direction:column;min-height:0;overflow:hidden}
-.vault-toolbar{display:flex;align-items:center;gap:8px;padding:10px 16px;border-bottom:1px solid var(--border);background:var(--card);flex-wrap:wrap}
-.vault-title{font-family:"Noto Serif TC",serif;font-size:15px;font-weight:700;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.vault-meta{font-size:11px;color:var(--muted);white-space:nowrap}
-.vault-tabs{display:flex;gap:3px;background:var(--bg2);border-radius:7px;padding:2px}
-.vault-tab{border:none;background:transparent;border-radius:5px;padding:4px 10px;font-size:11px;font-weight:500;color:var(--sub);cursor:pointer;font-family:inherit;transition:.1s;white-space:nowrap}
-.vault-tab.on{background:var(--card);color:var(--text);box-shadow:0 1px 3px rgba(0,0,0,.07)}
-.vault-body{flex:1;overflow-y:auto;padding:16px 20px}
-.vault-empty{display:grid;place-items:center;min-height:300px;color:var(--muted);font-size:13px;text-align:center;line-height:2}
-
-/* Markdown preview */
-.md-preview{font-size:13px;line-height:1.8;color:var(--text)}
-.md-preview h1{font-family:"Noto Serif TC",serif;font-size:20px;font-weight:700;margin:0 0 12px;padding-bottom:8px;border-bottom:2px solid var(--border)}
-.md-preview h2{font-size:15px;font-weight:700;margin:16px 0 8px;color:var(--primary)}
-.md-preview h3{font-size:13px;font-weight:700;margin:12px 0 6px;color:var(--sub)}
-.md-preview p{margin:0 0 10px}
-.md-preview ul,.md-preview ol{margin:0 0 10px;padding-left:20px}
-.md-preview li{margin:3px 0}
-.md-preview code{background:var(--bg2);border-radius:3px;padding:1px 5px;font-size:12px;font-family:monospace}
-.md-preview pre{background:var(--bg2);border-radius:7px;padding:12px;overflow-x:auto;margin:0 0 10px}
-.md-preview pre code{background:none;padding:0}
-.md-preview blockquote{border-left:3px solid var(--plight);margin:0 0 10px;padding:6px 12px;background:var(--pbg);border-radius:0 6px 6px 0;color:var(--sub)}
-.md-preview hr{border:none;border-top:1px solid var(--border);margin:16px 0}
-.md-preview strong{font-weight:700;color:var(--text)}
-.md-preview em{font-style:italic;color:var(--sub)}
-.md-preview .wikilink{background:var(--pbg);color:var(--primary);border:1px solid var(--plight);border-radius:4px;padding:1px 6px;font-size:12px;cursor:pointer;text-decoration:none;display:inline-block}
-.md-preview .wikilink:hover{background:var(--primary);color:#fff}
-
-/* Frontmatter block */
-.frontmatter{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:10px 14px;margin-bottom:14px;font-size:11px;display:grid;grid-template-columns:repeat(3,1fr);gap:6px 14px}
-.fm-item{display:flex;flex-direction:column;gap:2px}
-.fm-label{font-weight:700;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;font-size:10px}
-.fm-value{color:var(--text)}
-
-/* Editor */
-.vault-editor{width:100%;min-height:280px;border:1px solid var(--border);border-radius:8px;padding:12px 14px;background:var(--bg2);color:var(--text);font-family:"Noto Sans TC",monospace,sans-serif;font-size:13px;line-height:1.8;resize:vertical;outline:none;transition:.12s}
-.vault-editor:focus{border-color:var(--primary);background:var(--card)}
-.vault-editor-actions{display:flex;gap:7px;margin-top:10px;flex-wrap:wrap}
-
-/* SOP in vault */
+.vault{display:grid;grid-template-columns:220px 1fr;background:var(--card);border:1px solid var(--border);border-radius:12px;box-shadow:var(--sh);min-height:560px;overflow:hidden}
+.vsb{background:var(--bg2);border-right:1px solid var(--border);padding:12px 0;overflow-y:auto}
+.vsb-hd{padding:6px 14px 10px;font-size:10px;font-weight:700;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;border-bottom:1px solid var(--border);margin-bottom:6px}
+.vfbtn{width:100%;border:none;background:none;display:flex;align-items:center;gap:7px;padding:6px 14px;font-size:12px;font-weight:700;color:var(--sub);cursor:pointer;font-family:inherit;text-align:left;transition:.1s}
+.vfbtn:hover{background:var(--border);color:var(--text)}
+.vfbtn.open{color:var(--primary)}
+.vfarr{font-size:11px;transition:.15s;flex-shrink:0}
+.vfarr.open{transform:rotate(90deg)}
+.vfclr{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.vflist{display:none;padding:0 0 4px}
+.vflist.open{display:block}
+.vfilebtn{width:100%;border:none;background:none;display:flex;align-items:center;gap:7px;padding:5px 14px 5px 32px;font-size:12px;color:var(--sub);cursor:pointer;font-family:inherit;text-align:left;transition:.1s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.vfilebtn:hover{background:rgba(74,103,65,.08);color:var(--text)}
+.vfilebtn.on{background:var(--pbg);color:var(--primary);font-weight:600}
+.vdot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.vdot.st0{background:var(--muted)}.vdot.st1{background:#2060a0}.vdot.st2{background:#9a7818}
+.vdot.st3{background:#b83a35}.vdot.st4{background:#3a7055}
+.vmain{display:flex;flex-direction:column;overflow:hidden}
+.vtbar{display:flex;align-items:center;gap:8px;padding:10px 16px;border-bottom:1px solid var(--border);flex-wrap:wrap}
+.vtitle{font-family:"Noto Serif TC",serif;font-size:15px;font-weight:700;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.vtabs2{display:flex;gap:3px;background:var(--bg2);border-radius:7px;padding:2px}
+.vt2{border:none;background:transparent;border-radius:5px;padding:4px 10px;font-size:11px;font-weight:500;color:var(--sub);cursor:pointer;font-family:inherit;transition:.1s;white-space:nowrap}
+.vt2.on{background:var(--card);color:var(--text);box-shadow:0 1px 3px rgba(0,0,0,.07)}
+.vbody{flex:1;overflow-y:auto;padding:16px 20px}
+.vempty{display:grid;place-items:center;min-height:300px;color:var(--muted);font-size:13px;text-align:center;line-height:2}
+.fm{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:10px 14px;margin-bottom:14px;font-size:11px;display:grid;grid-template-columns:repeat(3,1fr);gap:6px 14px}
+.fmi{display:flex;flex-direction:column;gap:2px}
+.fml{font-weight:700;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;font-size:10px}
+.veditor{width:100%;min-height:280px;border:1px solid var(--border);border-radius:8px;padding:12px 14px;background:var(--bg2);color:var(--text);font-family:monospace,sans-serif;font-size:13px;line-height:1.8;resize:vertical;outline:none;transition:.12s}
+.veditor:focus{border-color:var(--primary);background:var(--card)}
+.veacts{display:flex;gap:7px;margin-top:10px;flex-wrap:wrap}
+.mdp{font-size:13px;line-height:1.8}
+.mdp h1{font-family:"Noto Serif TC",serif;font-size:20px;font-weight:700;margin:0 0 12px;padding-bottom:8px;border-bottom:2px solid var(--border)}
+.mdp h2{font-size:15px;font-weight:700;margin:16px 0 8px;color:var(--primary)}
+.mdp h3{font-size:13px;font-weight:700;margin:12px 0 6px;color:var(--sub)}
+.mdp p{margin:0 0 10px}.mdp ul,.mdp ol{margin:0 0 10px;padding-left:20px}.mdp li{margin:3px 0}
+.mdp code{background:var(--bg2);border-radius:3px;padding:1px 5px;font-size:12px;font-family:monospace}
+.mdp blockquote{border-left:3px solid var(--plight);margin:0 0 10px;padding:6px 12px;background:var(--pbg);border-radius:0 6px 6px 0;color:var(--sub)}
+.mdp hr{border:none;border-top:1px solid var(--border);margin:16px 0}
+.mdp strong{font-weight:700}.mdp em{font-style:italic;color:var(--sub)}
+.wikilink{background:var(--pbg);color:var(--primary);border:1px solid var(--plight);border-radius:4px;padding:1px 6px;font-size:12px;cursor:pointer;display:inline-block}
+.wikilink:hover{background:var(--primary);color:#fff}
 .sop-step{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px dashed var(--border)}
 .sop-step:last-child{border:none}
-.sop-num{width:20px;height:20px;border-radius:50%;background:var(--pbg);border:1px solid var(--plight);display:grid;place-items:center;font-size:10px;font-weight:700;color:var(--primary);flex-shrink:0}
-.sop-text{flex:1;font-size:13px;color:var(--text)}
-.sop-del{border:none;background:none;color:var(--muted);cursor:pointer;font-size:15px;padding:0 2px;line-height:1}
-.sop-del:hover{color:var(--red)}
-.sop-add-row{display:flex;gap:6px;margin-top:10px}
-.sop-add-row input{flex:1;border:1px solid var(--border2);border-radius:6px;padding:7px 10px;font-size:12px;color:var(--text);outline:none;background:var(--card);font-family:inherit}
-.sop-add-row input:focus{border-color:var(--primary)}
-
-/* Changelog in vault */
-.changelog{font-size:12px;color:var(--sub);background:var(--bg2);border-radius:8px;padding:10px 12px;line-height:1.7;max-height:200px;overflow-y:auto}
-.changelog-entry{border-bottom:1px dashed var(--border);padding-bottom:6px;margin-bottom:6px}
-.changelog-entry:last-child{border:none;margin:0;padding:0}
-.changelog-ver{font-weight:700;color:var(--primary);margin-right:6px}
-.changelog-add-row{display:flex;gap:7px;margin-top:10px}
-.changelog-add-row input{flex:1;border:1px solid var(--border2);border-radius:6px;padding:7px 10px;font-size:12px;color:var(--text);outline:none;background:var(--card);font-family:inherit}
-.changelog-add-row input:focus{border-color:var(--primary)}
-
-/* Related docs */
-.related-doc{display:flex;align-items:center;gap:8px;padding:7px 10px;background:var(--bg2);border-radius:7px;margin-bottom:6px;cursor:pointer;transition:.1s;border:1px solid var(--border)}
-.related-doc:hover{border-color:var(--primary);background:var(--pbg)}
-.related-doc-title{flex:1;font-size:12px;font-weight:500;color:var(--text);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-
-.small-btn{border:1px solid var(--border2);background:var(--card);color:var(--sub);border-radius:6px;padding:5px 10px;font-size:11px;font-weight:500;cursor:pointer;font-family:inherit;transition:.12s}
-.small-btn:hover{border-color:var(--primary);color:var(--primary)}
-.small-btn.pri{background:var(--primary);color:#fff;border-color:var(--primary)}
-.small-btn.pri:hover{background:var(--primary2)}
+.sopnum{width:20px;height:20px;border-radius:50%;background:var(--pbg);border:1px solid var(--plight);display:grid;place-items:center;font-size:10px;font-weight:700;color:var(--primary);flex-shrink:0}
+.soptext{flex:1;font-size:13px}
+.sopdel{border:none;background:none;color:var(--muted);cursor:pointer;font-size:15px;padding:0 2px}
+.sopdel:hover{color:var(--red)}
+.add-row{display:flex;gap:6px;margin-top:10px}
+.add-row input{flex:1;border:1px solid var(--border2);border-radius:6px;padding:7px 10px;font-size:12px;color:var(--text);outline:none;background:var(--card);font-family:inherit}
+.add-row input:focus{border-color:var(--primary)}
+.cl{font-size:12px;color:var(--sub);background:var(--bg2);border-radius:8px;padding:10px 12px;line-height:1.7;max-height:200px;overflow-y:auto}
+.cle{border-bottom:1px dashed var(--border);padding-bottom:6px;margin-bottom:6px}
+.cle:last-child{border:none;margin:0;padding:0}
+.clv{font-weight:700;color:var(--primary);margin-right:6px}
+.rdoc{display:flex;align-items:center;gap:8px;padding:7px 10px;background:var(--bg2);border-radius:7px;margin-bottom:6px;cursor:pointer;border:1px solid var(--border);transition:.1s}
+.rdoc:hover{border-color:var(--primary);background:var(--pbg)}
+.rdoc-t{flex:1;font-size:12px;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .tpl-state{font-size:10px;border-radius:3px;padding:1px 6px;font-weight:700}
-.tpl-state.已迭代{background:#e8f4ee;color:#3a7055}.tpl-state.可套用{background:#e8f0f9;color:#2060a0}
-.tpl-state.需微調{background:#fdf8e6;color:#9a7818}.tpl-state.需新建{background:#fdf0ef;color:#b83a35}
-.tpl-state.未分類{background:var(--bg2);color:var(--sub)}
-
-/* MODAL */
-.modal-bg{display:none;position:fixed;inset:0;background:rgba(20,18,14,.4);z-index:100;backdrop-filter:blur(4px);padding:16px;align-items:center;justify-content:center}
-.modal-bg.show{display:flex}
+.tpl-state.s0{background:var(--bg2);color:var(--sub)}.tpl-state.s1{background:#e8f0f9;color:#2060a0}
+.tpl-state.s2{background:#fdf8e6;color:#9a7818}.tpl-state.s3{background:#fdf0ef;color:#b83a35}
+.tpl-state.s4{background:#e8f4ee;color:#3a7055}
+.mbg{display:none;position:fixed;inset:0;background:rgba(20,18,14,.4);z-index:200;backdrop-filter:blur(4px);padding:16px;align-items:center;justify-content:center}
+.mbg.show{display:flex}
 .modal{background:var(--card);border-radius:14px;padding:22px 24px;width:100%;max-width:740px;box-shadow:0 24px 64px rgba(20,18,14,.18);max-height:92vh;overflow-y:auto}
-.modal.small{max-width:540px}
-.modal-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:16px}
-.modal-head h2{font-family:"Noto Serif TC",serif;font-size:20px;font-weight:700}
-.modal-head p{font-size:12px;color:var(--sub);margin-top:3px}
-.form{display:grid;grid-template-columns:repeat(2,1fr);gap:11px}
+.modal.sm{max-width:540px}
+.mhd{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:16px}
+.mhd h2{font-family:"Noto Serif TC",serif;font-size:20px;font-weight:700}
+.mhd p{font-size:12px;color:var(--sub);margin-top:3px}
+.mform{display:grid;grid-template-columns:repeat(2,1fr);gap:11px}
 .field{display:grid;gap:4px}
 .field.full{grid-column:1/-1}
 .field label{font-size:11px;color:var(--sub);font-weight:700;letter-spacing:.04em}
 .field input,.field select,.field textarea{width:100%;border:1px solid var(--border2);border-radius:7px;background:var(--bg2);padding:8px 10px;color:var(--text);font-family:inherit;font-size:13px;outline:none;transition:.12s}
 .field input:focus,.field select:focus,.field textarea:focus{border-color:var(--primary);background:var(--card)}
 .field textarea{min-height:70px;resize:vertical}
-.modal-actions{display:flex;justify-content:flex-end;gap:7px;margin-top:16px;flex-wrap:wrap}
+.macts{display:flex;justify-content:flex-end;gap:7px;margin-top:16px;flex-wrap:wrap}
 .mbtn{border:none;border-radius:7px;padding:8px 16px;font-weight:500;cursor:pointer;font-size:13px;font-family:inherit;transition:.12s}
 .mbtn.pri{background:var(--primary);color:#fff}.mbtn.pri:hover{background:var(--primary2)}
 .mbtn.sec{background:var(--bg2);color:var(--sub);border:1px solid var(--border2)}.mbtn.sec:hover{border-color:var(--primary);color:var(--primary)}
-.mbtn.danger{background:#fdf0ef;color:var(--red);border:1px solid #f0c8c4}
-
-/* WORKFLOW in modal */
-.wf-section{margin-top:14px;border-top:1px solid var(--border);padding-top:14px}
-.wf-section-title{font-size:11px;font-weight:700;color:var(--sub);letter-spacing:.06em;margin-bottom:8px;text-transform:uppercase}
+.mbtn.del{background:#fdf0ef;color:var(--red);border:1px solid #f0c8c4}
+.wf-sec{margin-top:14px;border-top:1px solid var(--border);padding-top:14px}
+.wf-sec-t{font-size:11px;font-weight:700;color:var(--sub);letter-spacing:.06em;margin-bottom:8px;text-transform:uppercase}
 .wf-step{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px dashed var(--border)}
 .wf-step:last-child{border:none}
-.wf-check{width:16px;height:16px;cursor:pointer;accent-color:var(--primary);flex-shrink:0}
-.wf-step-text{flex:1;font-size:13px;color:var(--text)}
-.wf-step-text.checked{text-decoration:line-through;color:var(--muted)}
-.wf-step-del{border:none;background:none;color:var(--muted);cursor:pointer;font-size:14px;padding:0 2px}
-.wf-step-del:hover{color:var(--red)}
-.wf-add-row{display:flex;gap:6px;margin-top:8px}
-.wf-add-row input{flex:1;border:1px solid var(--border2);border-radius:6px;padding:6px 9px;font-size:12px;color:var(--text);outline:none;background:var(--bg2);font-family:inherit}
-.wf-add-row input:focus{border-color:var(--primary)}
-
-/* CAPSULE TAG MANAGER */
-.cap-manager{display:flex;flex-wrap:wrap;gap:6px;padding:6px 0;min-height:32px}
+.wf-chk{width:16px;height:16px;cursor:pointer;accent-color:var(--primary);flex-shrink:0}
+.wf-stxt{flex:1;font-size:13px}
+.wf-stxt.ck{text-decoration:line-through;color:var(--muted)}
+.wf-sdel{border:none;background:none;color:var(--muted);cursor:pointer;font-size:14px;padding:0 2px}
+.wf-sdel:hover{color:var(--red)}
+.setup-sec{font-size:11px;font-weight:700;color:var(--sub);letter-spacing:.06em;text-transform:uppercase;margin:16px 0 8px;padding-top:14px;border-top:1px solid var(--border)}
+.cap-mgr{display:flex;flex-wrap:wrap;gap:6px;padding:6px 0;min-height:32px}
 .cap-tag{display:flex;align-items:center;gap:4px;border-radius:999px;padding:4px 10px;font-size:12px;border:1px solid var(--plight);background:var(--pbg);color:var(--primary)}
 .cap-tag button{border:none;background:none;color:var(--muted);cursor:pointer;font-size:13px;line-height:1;padding:0 0 0 2px}
 .cap-tag button:hover{color:var(--red)}
-.cap-add-row{display:flex;gap:6px;margin-top:6px}
-.cap-add-row input{flex:1;border:1px solid var(--border2);border-radius:7px;padding:6px 10px;font-size:12px;color:var(--text);outline:none;font-family:inherit;background:var(--bg2)}
-.cap-add-row input:focus{border-color:var(--primary)}
-.setup-section{font-size:11px;font-weight:700;color:var(--sub);letter-spacing:.06em;text-transform:uppercase;margin:16px 0 8px;padding-top:14px;border-top:1px solid var(--border)}
 .step-box{font-size:12px;color:var(--sub);background:var(--pbg);border-radius:8px;padding:11px 14px;margin-bottom:12px;line-height:1.8;border:1px solid var(--plight)}
 .step-box b{color:var(--primary)}
 .gas-test{font-size:11px;color:var(--sub);margin-top:6px;min-height:16px}
-
-/* TOAST */
-.toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:#1e1c18;color:#fff;padding:9px 18px;border-radius:8px;font-size:13px;opacity:0;pointer-events:none;transition:.2s;z-index:300;white-space:nowrap;box-shadow:0 8px 24px rgba(0,0,0,.2)}
+.small-btn{border:1px solid var(--border2);background:var(--card);color:var(--sub);border-radius:6px;padding:5px 10px;font-size:11px;font-weight:500;cursor:pointer;font-family:inherit;transition:.12s}
+.small-btn:hover{border-color:var(--primary);color:var(--primary)}
+.small-btn.pri{background:var(--primary);color:#fff;border-color:var(--primary)}
+.small-btn.pri:hover{background:var(--primary2)}
+.toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:#1e1c18;color:#fff;padding:9px 18px;border-radius:8px;font-size:13px;opacity:0;pointer-events:none;transition:.2s;z-index:500;white-space:nowrap;box-shadow:0 8px 24px rgba(0,0,0,.2)}
 .toast.show{opacity:1}
-.footer{margin-top:36px;color:var(--muted);font-size:11px;text-align:center;letter-spacing:.04em}
-
-/* TODO VIEW */
-.todo-wrap{max-width:600px;margin:0 auto}
-.todo-section{margin-bottom:20px}
-.todo-section-head{display:flex;align-items:center;gap:8px;margin-bottom:10px}
-.todo-section-title{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
-.todo-divider{flex:1;height:1px;background:var(--border)}
-.todo-card{background:var(--card);border:1px solid var(--border);border-left:3px solid var(--border2);border-radius:0 10px 10px 0;padding:12px 14px;margin-bottom:8px;cursor:pointer;transition:.12s;display:flex;gap:12px;align-items:flex-start}
-.todo-card:hover{box-shadow:var(--shadow2)}
-.todo-card-left{flex:1;min-width:0}
-.todo-card-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:5px;line-height:1.4}
-.todo-card-meta{display:flex;flex-wrap:wrap;gap:5px;align-items:center;margin-bottom:5px}
-.todo-card-next{font-size:11px;color:var(--primary);background:var(--pbg);border-radius:4px;padding:3px 7px;line-height:1.4;margin-top:4px}
-.todo-card-right{display:flex;flex-direction:column;align-items:flex-end;gap:5px;flex-shrink:0}
-.todo-wf{font-size:11px;color:var(--muted);white-space:nowrap}
-.todo-quick{display:flex;flex-direction:column;gap:4px}
-.todo-empty{text-align:center;color:var(--muted);font-size:13px;padding:32px 0}
-
-/* RESPONSIVE */
+.footer{margin-top:36px;color:var(--muted);font-size:11px;text-align:center}
 @media(max-width:1280px){.kanban{grid-template-columns:repeat(4,1fr)}.insight{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:960px){.dashboard{grid-template-columns:1fr}.stats-grid{grid-template-columns:repeat(3,1fr)}.kanban{grid-template-columns:repeat(2,1fr)}.tpl-grid{grid-template-columns:1fr 1fr}.form{grid-template-columns:1fr}}
-@media(max-width:640px){
-  .kanban{grid-template-columns:1fr}.wrap{padding:14px 12px 50px}
-  .header{flex-direction:column;align-items:flex-start}.header-right{width:100%;justify-content:space-between}
-  .tpl-grid{grid-template-columns:1fr}.stats-grid{grid-template-columns:repeat(2,1fr)}
-  .insight{grid-template-columns:1fr}.hero-title{font-size:18px}
-  .toolbar{overflow-x:auto;flex-wrap:nowrap;padding-bottom:6px}
-  .toolbar input{min-width:120px}.toolbar select{min-width:100px}
-}
+@media(max-width:960px){.dash{grid-template-columns:1fr}.sg{grid-template-columns:repeat(3,1fr)}.kanban{grid-template-columns:repeat(2,1fr)}.mform{grid-template-columns:1fr}}
+@media(max-width:640px){.kanban{grid-template-columns:1fr}.wrap{padding:14px 12px 50px}.hd{flex-direction:column;align-items:flex-start}.hd-r{width:100%;justify-content:space-between}.insight{grid-template-columns:1fr}.hero{font-size:18px}.toolbar{overflow-x:auto;flex-wrap:nowrap}}
 </style>
 </head>
 <body>
 <div class="wrap">
-
-<header class="header">
+<header class="hd">
   <div class="brand">
-    <div class="brand-mark">文</div>
-    <div>
-      <div class="brand-name">公文承辦 OS</div>
-      <div class="brand-sub">職業安全衛生署・個人承辦版 v3</div>
-    </div>
+    <div class="bmark">文</div>
+    <div><div class="bname">公文承辦 OS</div><div class="bsub">職業安全衛生署・個人承辦版 v3</div></div>
   </div>
-  <div class="header-right">
-    <div class="sync-group">
-      <button class="sync-btn" onclick="syncPull()"><div class="sync-dot" id="syncDot"></div>☁ 讀取</button>
-      <button class="sync-btn push" onclick="syncPush()">↑ 同步</button>
-      <button class="sync-btn" onclick="openSetup()">⚙ 設定</button>
-    </div>
-    <div class="view-toggle">
-      <button class="vbtn active" data-view="kanban" onclick="setView('kanban')">看板</button>
-      <button class="vbtn" data-view="list" onclick="setView('list')">清單</button>
-      <button class="vbtn" data-view="todo" onclick="setView('todo')">待辦</button>
-      <button class="vbtn" data-view="templates" onclick="setView('templates')">例稿庫</button>
+  <div class="hd-r">
+    <button class="sbtn" onclick="syncPull()"><div class="sdot" id="syncDot"></div>&#9729; 讀取</button>
+    <button class="sbtn push" onclick="syncPush()">&#8679; 同步</button>
+    <button class="sbtn" onclick="openSetup()">&#9881; 設定</button>
+    <div class="vtabs">
+      <button class="vt on" data-view="kanban" onclick="setView('kanban')">看板</button>
+      <button class="vt" data-view="list" onclick="setView('list')">清單</button>
+      <button class="vt" data-view="todo" onclick="setView('todo')">待辦</button>
+      <button class="vt" data-view="templates" onclick="setView('templates')">例稿庫</button>
     </div>
   </div>
 </header>
-<div class="sync-status" id="syncStatus"></div>
-
-<section class="dashboard">
+<div class="sync-st" id="syncSt"></div>
+<section class="dash">
   <div class="panel">
     <div class="kicker">Official Document OS · v3</div>
-    <div class="hero-title">把每件公文，沉澱成下次可複用的例稿。</div>
+    <div class="hero">把每件公文，沉澱成下次可複用的例稿。</div>
     <p class="hero-sub">業務類別主分類・來文單位對象標籤・Workflow 子任務・例稿版本迭代紀錄</p>
-    <div class="progress-wrap"><div class="progress" id="progress"></div></div>
-    <div class="pnote" id="progressText">載入中…</div>
+    <div class="prog-wrap"><div class="prog" id="prog"></div></div>
+    <div class="pnote" id="pnote">載入中…</div>
   </div>
   <div class="panel" style="padding:14px 16px">
-    <div class="stats-grid">
-      <div class="stat s-all" onclick="filterStat('all')"><b id="stAll">0</b><span>全部案件</span></div>
-      <div class="stat s-red" onclick="filterStat('red')"><b id="stLate">0</b><span>⚠ 已逾期</span></div>
-      <div class="stat s-orange" onclick="filterStat('orange')"><b id="stToday">0</b><span>今日到期</span></div>
-      <div class="stat s-yellow" onclick="filterStat('yellow')"><b id="stSoon">0</b><span>3日內</span></div>
-      <div class="stat s-blue" onclick="filterStat('blue')"><b id="stWait">0</b><span>等回復</span></div>
-      <div class="stat s-green" onclick="filterStat('iterate')"><b id="stIter">0</b><span>待迭代</span></div>
+    <div class="sg">
+      <div class="st s-all" onclick="filterStat('all')"><b id="stAll">0</b><span>全部案件</span></div>
+      <div class="st s-red" onclick="filterStat('red')"><b id="stLate">0</b><span>&#9888; 逾期</span></div>
+      <div class="st s-orange" onclick="filterStat('orange')"><b id="stToday">0</b><span>今日到期</span></div>
+      <div class="st s-yellow" onclick="filterStat('yellow')"><b id="stSoon">0</b><span>3日內</span></div>
+      <div class="st s-blue" onclick="filterStat('blue')"><b id="stWait">0</b><span>等回復</span></div>
+      <div class="st s-green" onclick="filterStat('iterate')"><b id="stIter">0</b><span>待迭代</span></div>
     </div>
   </div>
 </section>
-
 <section class="insight">
-  <div class="insight-card"><h3>業務類別</h3><div id="catBars"></div></div>
-  <div class="insight-card"><h3>例稿迭代狀態</h3><div id="iterBars"></div></div>
-  <div class="insight-card"><h3>狀態卡點</h3><div id="statusBars"></div></div>
-  <div class="insight-card"><h3>承辦負荷</h3><div id="ownerBars"></div></div>
+  <div class="ic"><h3>業務類別</h3><div id="catBars"></div></div>
+  <div class="ic"><h3>例稿迭代狀態</h3><div id="iterBars"></div></div>
+  <div class="ic"><h3>狀態卡點</h3><div id="statusBars"></div></div>
+  <div class="ic"><h3>承辦負荷</h3><div id="ownerBars"></div></div>
 </section>
-
 <div class="backup-banner" id="backupBanner">
-  <div class="backup-banner-text" id="backupMsg"></div>
-  <div class="backup-banner-actions">
-    <button class="tbtn" onclick="syncPush();dismissBackup()">↑ 立即同步雲端</button>
+  <div class="bb-txt" id="backupMsg"></div>
+  <div class="bb-actions">
+    <button class="tbtn" onclick="syncPush();dismissBackup()">&#8679; 立即同步</button>
     <button class="tbtn sec" onclick="exportCSV();dismissBackup()">匯出 CSV</button>
-    <button class="tbtn sec" onclick="dismissBackup()">稍後提醒</button>
+    <button class="tbtn sec" onclick="dismissBackup()">稍後</button>
   </div>
 </div>
-
 <div class="alert-banner" id="alertBanner">
-  <div class="alert-banner-head">
-    <span class="alert-banner-title" id="alertTitle">⚠ 到期提醒</span>
-    <button class="alert-close" onclick="dismissAlert()">×</button>
-  </div>
-  <div class="alert-list" id="alertList"></div>
+  <div class="ab-head"><span class="ab-title" id="alertTitle">&#9888; 到期提醒</span><button class="ab-close" onclick="dismissAlert()">&#215;</button></div>
+  <div class="ab-list" id="alertList"></div>
 </div>
-
 <div class="toolbar">
   <input id="search" placeholder="搜尋主旨、文號、來文單位…" oninput="render()"/>
   <select id="catFilter" onchange="render()"></select>
@@ -417,1212 +316,547 @@ tr:last-child td{border-bottom:none}
   <select id="statusFilter" onchange="render()"></select>
   <select id="lightFilter" onchange="render()">
     <option value="all">全部燈號</option>
-    <option value="red">🔴 逾期</option><option value="orange">🟠 今日到期</option>
-    <option value="yellow">🟡 3日內</option><option value="blue">🔵 等回復</option>
-    <option value="green">🟢 正常</option><option value="gray">⚫ 結案</option>
+    <option value="red">逾期</option><option value="orange">今日到期</option>
+    <option value="yellow">3日內</option><option value="blue">等回復</option>
+    <option value="green">正常</option><option value="gray">結案</option>
   </select>
-  <button class="tbtn" onclick="openDoc()">＋ 新增公文</button>
+  <button class="tbtn" onclick="openDoc(0)">＋ 新增公文</button>
   <button class="tbtn sec" onclick="exportCSV()">匯出 CSV</button>
   <button class="tbtn sec" onclick="importSample()">範例</button>
 </div>
-
-<main id="todoView" style="display:none">
-  <div id="todoContent"></div>
-</main>
 <main id="kanbanView"><div class="kanban" id="kanban"></div></main>
 <main id="listView" class="list-view">
-  <div class="table-wrap">
-    <table>
-      <thead><tr>
-        <th>燈號</th><th>主旨</th><th>文號</th><th>業務類別</th>
-        <th>例稿</th><th>例稿狀態</th><th>流程</th><th>速別</th>
-        <th>期限</th><th>WF</th><th>下一步</th><th>承辦</th>
-      </tr></thead>
-      <tbody id="tableBody"></tbody>
-    </table>
-  </div>
+  <div class="tw"><table>
+    <thead><tr><th>燈號</th><th>主旨</th><th>文號</th><th>業務類別</th><th>例稿</th><th>例稿狀態</th><th>流程</th><th>速別</th><th>期限</th><th>WF</th><th>下一步</th><th>承辦</th></tr></thead>
+    <tbody id="tableBody"></tbody>
+  </table></div>
 </main>
+<main id="todoView" style="display:none"><div id="todoContent"></div></main>
 <main id="templatesView" class="templates-view"></main>
-
-<div class="footer">公文承辦 OS v3｜localStorage + GAS 雙向同步・例稿迭代知識庫・Workflow 子任務</div>
+<div class="footer">公文承辦 OS v3 · localStorage + GAS 雙向同步 · 例稿知識庫 · Workflow · 拖拉看板</div>
 </div>
-
-<!-- 公文 Modal -->
-<div class="modal-bg" id="docBg" onclick="bgClose(event,'docBg')">
+<div class="mbg" id="docBg" onclick="if(event.target===this)closeM('docBg')">
   <div class="modal">
-    <div class="modal-head">
-      <div><h2 id="docModalTitle">新增公文</h2><p>填「例稿分類」與「下一步」最能累積承辦知識。</p></div>
-      <button class="mbtn sec" onclick="closeId('docBg')">關閉</button>
-    </div>
-    <div class="form">
-      <div class="field full"><label>主旨 / 案名</label><input id="fTitle" placeholder="例：建教合作機構過往違反勞動法令紀錄查復案"/></div>
-      <div class="field"><label>文號 / 編號</label><input id="fDocNo" placeholder="如：1153100123"/></div>
-      <div class="field"><label>來文單位（對象標籤）</label>
-        <input id="fSource" placeholder="可輸入或選擇" list="sourceList"/>
-        <datalist id="sourceList"></datalist>
-      </div>
+    <div class="mhd"><div><h2 id="docTitle">新增公文</h2><p>填「例稿分類」與「下一步」最能累積承辦知識。</p></div><button class="mbtn sec" onclick="closeM('docBg')">關閉</button></div>
+    <div class="mform">
+      <div class="field full"><label>主旨 / 案名</label><input id="fTitle"/></div>
+      <div class="field"><label>文號</label><input id="fDocNo"/></div>
+      <div class="field"><label>來文單位</label><input id="fSource" list="srcList"/><datalist id="srcList"></datalist></div>
       <div class="field"><label>收文日期</label><input type="date" id="fReceived"/></div>
       <div class="field"><label>辦理期限</label><input type="date" id="fDue"/></div>
-      <div class="field"><label>業務類別</label><select id="fCat" onchange="updateTplOptions()"></select></div>
+      <div class="field"><label>業務類別</label><select id="fCat" onchange="updateTplOpts()"></select></div>
       <div class="field"><label>例稿分類</label><select id="fTemplate"></select></div>
       <div class="field"><label>流程狀態</label><select id="fStatus"></select></div>
-      <div class="field"><label>例稿狀態</label><select id="fTemplateState"></select></div>
-      <div class="field"><label>公文速別</label>
-        <select id="fSpeed">
-          <option value="普通件">普通件（14天）</option>
-          <option value="速件">速件（3天）</option>
-          <option value="最速件">最速件（1天）</option>
-        </select>
-      </div>
-      <div class="field"><label>承辦人</label><input id="fOwner" placeholder="個人版預設「我」"/></div>
-      <div class="field"><label>等外部回復</label>
-        <select id="fWaiting"><option value="no">否</option><option value="yes">是，等他人／外部回復</option></select>
-      </div>
-      <div class="field full"><label>下一步行動</label><input id="fNext" placeholder="例：補上近三年違規紀錄查詢結果"/></div>
-      <div class="field full"><label>連結</label><input id="fLink" placeholder="公文系統、雲端資料夾或參考文件連結"/></div>
-      <div class="field full"><label>備註 / 迭代紀錄</label><textarea id="fNote" placeholder="記錄本案可回饋到例稿的修正點、常用法規依據…"></textarea></div>
+      <div class="field"><label>例稿狀態</label><select id="fTplState"></select></div>
+      <div class="field"><label>速別</label><select id="fSpeed"><option value="普通件">普通件</option><option value="速件">速件</option><option value="最速件">最速件</option></select></div>
+      <div class="field"><label>承辦人</label><input id="fOwner"/></div>
+      <div class="field"><label>等外部回復</label><select id="fWaiting"><option value="no">否</option><option value="yes">是，等他人回復</option></select></div>
+      <div class="field full"><label>下一步行動</label><input id="fNext"/></div>
+      <div class="field full"><label>連結</label><input id="fLink"/></div>
+      <div class="field full"><label>備註</label><textarea id="fNote"></textarea></div>
     </div>
-
-    <!-- Workflow 子任務 -->
-    <div class="wf-section">
-      <div class="wf-section-title">Workflow 子任務</div>
-      <div id="wfStepList"></div>
-      <div class="wf-add-row">
-        <input id="wfNewStep" placeholder="新增步驟…" onkeydown="if(event.key==='Enter')addWfStep()"/>
-        <button class="small-btn pri" onclick="addWfStep()">＋ 新增</button>
-        <button class="small-btn" onclick="loadSopSteps()">套用例稿 SOP</button>
+    <div class="wf-sec">
+      <div class="wf-sec-t">Workflow 子任務</div>
+      <div id="wfList"></div>
+      <div class="add-row" style="margin-top:8px">
+        <input id="wfInput" placeholder="新增步驟…" onkeydown="if(event.key==='Enter')addWfStep()"/>
+        <button class="small-btn pri" onclick="addWfStep()">＋</button>
+        <button class="small-btn" onclick="loadSop()">套用 SOP</button>
       </div>
     </div>
-
-    <div class="modal-actions">
-      <button class="mbtn danger" id="deleteBtn" onclick="deleteDoc()" style="display:none">刪除</button>
+    <div class="macts">
+      <button class="mbtn del" id="delBtn" style="display:none" onclick="deleteDoc()">刪除</button>
       <button class="mbtn sec" onclick="copyBrief()">複製摘要</button>
       <button class="mbtn pri" onclick="saveDoc()">儲存</button>
     </div>
   </div>
 </div>
-
-<!-- 設定 Modal -->
-<div class="modal-bg" id="setupBg" onclick="bgClose(event,'setupBg')">
-  <div class="modal small">
-    <div class="modal-head">
-      <div><h2>系統設定</h2><p>管理分類標籤與 GAS 同步設定</p></div>
-      <button class="mbtn sec" onclick="closeId('setupBg')">關閉</button>
-    </div>
-
-    <div class="setup-section">業務類別</div>
-    <div class="cap-manager" id="capCats"></div>
-    <div class="cap-add-row">
-      <input id="newCatInput" placeholder="新增業務類別…" onkeydown="if(event.key==='Enter')addCap('cat')"/>
-      <button class="small-btn pri" onclick="addCap('cat')">新增</button>
-    </div>
-
-    <div class="setup-section">來文單位</div>
-    <div class="cap-manager" id="capSources"></div>
-    <div class="cap-add-row">
-      <input id="newSourceInput" placeholder="新增來文單位…" onkeydown="if(event.key==='Enter')addCap('source')"/>
-      <button class="small-btn pri" onclick="addCap('source')">新增</button>
-    </div>
-
-    <div class="setup-section">GAS 雲端同步</div>
-    <div class="step-box">
-      <b>部署指南</b><br>
-      1. Google Sheet → 擴充功能 → Apps Script → 貼上 GAS 腳本<br>
-      2. 部署 → 新增部署 → 網頁應用程式<br>
-      3. 執行身分：<b>我</b>｜存取：<b>任何人</b> → 複製網址貼入下方
-    </div>
-    <div class="field" style="margin-bottom:10px"><label>GAS Web App URL</label><input id="gasUrl" placeholder="https://script.google.com/macros/s/.../exec"/></div>
-    <div class="field" style="margin-bottom:6px"><label>Token（驗證密碼）</label><input id="gasToken" placeholder="與 GAS 腳本 ACCESS_TOKEN 一致" autocomplete="off"/></div>
-    <div class="gas-test" id="gasTestResult"></div>
-    <div class="modal-actions">
+<div class="mbg" id="setupBg" onclick="if(event.target===this)closeM('setupBg')">
+  <div class="modal sm">
+    <div class="mhd"><div><h2>系統設定</h2><p>管理分類標籤與 GAS 同步設定</p></div><button class="mbtn sec" onclick="closeM('setupBg')">關閉</button></div>
+    <div class="setup-sec">業務類別</div>
+    <div class="cap-mgr" id="capCats"></div>
+    <div class="add-row"><input id="newCatInp" placeholder="新增業務類別…" onkeydown="if(event.key==='Enter')addCap('cat')"/><button class="small-btn pri" onclick="addCap('cat')">新增</button></div>
+    <div class="setup-sec">來文單位</div>
+    <div class="cap-mgr" id="capSrcs"></div>
+    <div class="add-row"><input id="newSrcInp" placeholder="新增來文單位…" onkeydown="if(event.key==='Enter')addCap('src')"/><button class="small-btn pri" onclick="addCap('src')">新增</button></div>
+    <div class="setup-sec">GAS 雲端同步</div>
+    <div class="step-box"><b>部署指南</b><br>1. Google Sheet → 擴充功能 → Apps Script → 貼上腳本<br>2. 部署 → 新增部署 → 網頁應用程式<br>3. 執行身分：<b>我</b>｜存取：<b>任何人</b> → 複製網址</div>
+    <div class="field" style="margin-bottom:10px"><label>GAS Web App URL</label><input id="gasUrl"/></div>
+    <div class="field" style="margin-bottom:6px"><label>Token</label><input id="gasToken" autocomplete="off"/></div>
+    <div class="gas-test" id="gasTest"></div>
+    <div class="macts">
       <button class="mbtn sec" onclick="testGas()">測試連線</button>
-      <button class="mbtn sec" onclick="saveSetup()">儲存設定</button>
+      <button class="mbtn pri" onclick="saveSetup()">儲存設定</button>
     </div>
   </div>
 </div>
-
 <div class="toast" id="toast"></div>
-
 <script>
-// ══════════════════════════════════
-//  預設資料
-// ══════════════════════════════════
-const DEFAULT_CATS = ['勞動檢查','青少年勞動','一般行政','行政訴訟','政策研析','其他'];
-const DEFAULT_SOURCES = ['勞動部','立法院','地方政府','教育部','衛福部','事業單位','民眾陳情','內部交辦','跨司處會辦'];
-const DEFAULT_TPLS_BY_CAT = {
-  '勞動檢查':['勞檢處理原則稿','勞檢行政處分書','高風險行業稽查說明稿','勞動條件說明稿'],
-  '青少年勞動':['童工/兒少勞動權益稿','建教合作查復稿','申訴/1955管道說明稿','青少年職場安全說明稿'],
-  '一般行政':['一般函復說明稿','跨部會協作回復稿','地方政府權責說明稿','存查/不予處理說明稿'],
-  '行政訴訟':['行政訴訟答辯狀','準備書狀','訴願答辯書'],
-  '政策研析':['政策精進說明稿','法規疑義函復稿','會議資料標準包'],
-  '其他':['轉請權責機關處理稿','待建立新例稿']
-};
-const STATUSES = [
-  {id:'new',label:'收文待判'},{id:'research',label:'查核/蒐資'},
-  {id:'draft',label:'擬稿中'},{id:'consult',label:'會辦中'},
-  {id:'revise',label:'退修/補正'},{id:'approve',label:'陳核中'},
-  {id:'ready',label:'待發/待存'},{id:'done',label:'結案/追蹤'}
-];
-const TEMPLATE_STATES = ['未分類','可套用','需微調','需新建','已迭代'];
-const CAT_COLORS = [
-  '#9b6a1a','#4a4598','#1d5c8a','#8a3020','#2d7060','#5f5e5a',
-  '#7a5a20','#3a6080','#6a3570','#3a7050','#8a5a30','#4a5060'
-];
+var DCATS=['勞動檢查','青少年勞動','一般行政','行政訴訟','政策研析','其他'];
+var DSRCS=['勞動部','立法院','地方政府','教育部','衛福部','事業單位','民眾陳情','內部交辦','跨司處會辦'];
+var DTPLS={'勞動檢查':['勞檢處理原則稿','勞檢行政處分書','高風險行業稽查說明稿','勞動條件說明稿'],'青少年勞動':['童工/兒少勞動權益稿','建教合作查復稿','申訴/1955管道說明稿','青少年職場安全說明稿'],'一般行政':['一般函復說明稿','跨部會協作回復稿','地方政府權責說明稿','存查/不予處理說明稿'],'行政訴訟':['行政訴訟答辯狀','準備書狀','訴願答辯書'],'政策研析':['政策精進說明稿','法規疑義函復稿','會議資料標準包'],'其他':['轉請權責機關處理稿','待建立新例稿']};
+var STS=[{id:'new',lb:'收文待判'},{id:'research',lb:'查核/蒐資'},{id:'draft',lb:'擬稿中'},{id:'consult',lb:'會辦中'},{id:'revise',lb:'退修/補正'},{id:'approve',lb:'陳核中'},{id:'ready',lb:'待發/待存'},{id:'done',lb:'結案/追蹤'}];
+var TSS=['未分類','可套用','需微調','需新建','已迭代'];
+var TSSCLASS=['s0','s1','s2','s3','s4'];
+var COLORS=['#9b6a1a','#4a4598','#1d5c8a','#8a3020','#2d7060','#5f5e5a','#7a5a20','#3a6080'];
+var K='govdoc-os-v3',GK='govdoc-os-gas-url',TK='govdoc-os-gas-token';
+var DK='govdoc-os-tpl',CK='govdoc-os-cats',SK='govdoc-os-sources';
+var AK='govdoc-alert-dismissed',BK='govdoc-last-backup',BDK='govdoc-backup-dismissed';
 
-// ══════════════════════════════════
-//  Storage keys
-// ══════════════════════════════════
-const KEY = 'govdoc-os-v3';
-const GAS_KEY = 'govdoc-os-gas-url';
-const TOKEN_KEY = 'govdoc-os-gas-token';
-const TPL_KEY = 'govdoc-os-tpl';      // { notes:{}, sop:{}, changelog:{} }
-const CATS_KEY = 'govdoc-os-cats';
-const SRCS_KEY = 'govdoc-os-sources';
+var docs,tpl,cats,srcs,editId=0,curView='kanban',wfSteps=[];
+var vaultOpen,vaultTpl=null,vaultTab='note',dragId=null;
 
-// ══════════════════════════════════
-//  State
-// ══════════════════════════════════
-let docs = loadDocs();
-let tplData = loadTplData();
-let cats = JSON.parse(localStorage.getItem(CATS_KEY)||'null') || DEFAULT_CATS.slice();
-let sources = JSON.parse(localStorage.getItem(SRCS_KEY)||'null') || DEFAULT_SOURCES.slice();
-let editId = null;
-let curView = 'kanban';
-let wfSteps = []; // current editing steps [{text,done}]
-
-// ══════════════════════════════════
-//  Helpers
-// ══════════════════════════════════
-function todayISO(){ return new Date().toISOString().slice(0,10) }
-function addDays(n){ const d=new Date(); d.setDate(d.getDate()+n); return d.toISOString().slice(0,10) }
-function esc(s){ return String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])) }
-function closeId(id){ document.getElementById(id).classList.remove('show') }
-function bgClose(e,id){ if(e.target===document.getElementById(id)) closeId(id) }
-function statusLabel(id){ return STATUSES.find(s=>s.id===id)?.label||id }
-function allTemplates(){ return cats.flatMap(c=>(DEFAULT_TPLS_BY_CAT[c]||[])) }
-function catColor(cat){
-  const i = cats.indexOf(cat);
-  return CAT_COLORS[i % CAT_COLORS.length] || '#5f5e5a';
-}
+function g(id){return document.getElementById(id);}
+function esc(s){if(s==null)return '';return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function today(){return new Date().toISOString().slice(0,10);}
+function addDays(n){var d=new Date();d.setDate(d.getDate()+n);return d.toISOString().slice(0,10);}
+function slb(id){var s=STS.find(function(x){return x.id===id;});return s?s.lb:id;}
+function allTpls(){return cats.reduce(function(a,c){return a.concat(DTPLS[c]||[]);},[])}
+function catColor(c){var i=cats.indexOf(c);return COLORS[i<0?COLORS.length-1:i%COLORS.length];}
+function tssClass(s){var i=TSS.indexOf(s);return i<0?'s0':TSSCLASS[i];}
 
 function lightOf(d){
-  if(d.status==='done') return {id:'gray',label:'結案'};
-  if(d.waiting==='yes') return {id:'blue',label:'等回復'};
-  if(!d.due) return {id:'green',label:'正常'};
-  const diff = Math.ceil((new Date(d.due)-new Date(todayISO()))/86400000);
-  if(diff<0) return {id:'red',label:'逾期'+Math.abs(diff)+'日'};
-  if(diff===0) return {id:'orange',label:'今日到期'};
-  if(diff<=3) return {id:'yellow',label:diff+'日後'};
-  return {id:'green',label:diff+'日後'};
+  if(d.status==='done')return{id:'gray',lb:'結案'};
+  if(d.waiting==='yes')return{id:'blue',lb:'等回復'};
+  if(!d.due)return{id:'green',lb:'正常'};
+  var diff=Math.ceil((new Date(d.due)-new Date(today()))/86400000);
+  if(diff<0)return{id:'red',lb:'逾期'+Math.abs(diff)+'日'};
+  if(diff===0)return{id:'orange',lb:'今日到期'};
+  if(diff<=3)return{id:'yellow',lb:diff+'日後'};
+  return{id:'green',lb:diff+'日後'};
 }
 
-// ══════════════════════════════════
-//  Data load/save
-// ══════════════════════════════════
-function loadDocs(){
-  try{ const s=localStorage.getItem(KEY); if(s) return JSON.parse(s); } catch(e){}
-  return sampleDocs();
+function topState(t){
+  var arr=docs.filter(function(d){return d.template===t;}).map(function(d){return d.templateState;});
+  if(!arr.length)return'未分類';
+  if(arr.indexOf('需新建')>=0)return'需新建';
+  if(arr.indexOf('需微調')>=0)return'需微調';
+  if(arr.indexOf('已迭代')>=0)return'已迭代';
+  if(arr.indexOf('可套用')>=0)return'可套用';
+  return'未分類';
 }
-function saveDocs(){ localStorage.setItem(KEY, JSON.stringify(docs)); }
 
-function loadTplData(){
-  try{ const s=localStorage.getItem(TPL_KEY); if(s) return JSON.parse(s); } catch(e){}
-  return {notes:{}, sop:{}, changelog:{}};
+function load(){
+  try{docs=JSON.parse(localStorage.getItem(K))||null;}catch(e){docs=null;}
+  if(!docs)docs=sampleDocs();
+  try{tpl=JSON.parse(localStorage.getItem(DK))||null;}catch(e){tpl=null;}
+  if(!tpl)tpl={notes:{},sop:{},changelog:{}};
+  try{cats=JSON.parse(localStorage.getItem(CK))||null;}catch(e){cats=null;}
+  if(!cats)cats=DCATS.slice();
+  try{srcs=JSON.parse(localStorage.getItem(SK))||null;}catch(e){srcs=null;}
+  if(!srcs)srcs=DSRCS.slice();
+  vaultOpen=new Set(cats.slice(0,2));
 }
-function saveTplData(){ localStorage.setItem(TPL_KEY, JSON.stringify(tplData)); }
 
-function saveCats(){ localStorage.setItem(CATS_KEY, JSON.stringify(cats)); }
-function saveSources(){ localStorage.setItem(SRCS_KEY, JSON.stringify(sources)); }
+function save(){localStorage.setItem(K,JSON.stringify(docs));}
+function saveTpl(){localStorage.setItem(DK,JSON.stringify(tpl));}
+function saveCats(){localStorage.setItem(CK,JSON.stringify(cats));}
+function saveSrcs(){localStorage.setItem(SK,JSON.stringify(srcs));}
 
 function sampleDocs(){
   return [
-    {id:1,title:'建教合作機構過往違反勞動法令紀錄查復案',docNo:'A-001',source:'教育部',received:addDays(-3),due:addDays(2),cat:'青少年勞動',template:'建教合作查復稿',status:'research',templateState:'需微調',speed:'速件',owner:'我',waiting:'no',next:'補上近三年違規紀錄查詢結果。',link:'',note:'可沉澱成「建教合作＋違規紀錄」例稿。',steps:[{text:'調閱近三年違規紀錄',done:true},{text:'確認跨部會協作權責',done:false},{text:'撰擬函復初稿',done:false}]},
-    {id:2,title:'兒少勞動權益小組工作小組會議資料彙整案',docNo:'A-002',source:'內部交辦',received:addDays(-5),due:addDays(0),cat:'青少年勞動',template:'會議資料標準包',status:'draft',templateState:'需新建',speed:'速件',owner:'我',waiting:'no',next:'整理三部會分工與攻防稿。',link:'',note:'',steps:[{text:'議程草擬',done:true},{text:'三部會分工表',done:true},{text:'攻防稿初稿',done:false},{text:'陳核',done:false}]},
-    {id:3,title:'地方政府查處疑義函復案',docNo:'A-003',source:'臺北市政府',received:addDays(-10),due:addDays(-1),cat:'一般行政',template:'地方政府權責說明稿',status:'revise',templateState:'需微調',speed:'普通件',owner:'我',waiting:'no',next:'依最新法規用語修正。',link:'',note:'逾期案件。',steps:[]},
-    {id:4,title:'1955 申訴管道兒少友善話務說明案',docNo:'A-004',source:'跨司處會辦',received:addDays(-2),due:addDays(5),cat:'政策研析',template:'申訴/1955管道說明稿',status:'consult',templateState:'可套用',speed:'普通件',owner:'我',waiting:'yes',next:'等待相關單位確認話務訓練內容。',link:'',note:'',steps:[]},
-    {id:5,title:'勞動條件專案檢查計畫第三季執行情形說明',docNo:'A-005',source:'勞動部',received:addDays(-4),due:addDays(7),cat:'勞動檢查',template:'勞檢處理原則稿',status:'approve',templateState:'已迭代',speed:'普通件',owner:'我',waiting:'no',next:'等科長核閱後補新聞稿口徑。',link:'',note:'',steps:[{text:'初稿完成',done:true},{text:'補統計數據',done:true},{text:'陳核',done:true},{text:'發文',done:false}]},
-    {id:6,title:'民眾陳情工讀生加班費疑義案',docNo:'A-006',source:'民眾陳情',received:addDays(-1),due:addDays(9),cat:'勞動檢查',template:'勞動條件說明稿',status:'new',templateState:'可套用',speed:'普通件',owner:'我',waiting:'no',next:'確認陳情內容是否具體。',link:'',note:'',steps:[]}
+    {id:1,title:'建教合作機構過往違反勞動法令紀錄查復案',docNo:'2026-001',source:'教育部',received:addDays(-3),due:addDays(2),cat:'青少年勞動',template:'建教合作查復稿',status:'research',templateState:'需微調',speed:'速件',owner:'我',waiting:'no',next:'補上近三年違規紀錄查詢結果。',link:'',note:'',steps:[{text:'調閱近三年違規紀錄',done:true},{text:'確認跨部會協作權責',done:false},{text:'撰擬函復初稿',done:false}]},
+    {id:2,title:'兒少勞動權益小組工作小組會議資料彙整案',docNo:'2026-002',source:'內部交辦',received:addDays(-5),due:addDays(0),cat:'青少年勞動',template:'會議資料標準包',status:'draft',templateState:'需新建',speed:'速件',owner:'我',waiting:'no',next:'整理三部會分工與攻防稿。',link:'',note:'',steps:[{text:'議程草擬',done:true},{text:'攻防稿初稿',done:false}]},
+    {id:3,title:'地方政府查處疑義函復案',docNo:'2026-003',source:'臺北市政府',received:addDays(-10),due:addDays(-1),cat:'一般行政',template:'地方政府權責說明稿',status:'revise',templateState:'需微調',speed:'普通件',owner:'我',waiting:'no',next:'依最新法規用語修正。',link:'',note:'',steps:[]},
+    {id:4,title:'1955申訴管道兒少友善話務說明案',docNo:'2026-004',source:'跨司處會辦',received:addDays(-2),due:addDays(5),cat:'政策研析',template:'申訴/1955管道說明稿',status:'consult',templateState:'可套用',speed:'普通件',owner:'我',waiting:'yes',next:'等待相關單位確認話務訓練內容。',link:'',note:'',steps:[]},
+    {id:5,title:'勞動條件專案檢查計畫第三季執行情形說明',docNo:'2026-005',source:'勞動部',received:addDays(-4),due:addDays(7),cat:'勞動檢查',template:'勞檢處理原則稿',status:'approve',templateState:'已迭代',speed:'普通件',owner:'我',waiting:'no',next:'等科長核閱後補新聞稿口徑。',link:'',note:'',steps:[{text:'初稿完成',done:true},{text:'補統計數據',done:true},{text:'陳核',done:true},{text:'發文',done:false}]},
+    {id:6,title:'民眾陳情工讀生加班費疑義案',docNo:'2026-006',source:'民眾陳情',received:addDays(-1),due:addDays(9),cat:'勞動檢查',template:'勞動條件說明稿',status:'new',templateState:'可套用',speed:'普通件',owner:'我',waiting:'no',next:'確認陳情內容是否具體。',link:'',note:'',steps:[]}
   ];
 }
 
-// ══════════════════════════════════
-//  Filter
-// ══════════════════════════════════
 function filtered(){
-  const q=(document.getElementById('search')?.value||'').trim();
-  const cf=document.getElementById('catFilter')?.value||'all';
-  const tf=document.getElementById('tplFilter')?.value||'all';
-  const sf=document.getElementById('statusFilter')?.value||'all';
-  const lf=document.getElementById('lightFilter')?.value||'all';
-  return docs.filter(d=>{
-    const hay=[d.title,d.docNo,d.source,d.cat,d.template,d.next,d.note,d.owner].join(' ');
-    const l=lightOf(d);
-    const iter=['需微調','需新建'].includes(d.templateState);
-    return (!q||hay.includes(q))
-      &&(cf==='all'||d.cat===cf)
-      &&(tf==='all'||d.template===tf)
-      &&(sf==='all'||d.status===sf)
-      &&(lf==='all'||(lf==='iterate'?iter:l.id===lf));
+  var q=(g('search').value||'').trim();
+  var cf=g('catFilter').value,tf=g('tplFilter').value,sf=g('statusFilter').value,lf=g('lightFilter').value;
+  return docs.filter(function(d){
+    var hay=[d.title,d.docNo,d.source,d.cat,d.template,d.next,d.note,d.owner].join(' ');
+    var l=lightOf(d),iter=TSS.indexOf(d.templateState)>=2&&TSS.indexOf(d.templateState)<=3;
+    return(!q||hay.indexOf(q)>=0)&&(cf==='all'||d.cat===cf)&&(tf==='all'||d.template===tf)&&(sf==='all'||d.status===sf)&&(lf==='all'||(lf==='iterate'?iter:l.id===lf));
   });
 }
-function filterStat(key){
-  const lf=document.getElementById('lightFilter');
-  if(key==='all'){lf.value='all';document.getElementById('statusFilter').value='all';}
-  else if(key==='iterate') lf.value='iterate';
-  else lf.value=key;
+
+function filterStat(k){
+  var lf=g('lightFilter'),sf=g('statusFilter');
+  if(k==='all'){lf.value='all';sf.value='all';}else if(k==='iterate')lf.value='iterate';else lf.value=k;
   render();
 }
 
-// ══════════════════════════════════
-//  View
-// ══════════════════════════════════
 function setView(v){
   curView=v;
-  document.querySelectorAll('.vbtn').forEach(b=>b.classList.toggle('active',b.dataset.view===v));
-  document.getElementById('kanbanView').style.display=v==='kanban'?'block':'none';
-  document.getElementById('listView').style.display=v==='list'?'block':'none';
-  document.getElementById('todoView').style.display=v==='todo'?'block':'none';
-  document.getElementById('templatesView').style.display=v==='templates'?'block':'none';
+  document.querySelectorAll('.vt').forEach(function(b){b.classList.toggle('on',b.dataset.view===v);});
+  g('kanbanView').style.display=v==='kanban'?'block':'none';
+  g('listView').style.display=v==='list'?'block':'none';
+  g('todoView').style.display=v==='todo'?'block':'none';
+  g('templatesView').style.display=v==='templates'?'block':'none';
   render();
 }
 
-// ══════════════════════════════════
-//  Render
-// ══════════════════════════════════
 function render(){
-  if(curView==='kanban') renderKanban();
-  if(curView==='list') renderList();
-  if(curView==='todo') renderTodo();
-  if(curView==='templates') renderTemplates();
   renderStats();
+  if(curView==='kanban')renderKanban();
+  else if(curView==='list')renderList();
+  else if(curView==='todo')renderTodo();
+  else if(curView==='templates')renderTemplates();
 }
 
 function renderStats(){
-  const all=docs, lights=all.map(lightOf);
-  document.getElementById('stAll').textContent=all.length;
-  document.getElementById('stLate').textContent=lights.filter(l=>l.id==='red').length;
-  document.getElementById('stToday').textContent=lights.filter(l=>l.id==='orange').length;
-  document.getElementById('stSoon').textContent=lights.filter(l=>l.id==='yellow').length;
-  document.getElementById('stWait').textContent=lights.filter(l=>l.id==='blue').length;
-  document.getElementById('stIter').textContent=all.filter(d=>['需微調','需新建'].includes(d.templateState)).length;
-  const done=all.filter(d=>d.status==='done').length;
-  document.getElementById('progress').style.width=all.length?Math.round(done/all.length*100)+'%':'0%';
-  document.getElementById('progressText').textContent=`已結案 ${done}/${all.length} 件｜待例稿迭代 ${all.filter(d=>['需微調','需新建'].includes(d.templateState)).length} 件`;
-  bars('catBars',countBy(all,d=>d.cat));
-  bars('iterBars',countBy(all,d=>d.templateState));
-  bars('statusBars',countBy(all,d=>statusLabel(d.status)));
-  bars('ownerBars',countBy(all,d=>d.owner||'我'));
+  var all=docs,lights=all.map(lightOf);
+  g('stAll').textContent=all.length;
+  g('stLate').textContent=lights.filter(function(l){return l.id==='red';}).length;
+  g('stToday').textContent=lights.filter(function(l){return l.id==='orange';}).length;
+  g('stSoon').textContent=lights.filter(function(l){return l.id==='yellow';}).length;
+  g('stWait').textContent=lights.filter(function(l){return l.id==='blue';}).length;
+  g('stIter').textContent=all.filter(function(d){return d.templateState==='需微調'||d.templateState==='需新建';}).length;
+  var done=all.filter(function(d){return d.status==='done';}).length;
+  g('prog').style.width=all.length?Math.round(done/all.length*100)+'%':'0%';
+  g('pnote').textContent='已結案 '+done+'/'+all.length+' 件｜待例稿迭代 '+all.filter(function(d){return d.templateState==='需微調'||d.templateState==='需新建';}).length+' 件';
+  bars('catBars',countBy(all,function(d){return d.cat;}));
+  bars('iterBars',countBy(all,function(d){return d.templateState;}));
+  bars('statusBars',countBy(all,function(d){return slb(d.status);}));
+  bars('ownerBars',countBy(all,function(d){return d.owner||'我';}));
 }
 
-function countBy(arr,fn){
-  const m={};
-  arr.forEach(x=>{const k=fn(x)||'未填';m[k]=(m[k]||0)+1;});
-  return Object.entries(m).sort((a,b)=>b[1]-a[1]);
-}
+function countBy(arr,fn){var m={};arr.forEach(function(x){var k=fn(x)||'未填';m[k]=(m[k]||0)+1;});return Object.keys(m).map(function(k){return[k,m[k]];}).sort(function(a,b){return b[1]-a[1];});}
+
 function bars(id,data){
-  const max=Math.max(1,...data.map(x=>x[1]));
-  document.getElementById(id).innerHTML=data.slice(0,5).map(([k,v])=>
-    `<div class="bar-line"><div class="bar-label">${esc(k)}</div><div class="bar-bg"><div class="bar-fill" style="width:${Math.round(v/max*100)}%"></div></div><div class="bar-num">${v}</div></div>`
-  ).join('')||'<div class="bar-line"><span class="bar-label" style="color:var(--muted)">尚無資料</span></div>';
+  var max=1;data.forEach(function(x){if(x[1]>max)max=x[1];});
+  var el=g(id);if(!el)return;
+  el.innerHTML=data.slice(0,5).map(function(kv){
+    return '<div class="bl"><div class="bl-lbl">'+esc(kv[0])+'</div><div class="bl-bg"><div class="bl-fill" style="width:'+Math.round(kv[1]/max*100)+'%"></div></div><div class="bl-n">'+kv[1]+'</div></div>';
+  }).join('')||'<div style="color:var(--muted);font-size:11px">尚無資料</div>';
 }
 
 function renderKanban(){
-  const list=filtered();
-  document.getElementById('kanban').innerHTML=STATUSES.map(s=>{
-    const cards=list.filter(d=>d.status===s.id);
-    return `<section class="kb-col"
-      data-status="${s.id}"
-      ondragover="onColDragOver(event,this)"
-      ondragleave="onColDragLeave(this)"
-      ondrop="onColDrop(event,this)">
-      <div class="kb-head"><span class="kb-name">${s.label}</span><span class="kb-count">${cards.length}</span></div>
-      <div class="kb-drop-indicator" id="di_${s.id}"></div>
-      ${cards.length?cards.map(cardHTML).join(''):'<div class="empty-col" id="empty_${s.id}">拖曳至此</div>'}
-    </section>`;
+  var list=filtered();
+  g('kanban').innerHTML=STS.map(function(s){
+    var cards=list.filter(function(d){return d.status===s.id;});
+    return '<section class="kbc" data-status="'+s.id+'" ondragover="colDO(event,this)" ondragleave="colDL(this)" ondrop="colDrop(event,this)">'
+      +'<div class="kbh"><span class="kbn">'+s.lb+'</span><span class="kbcnt">'+cards.length+'</span></div>'
+      +'<div class="drop-bar" id="db_'+s.id+'"></div>'
+      +(cards.length?cards.map(cardHTML).join(''):'<div class="empty-col">拖曳至此</div>')
+      +'</section>';
   }).join('');
 }
 
+function spCls(sp){if(sp==='最速件')return 'x-fastest';if(sp==='速件')return 'x-fast';return 'x-normal';}
+
 function cardHTML(d){
-  const l=lightOf(d);
-  const color=catColor(d.cat||'其他');
-  const steps=d.steps||[];
-  const doneSteps=steps.filter(s=>s.done).length;
-  const speedEl=d.speed&&d.speed!=='普通件'?`<span class="speed-tag ${esc(d.speed)}">${esc(d.speed)}</span>`:'';
-    const wfEl=steps.length?('<div class="wf-mini">'+steps.map(s=>'<div class="wf-dot'+(s.done?' done-step':'')+'"></div>').join('')+'<span class="wf-progress">'+doneSteps+'/'+steps.length+'</span></div>'):'';
-  // next status for quick advance
-  const si=STATUSES.findIndex(s=>s.id===d.status);
-  const nextS=si>=0&&si<STATUSES.length-1?STATUSES[si+1]:null;
-  const doneBtn = d.status!=='done'
-    ? `<button class="qbtn green-btn" onclick="quickStatus(${d.id},'done')">✓ 結案</button>`
-    : `<button class="qbtn" onclick="quickStatus(${d.id},'research')">↩ 重開</button>`;
-  const waitBtn = d.waiting!=='yes'
-    ? `<button class="qbtn blue-btn" onclick="quickWait(${d.id},true)">⏸ 等回復</button>`
-    : `<button class="qbtn" onclick="quickWait(${d.id},false)">▶ 繼續</button>`;
-  const nextBtn = nextS ? `<button class="qbtn" onclick="quickStatus(${d.id},'${nextS.id}')">→ ${nextS.label}</button>` : '';
-  const quickBtns = `<div class="card-quick" onclick="event.stopPropagation()">${nextBtn}${doneBtn}${waitBtn}</div>`;
-  return `<article class="doc-card ${d.status==='done'?'done':''}" style="border-left-color:${color}"
-    draggable="true"
-    data-id="${d.id}"
-    ondragstart="onCardDragStart(event,${d.id})"
-    ondragend="onCardDragEnd(event)"
-    onclick="openDoc(${d.id})">
-    <div class="card-top">
-      <span class="doc-no">${esc(d.docNo||('#'+d.id))}</span>
-      <span class="light ${l.id}">${l.label}</span>
-    </div>
-    <div class="doc-title">${esc(d.title)}</div>
-    <div class="doc-tags">
-      <span class="cat-tag" style="background:${color}18;color:${color}">${esc(d.cat||'其他')}</span>
-      ${d.source?`<span class="src-tag">${esc(d.source)}</span>`:''}
-      ${speedEl}
-    </div>
-    ${d.next?`<div class="doc-next">▶ ${esc(d.next)}</div>`:''}
-    ${wfEl}
-    <div class="doc-meta-row">
-      <span style="max-width:90px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(d.template||'')}</span>
-      <span class="pill">${esc(d.templateState||'未分類')}</span>
-    </div>
-    ${quickBtns}
-  </article>`;
+  var l=lightOf(d),color=catColor(d.cat||'其他');
+  var steps=d.steps||[],done=steps.filter(function(s){return s.done;}).length;
+  var spEl=(d.speed&&d.speed!=='普通件')?'<span class="sptag '+spCls(d.speed)+'">'+esc(d.speed)+'</span>':'';
+  var wfEl='';
+  if(steps.length){
+    var dots=steps.map(function(s){return '<div class="wfdot'+(s.done?' done':'')+'"></div>';}).join('');
+    wfEl='<div class="wfmini">'+dots+'<span class="wfprog">'+done+'/'+steps.length+'</span></div>';
+  }
+  var si=STS.findIndex(function(s){return s.id===d.status;});
+  var ns=(si>=0&&si<STS.length-1)?STS[si+1]:null;
+  var nBtn=ns?'<button class="qb" onclick="qSt('+d.id+',\''+ns.id+'\')">&#8594; '+ns.lb+'</button>':'';
+  var dBtn=(d.status!=='done')
+    ?'<button class="qb g" onclick="qSt('+d.id+',\'done\')">&#10003; 結案</button>'
+    :'<button class="qb" onclick="qSt('+d.id+',\'research\')">&#8617; 重開</button>';
+  var wBtn=(d.waiting!=='yes')
+    ?'<button class="qb b" onclick="qWt('+d.id+',1)">&#9646; 等回復</button>'
+    :'<button class="qb" onclick="qWt('+d.id+',0)">&#9654; 繼續</button>';
+  var quick='<div class="cquick" onclick="event.stopPropagation()">'+nBtn+dBtn+wBtn+'</div>';
+  return '<article class="dc'+(d.status==='done'?' done':'')+'" style="border-left-color:'+color+'" draggable="true" ondragstart="cDS(event,'+d.id+')" ondragend="cDE(event)" onclick="openDoc('+d.id+')">'
+    +'<div class="ctop"><span class="dno">'+esc(d.docNo||'#'+d.id)+'</span><span class="lt '+l.id+'">'+l.lb+'</span></div>'
+    +'<div class="dtitle">'+esc(d.title)+'</div>'
+    +'<div class="dtags"><span class="ctag" style="background:'+color+'18;color:'+color+'">'+esc(d.cat||'其他')+'</span>'+(d.source?'<span class="stag">'+esc(d.source)+'</span>':'')+spEl+'</div>'
+    +(d.next?'<div class="dnext">&#9654; '+esc(d.next)+'</div>':'')
+    +wfEl
+    +'<div class="dmeta"><span style="max-width:90px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+esc(d.template||'')+'</span><span class="pill">'+esc(d.templateState||'未分類')+'</span></div>'
+    +quick+'</article>';
 }
 
+function qSt(id,st){var d=docs.find(function(x){return x.id===id;});if(!d)return;d.status=st;save();render();toast('已更新：'+slb(st));}
+function qWt(id,w){var d=docs.find(function(x){return x.id===id;});if(!d)return;d.waiting=w?'yes':'no';save();render();toast(w?'已標記等外部回復':'已繼續承辦');}
 
-// ══════════════════════════════════
-//  Drag & Drop Kanban
-// ══════════════════════════════════
-let dragId = null;
-let dragGhost = null;
-
-function onCardDragStart(e, id){
-  dragId = id;
-  const d = docs.find(x=>x.id===id);
-  e.dataTransfer.effectAllowed = 'move';
-  e.dataTransfer.setData('text/plain', String(id));
-
-  // 自訂 ghost
-  dragGhost = document.createElement('div');
-  dragGhost.className = 'drag-ghost';
-  dragGhost.textContent = d ? d.title : '';
-  const color = d ? catColor(d.cat||'') : 'var(--primary)';
-  dragGhost.style.borderLeftColor = color;
-  document.body.appendChild(dragGhost);
-  e.dataTransfer.setDragImage(dragGhost, 20, 20);
-
-  // 延遲加 dragging class，讓瀏覽器先截圖
-  setTimeout(()=>{ e.target.classList.add('dragging'); }, 0);
-}
-
-function onCardDragEnd(e){
-  e.target.classList.remove('dragging');
-  if(dragGhost){ dragGhost.remove(); dragGhost=null; }
-  // 清除所有 drag-over 樣式
-  document.querySelectorAll('.kb-col').forEach(c=>c.classList.remove('drag-over'));
-  document.querySelectorAll('.kb-drop-indicator').forEach(i=>i.classList.remove('show'));
-  dragId = null;
-}
-
-function onColDragOver(e, col){
-  e.preventDefault();
-  e.dataTransfer.dropEffect = 'move';
-  col.classList.add('drag-over');
-  const statusId = col.dataset.status;
-  const ind = document.getElementById('di_'+statusId);
-  if(ind) ind.classList.add('show');
-}
-
-function onColDragLeave(col){
-  col.classList.remove('drag-over');
-  const statusId = col.dataset.status;
-  const ind = document.getElementById('di_'+statusId);
-  if(ind) ind.classList.remove('show');
-}
-
-function onColDrop(e, col){
-  e.preventDefault();
-  col.classList.remove('drag-over');
-  const statusId = col.dataset.status;
-  const ind = document.getElementById('di_'+statusId);
-  if(ind) ind.classList.remove('show');
-
-  const id = parseInt(e.dataTransfer.getData('text/plain')||dragId);
-  if(!id || !statusId) return;
-  const d = docs.find(x=>x.id===id);
-  if(!d || d.status===statusId) return;
-
-  const oldStatus = statusLabel(d.status);
-  d.status = statusId;
-  saveDocs();
-  render();
-  toast(`${d.title.slice(0,12)}… → ${statusLabel(statusId)}`);
-}
-
-function quickStatus(id, statusId){
-  const d=docs.find(x=>x.id===id); if(!d) return;
-  d.status=statusId; saveDocs(); render();
-  toast('已更新：'+statusLabel(statusId));
-}
-function quickWait(id, isWaiting){
-  const d=docs.find(x=>x.id===id); if(!d) return;
-  d.waiting=isWaiting?'yes':'no'; saveDocs(); render();
-  toast(isWaiting?'已標記等外部回復':'已繼續承辦');
+function cDS(e,id){dragId=id;e.dataTransfer.effectAllowed='move';e.dataTransfer.setData('text/plain',String(id));setTimeout(function(){e.target.classList.add('dragging');},0);}
+function cDE(e){e.target.classList.remove('dragging');document.querySelectorAll('.kbc').forEach(function(c){c.classList.remove('drag-over');});document.querySelectorAll('.drop-bar').forEach(function(b){b.classList.remove('show');});dragId=null;}
+function colDO(e,col){e.preventDefault();col.classList.add('drag-over');var db=g('db_'+col.dataset.status);if(db)db.classList.add('show');}
+function colDL(col){col.classList.remove('drag-over');var db=g('db_'+col.dataset.status);if(db)db.classList.remove('show');}
+function colDrop(e,col){
+  e.preventDefault();col.classList.remove('drag-over');var db=g('db_'+col.dataset.status);if(db)db.classList.remove('show');
+  var id=parseInt(e.dataTransfer.getData('text/plain')||dragId,10);if(!id||!col.dataset.status)return;
+  var d=docs.find(function(x){return x.id===id;});if(!d||d.status===col.dataset.status)return;
+  d.status=col.dataset.status;save();render();toast(d.title.slice(0,15)+'… → '+slb(col.dataset.status));
 }
 
 function renderList(){
-  document.getElementById('tableBody').innerHTML=filtered().map(d=>{
-    const l=lightOf(d); const color=catColor(d.cat||'其他');
-    const steps=d.steps||[]; const ds=steps.filter(s=>s.done).length;
-    return `<tr class="row-click" onclick="openDoc(${d.id})">
-      <td><span class="light ${l.id}">${l.label}</span></td>
-      <td style="max-width:240px;font-size:12px;font-weight:500">${esc(d.title)}</td>
-      <td>${esc(d.docNo)}</td>
-      <td><span class="cat-tag" style="background:${color}18;color:${color}">${esc(d.cat||'')}</span></td>
-      <td>${esc(d.template)}</td>
-      <td><span class="pill">${esc(d.templateState)}</span></td>
-      <td>${esc(statusLabel(d.status))}</td>
-      <td>${d.speed&&d.speed!=='普通件'?`<span class="speed-tag ${esc(d.speed)}">${esc(d.speed)}</span>`:esc(d.speed||'')}</td>
-      <td>${esc(d.due||'')}</td>
-      <td style="white-space:nowrap">${steps.length?`${ds}/${steps.length}`:'-'}</td>
-      <td style="max-width:160px;font-size:11px;color:var(--primary)">${esc(d.next||'')}</td>
-      <td>${esc(d.owner||'')}</td>
-    </tr>`;
+  g('tableBody').innerHTML=filtered().map(function(d){
+    var l=lightOf(d),color=catColor(d.cat||''),steps=d.steps||[],ds=steps.filter(function(s){return s.done;}).length;
+    return '<tr class="tr-c" onclick="openDoc('+d.id+')">'
+      +'<td><span class="lt '+l.id+'">'+l.lb+'</span></td>'
+      +'<td style="max-width:240px;font-weight:500">'+esc(d.title)+'</td>'
+      +'<td>'+esc(d.docNo)+'</td>'
+      +'<td><span class="ctag" style="background:'+color+'18;color:'+color+'">'+esc(d.cat||'')+'</span></td>'
+      +'<td>'+esc(d.template)+'</td>'
+      +'<td><span class="pill">'+esc(d.templateState)+'</span></td>'
+      +'<td>'+esc(slb(d.status))+'</td>'
+      +'<td>'+(d.speed&&d.speed!=='普通件'?'<span class="sptag '+spCls(d.speed)+'">'+esc(d.speed)+'</span>':esc(d.speed||''))+'</td>'
+      +'<td>'+esc(d.due||'')+'</td>'
+      +'<td>'+(steps.length?ds+'/'+steps.length:'-')+'</td>'
+      +'<td style="max-width:160px;font-size:11px;color:var(--primary)">'+esc(d.next||'')+'</td>'
+      +'<td>'+esc(d.owner||'')+'</td>'
+      +'</tr>';
   }).join('');
 }
 
 function renderTodo(){
-  const active = docs.filter(d=>{
-    if(d.status==='done') return false;
-    if(d.waiting==='yes') return false;
-    return true;
-  });
-
-  // 排序：逾期 > 今日 > 3日內 > 其他
-  const order = {red:0, orange:1, yellow:2, green:3, blue:4, gray:5};
-  active.sort((a,b)=>{
-    const la=lightOf(a), lb=lightOf(b);
-    return (order[la.id]??9)-(order[lb.id]??9);
-  });
-
-  // 分組：依燈號
-  const groups = [
-    {key:'red', label:'⚠ 已逾期', color:'var(--red)', items: active.filter(d=>lightOf(d).id==='red')},
-    {key:'orange', label:'🔥 今日到期', color:'var(--orange)', items: active.filter(d=>lightOf(d).id==='orange')},
-    {key:'yellow', label:'⏰ 3日內到期', color:'var(--yellow)', items: active.filter(d=>lightOf(d).id==='yellow')},
-    {key:'green', label:'📋 承辦中', color:'var(--primary)', items: active.filter(d=>lightOf(d).id==='green')},
+  var active=docs.filter(function(d){return d.status!=='done'&&d.waiting!=='yes';});
+  var order={red:0,orange:1,yellow:2,green:3};
+  active.sort(function(a,b){return(order[lightOf(a).id]||9)-(order[lightOf(b).id]||9);});
+  var groups=[
+    {k:'red',lb:'&#9888; 已逾期',c:'var(--red)',items:active.filter(function(d){return lightOf(d).id==='red';})},
+    {k:'orange',lb:'&#128293; 今日到期',c:'var(--orange)',items:active.filter(function(d){return lightOf(d).id==='orange';})},
+    {k:'yellow',lb:'&#8987; 3日內到期',c:'var(--yellow)',items:active.filter(function(d){return lightOf(d).id==='yellow';})},
+    {k:'green',lb:'&#128203; 承辦中',c:'var(--primary)',items:active.filter(function(d){return lightOf(d).id==='green';})}
   ];
-
-  const root = document.getElementById('todoContent');
-  if(!active.length){
-    root.innerHTML = '<div class="todo-empty">🎉 目前沒有待辦案件</div>';
-    return;
-  }
-
-  root.innerHTML = '<div class="todo-wrap">' +
-    groups.filter(g=>g.items.length).map(g=>{
-      return `<div class="todo-section">
-        <div class="todo-section-head">
-          <span class="todo-section-title" style="color:${g.color}">${g.label}（${g.items.length}）</span>
-          <div class="todo-divider"></div>
-        </div>
-        ${g.items.map(d=>todoCardHTML(d)).join('')}
-      </div>`;
-    }).join('') + '</div>';
+  var root=g('todoContent');
+  if(!active.length){root.innerHTML='<div class="todo-empty">&#127881; 目前沒有待辦案件</div>';return;}
+  root.innerHTML='<div class="todo-wrap">'+groups.filter(function(gr){return gr.items.length;}).map(function(gr){
+    return '<div class="tds">'
+      +'<div class="tdsh"><span class="tdst" style="color:'+gr.c+'">'+gr.lb+'（'+gr.items.length+'）</span><div class="tddiv"></div></div>'
+      +gr.items.map(function(d){
+        var l=lightOf(d),color=catColor(d.cat||''),steps=d.steps||[],ds=steps.filter(function(s){return s.done;}).length;
+        var si=STS.findIndex(function(s){return s.id===d.status;});
+        var ns=(si>=0&&si<STS.length-1)?STS[si+1]:null;
+        return '<div class="tdc" style="border-left-color:'+color+'">'
+          +'<div class="tdc-l" onclick="openDoc('+d.id+')">'
+            +'<div class="tdc-title">'+esc(d.title)+'</div>'
+            +'<div class="tdc-meta"><span class="lt '+l.id+'">'+l.lb+'</span><span class="ctag" style="background:'+color+'18;color:'+color+'">'+esc(d.cat||'')+'</span>'+(d.source?'<span class="stag">'+esc(d.source)+'</span>':'')+(d.due?'<span style="font-size:10px;color:var(--muted)">期限 '+esc(d.due)+'</span>':'')+'</div>'
+            +(d.next?'<div class="tdc-next">&#9654; '+esc(d.next)+'</div>':'')
+          +'</div>'
+          +'<div class="tdc-r" onclick="event.stopPropagation()">'
+            +'<span class="tdc-wf">'+(steps.length?'WF '+ds+'/'+steps.length:slb(d.status))+'</span>'
+            +'<div class="tdc-btns">'
+              +(ns?'<button class="qb" onclick="qSt('+d.id+',\''+ns.id+'\')">&#8594; '+ns.lb+'</button>':'')
+              +'<button class="qb g" onclick="qSt('+d.id+',\'done\')">&#10003; 結案</button>'
+              +'<button class="qb b" onclick="qWt('+d.id+',1)">&#9646; 等回復</button>'
+            +'</div>'
+          +'</div>'
+          +'</div>';
+      }).join('')
+      +'</div>';
+  }).join('')+'</div>';
 }
-
-function todoCardHTML(d){
-  const l = lightOf(d);
-  const color = catColor(d.cat||'其他');
-  const steps = d.steps||[];
-  const doneSteps = steps.filter(s=>s.done).length;
-  const si = STATUSES.findIndex(s=>s.id===d.status);
-  const nextS = si>=0&&si<STATUSES.length-1?STATUSES[si+1]:null;
-  return `<div class="todo-card" style="border-left-color:${color}">
-    <div class="todo-card-left" onclick="openDoc(${d.id})" style="cursor:pointer">
-      <div class="todo-card-title">${esc(d.title)}</div>
-      <div class="todo-card-meta">
-        <span class="light ${l.id}">${l.label}</span>
-        <span class="cat-tag" style="background:${color}18;color:${color}">${esc(d.cat||'')}</span>
-        ${d.source?`<span class="src-tag">${esc(d.source)}</span>`:''}
-        ${d.speed&&d.speed!=='普通件'?`<span class="speed-tag ${esc(d.speed)}">${esc(d.speed)}</span>`:''}
-        ${d.due?`<span style="font-size:10px;color:var(--muted)">期限 ${esc(d.due)}</span>`:''}
-      </div>
-      ${d.next?`<div class="todo-card-next">▶ ${esc(d.next)}</div>`:''}
-    </div>
-    <div class="todo-card-right" onclick="event.stopPropagation()">
-      <span class="todo-wf">${steps.length?`WF ${doneSteps}/${steps.length}`:esc(statusLabel(d.status))}</span>
-      <div class="todo-quick">
-        ${nextS?`<button class="qbtn" onclick="quickStatus(${d.id},'${nextS.id}')">→ ${nextS.label}</button>`:''}
-        <button class="qbtn green-btn" onclick="quickStatus(${d.id},'done')">✓ 結案</button>
-        <button class="qbtn blue-btn" onclick="quickWait(${d.id},true)">⏸ 等回復</button>
-      </div>
-    </div>
-  </div>`;
-}
-
 
 function renderTemplates(){
-  const root=document.getElementById('templatesView');
-  // 確保 vault 架構只建一次，避免每次 render 都重建
-  if(!root.querySelector('.vault-wrap')){
-    root.innerHTML=`
-    <div class="vault-wrap">
-      <div class="vault-sidebar">
-        <div class="vault-sidebar-head">例稿知識庫</div>
-        <div id="vaultTree"></div>
-      </div>
-      <div class="vault-main" id="vaultMain">
-        <div class="vault-empty">
-          <div>
-            <div style="font-size:32px;margin-bottom:8px">📂</div>
-            <div>點選左側例稿開始編輯</div>
-            <div style="font-size:11px;margin-top:4px">支援 Markdown・[[雙向連結]]・SOP・迭代紀錄</div>
-          </div>
-        </div>
-      </div>
-    </div>`;
+  var root=g('templatesView');
+  if(!root.querySelector('.vault')){
+    root.innerHTML='<div class="vault"><div class="vsb"><div class="vsb-hd">例稿知識庫</div><div id="vaultTree"></div></div><div class="vmain" id="vaultMain"><div class="vempty"><div><div style="font-size:32px;margin-bottom:8px">&#128194;</div><div>點選左側例稿開始編輯</div><div style="font-size:11px;margin-top:4px">支援 Markdown・[[雙向連結]]・SOP・迭代紀錄</div></div></div></div></div>';
   }
-  renderVaultTree();
+  renderVTree();
 }
 
-let vaultOpenFolders = new Set(cats.slice(0,2).map(c=>c)); // 預設展開前兩個
-let vaultActiveTpl = null;
-let vaultActiveTab = 'note';
-
-function renderVaultTree(){
-  const tree = document.getElementById('vaultTree');
-  if(!tree) return;
-  tree.innerHTML = cats.map(cat=>{
-    const tpls = DEFAULT_TPLS_BY_CAT[cat]||[];
-    const color = catColor(cat);
-    const isOpen = vaultOpenFolders.has(cat);
-    const files = tpls.map(t=>{
-      const stateArr = docs.filter(d=>d.template===t).map(d=>d.templateState);
-      const topState = stateArr.length?(
-        stateArr.includes('需新建')?'需新建':stateArr.includes('需微調')?'需微調':
-        stateArr.includes('已迭代')?'已迭代':stateArr.includes('可套用')?'可套用':'未分類'
-      ):'未分類';
-      const isActive = vaultActiveTpl===t;
-      return `<button class="vault-file-btn${isActive?' active':''}" onclick="openVaultFile('${esc(t)}')">
-        <div class="vault-file-dot ${esc(topState)}"></div>
-        <span style="overflow:hidden;text-overflow:ellipsis">${esc(t)}</span>
-      </button>`;
+function renderVTree(){
+  var tree=g('vaultTree');if(!tree)return;
+  tree.innerHTML=cats.map(function(cat){
+    var tpls=DTPLS[cat]||[],color=catColor(cat),isOpen=vaultOpen.has(cat);
+    var files=tpls.map(function(t){
+      var ts=topState(t),tsc=tssClass(ts);
+      var ia=vaultTpl===t;
+      return '<button class="vfilebtn'+(ia?' on':'')+'" onclick="openVF(\''+t.replace(/'/g,"\\'")+'\')">'
+        +'<div class="vdot '+tsc+'"></div>'
+        +'<span style="overflow:hidden;text-overflow:ellipsis">'+esc(t)+'</span>'
+        +'</button>';
     }).join('');
-    return `<div class="vault-folder">
-      <button class="vault-folder-btn${isOpen?' open':''}" onclick="toggleFolder('${esc(cat)}')">
-        <span class="vault-folder-icon${isOpen?' open':''}">▶</span>
-        <div class="vault-folder-color" style="background:${color}"></div>
-        <span style="flex:1">${esc(cat)}</span>
-        <span style="font-size:10px;color:var(--muted)">${tpls.length}</span>
-      </button>
-      <div class="vault-file-list${isOpen?' open':''}">${files}</div>
-    </div>`;
+    return '<div><button class="vfbtn'+(isOpen?' open':'')+'" onclick="togF(\''+cat.replace(/'/g,"\\'")+'\')">'
+      +'<span class="vfarr'+(isOpen?' open':'')+'">&#9654;</span>'
+      +'<div class="vfclr" style="background:'+color+'"></div>'
+      +'<span style="flex:1">'+esc(cat)+'</span>'
+      +'<span style="font-size:10px;color:var(--muted)">'+tpls.length+'</span>'
+      +'</button>'
+      +'<div class="vflist'+(isOpen?' open':'')+'">'+files+'</div>'
+      +'</div>';
   }).join('');
 }
 
-function toggleFolder(cat){
-  if(vaultOpenFolders.has(cat)) vaultOpenFolders.delete(cat);
-  else vaultOpenFolders.add(cat);
-  renderVaultTree();
-}
+function togF(cat){if(vaultOpen.has(cat))vaultOpen.delete(cat);else vaultOpen.add(cat);renderVTree();}
 
-function openVaultFile(t){
-  vaultActiveTpl = t;
-  vaultActiveTab = vaultActiveTab||'note';
-  renderVaultTree();
-  renderVaultMain(t);
-}
+function openVF(t){vaultTpl=t;renderVTree();renderVMain(t);}
 
-function renderVaultMain(t){
-  const main = document.getElementById('vaultMain');
-  if(!main) return;
-  const used = docs.filter(d=>d.template===t);
-  const stateArr = used.map(d=>d.templateState);
-  const topState = stateArr.length?(
-    stateArr.includes('需新建')?'需新建':stateArr.includes('需微調')?'需微調':
-    stateArr.includes('已迭代')?'已迭代':stateArr.includes('可套用')?'可套用':'未分類'
-  ):'未分類';
-  const needIter = used.filter(d=>['需微調','需新建'].includes(d.templateState)).length;
-  const cl = tplData.changelog[t]||[];
-  const sop = tplData.sop[t]||[];
-  const lastIter = cl.length ? cl[cl.length-1].date : '尚未迭代';
-
-  main.innerHTML = `
-    <div class="vault-toolbar">
-      <div class="vault-title">${esc(t)}</div>
-      <span class="tpl-state ${esc(topState)}">${esc(topState)}</span>
-      <div class="vault-tabs">
-        <button class="vault-tab${vaultActiveTab==='note'?' on':''}" onclick="switchVaultTab('note','${esc(t)}')">筆記</button>
-        <button class="vault-tab${vaultActiveTab==='preview'?' on':''}" onclick="switchVaultTab('preview','${esc(t)}')">預覽</button>
-        <button class="vault-tab${vaultActiveTab==='sop'?' on':''}" onclick="switchVaultTab('sop','${esc(t)}')">SOP</button>
-        <button class="vault-tab${vaultActiveTab==='log'?' on':''}" onclick="switchVaultTab('log','${esc(t)}')">迭代紀錄</button>
-        <button class="vault-tab${vaultActiveTab==='related'?' on':''}" onclick="switchVaultTab('related','${esc(t)}')">關聯案件</button>
-      </div>
-    </div>
-    <div class="vault-body">
-      <div class="frontmatter">
-        <div class="fm-item"><div class="fm-label">使用案件</div><div class="fm-value">${used.length} 件</div></div>
-        <div class="fm-item"><div class="fm-label">待迭代</div><div class="fm-value">${needIter} 件</div></div>
-        <div class="fm-item"><div class="fm-label">SOP 步驟</div><div class="fm-value">${sop.length} 步</div></div>
-        <div class="fm-item"><div class="fm-label">迭代版本</div><div class="fm-value">v${cl.length||0}</div></div>
-        <div class="fm-item"><div class="fm-label">最後迭代</div><div class="fm-value">${esc(lastIter)}</div></div>
-        <div class="fm-item"><div class="fm-label">狀態</div><div class="fm-value">${esc(topState)}</div></div>
-      </div>
-      <div id="vaultTabContent"></div>
-    </div>`;
-
-  renderVaultTabContent(t);
-}
-
-function switchVaultTab(tab, t){
-  vaultActiveTab = tab;
-  // 只更新 tab 按鈕 active 狀態
-  document.querySelectorAll('.vault-tab').forEach(b=>{
-    b.classList.toggle('on', b.textContent===({note:'筆記',preview:'預覽',sop:'SOP',log:'迭代紀錄',related:'關聯案件'}[tab]));
-  });
-  renderVaultTabContent(t);
-}
-
-function renderVaultTabContent(t){
-  const el = document.getElementById('vaultTabContent');
-  if(!el) return;
-  const sop = tplData.sop[t]||[];
-  const cl = tplData.changelog[t]||[];
-  const note = tplData.notes[t]||'';
-
-  if(vaultActiveTab==='note'){
-    el.innerHTML = `
-      <textarea class="vault-editor" id="vaultEditor" placeholder="使用 Markdown 記錄例稿內容。
-支援 [[例稿名稱]] 語法連結到其他例稿。
-
-建議結構：
-## 適用情境
-## 常用法規依據
-## 標準段落
-## 注意事項">${esc(note)}</textarea>
-      <div class="vault-editor-actions">
-        <button class="small-btn pri" onclick="saveVaultNote('${esc(t)}')">儲存</button>
-        <button class="small-btn" onclick="switchVaultTab('preview','${esc(t)}')">預覽</button>
-        <button class="small-btn" onclick="copyVaultNote('${esc(t)}')">複製</button>
-        <button class="small-btn" onclick="filterByTpl('${esc(t)}')">篩選案件</button>
-        <button class="small-btn" onclick="exportVaultMd('${esc(t)}')">匯出 .md</button>
-      </div>`;
-  }
-  else if(vaultActiveTab==='preview'){
-    el.innerHTML = `
-      <div class="md-preview">${renderMarkdown(note, t)}</div>
-      <div style="margin-top:12px">
-        <button class="small-btn" onclick="switchVaultTab('note','${esc(t)}')">← 返回編輯</button>
-      </div>`;
-  }
-  else if(vaultActiveTab==='sop'){
-    const steps = sop.map((s,i)=>`
-      <div class="sop-step">
-        <div class="sop-num">${i+1}</div>
-        <div class="sop-text">${esc(s)}</div>
-        <button class="sop-del" onclick="vaultDelSop('${esc(t)}',${i})">×</button>
-      </div>`).join('');
-    el.innerHTML = `
-      <div style="margin-bottom:12px;font-size:12px;color:var(--sub)">新增公文時可一鍵套用此 SOP 步驟清單。</div>
-      <div id="vaultSopList">${steps||'<div style="color:var(--muted);font-size:12px;padding:8px 0">尚未設定 SOP 步驟</div>'}</div>
-      <div class="sop-add-row">
-        <input id="vaultSopInput" placeholder="新增步驟…" onkeydown="if(event.key==='Enter')vaultAddSop('${esc(t)}')"/>
-        <button class="small-btn pri" onclick="vaultAddSop('${esc(t)}')">＋ 新增</button>
-      </div>`;
-  }
-  else if(vaultActiveTab==='log'){
-    const entries = cl.length ? cl.map(e=>`
-      <div class="changelog-entry">
-        <span class="changelog-ver">${esc(e.ver)}</span>${esc(e.date)}｜${esc(e.note)}
-      </div>`).join('') : '<div style="color:var(--muted);font-size:12px">尚無迭代紀錄</div>';
-    el.innerHTML = `
-      <div style="margin-bottom:10px;font-size:12px;color:var(--sub)">每次修改筆記後，記錄一筆修改摘要。紀錄只累加，不刪除。</div>
-      <div class="changelog">${entries}</div>
-      <div class="changelog-add-row">
-        <input id="vaultLogInput" placeholder="本次修改摘要，如：補入勞基法第 32 條新函釋…"/>
-        <button class="small-btn pri" onclick="vaultAddLog('${esc(t)}')">＋ 記錄</button>
-      </div>`;
-  }
-  else if(vaultActiveTab==='related'){
-    const related = docs.filter(d=>d.template===t);
-    const html = related.length ? related.map(d=>{
-      const l=lightOf(d); const color=catColor(d.cat||'');
-      return `<div class="related-doc" onclick="openDoc(${d.id})">
-        <span class="light ${l.id}" style="flex-shrink:0">${l.label}</span>
-        <div class="related-doc-title">${esc(d.title)}</div>
-        <span class="cat-tag" style="background:${color}18;color:${color};flex-shrink:0">${esc(d.cat||'')}</span>
-        <span style="font-size:10px;color:var(--muted);flex-shrink:0">${esc(d.due||'')}</span>
-      </div>`;
-    }).join('') : '<div style="color:var(--muted);font-size:12px;padding:8px 0">尚無使用此例稿的案件</div>';
-    el.innerHTML = `
-      <div style="margin-bottom:10px;font-size:12px;color:var(--sub)">所有使用「${esc(t)}」的案件。點擊可開啟編輯。</div>
-      ${html}`;
-  }
-}
-
-// ── Markdown 渲染（輕量版，支援 [[wikilink]]）──
-function renderMarkdown(md, currentTpl){
-  if(!md) return '<span style="color:var(--muted)">尚無內容，切換到「筆記」分頁開始撰寫。</span>';
-  let html = esc(md);
-  // 還原 esc 對 markdown 語法的影響
-  html = md
-    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-  // wikilink [[xxx]]
-  html = html.replace(/\[\[([^\]]+)\]\]/g,(m,name)=>{
-    return `<a class="wikilink" onclick="openVaultFile('${name.replace(/'/g,"\'")}')">[[${name}]]</a>`;
-  });
-  // headings
-  html = html.replace(/^### (.+)$/gm,'<h3>$1</h3>');
-  html = html.replace(/^## (.+)$/gm,'<h2>$1</h2>');
-  html = html.replace(/^# (.+)$/gm,'<h1>$1</h1>');
-  // bold / italic
-  html = html.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');
-  html = html.replace(/\*(.+?)\*/g,'<em>$1</em>');
-  // inline code
-  html = html.replace(/`([^`]+)`/g,'<code>$1</code>');
-  // blockquote
-  html = html.replace(/^&gt; (.+)$/gm,'<blockquote>$1</blockquote>');
-  // hr
-  html = html.replace(/^---$/gm,'<hr>');
-  // ul
-  html = html.replace(/^[-*] (.+)$/gm,'<li>$1</li>');
-  html = html.replace(/(<li>.*<\/li>)/gs, '<ul>$1</ul>');
-  // ol
-  html = html.replace(/^\d+\. (.+)$/gm,'<li>$1</li>');
-  // paragraphs
-  html = html.split(/
-
-+/).map(block=>{
-    if(/^<(h[1-3]|ul|ol|blockquote|hr|pre)/.test(block.trim())) return block;
-    return `<p>${block.replace(/
-/g,'<br>')}</p>`;
-  }).join('
-');
-  return html;
-}
-
-// ── Vault 操作函式 ──
-function saveVaultNote(t){
-  const val = document.getElementById('vaultEditor')?.value||'';
-  tplData.notes[t] = val;
-  saveTplData(); toast('已儲存筆記');
-}
-function copyVaultNote(t){
-  navigator.clipboard.writeText(tplData.notes[t]||'').then(()=>toast('已複製'));
-}
-function exportVaultMd(t){
-  const sop = tplData.sop[t]||[];
-  const cl = tplData.changelog[t]||[];
-  const note = tplData.notes[t]||'';
-  const used = docs.filter(d=>d.template===t);
-  const frontmatter = `---
-title: ${t}
-state: ${getTopState(t)}
-used: ${used.length}
-sop_steps: ${sop.length}
-changelog_count: ${cl.length}
-exported: ${todayISO()}
----
-
-`;
-  const sopSection = sop.length ? `
-
-## SOP 步驟
-${sop.map((s,i)=>`${i+1}. ${s}`).join('
-')}` : '';
-  const logSection = cl.length ? `
-
-## 迭代紀錄
-${cl.map(e=>`- **${e.ver}** ${e.date}｜${e.note}`).join('
-')}` : '';
-  const full = frontmatter + note + sopSection + logSection;
-  const url = URL.createObjectURL(new Blob([full],{type:'text/markdown;charset=utf-8'}));
-  const a = document.createElement('a');
-  a.href=url; a.download=`${t}.md`;
-  document.body.appendChild(a); a.click();
-  setTimeout(()=>{ a.remove(); URL.revokeObjectURL(url); }, 200);
-  toast('已匯出 .md 檔案');
-}
-function getTopState(t){
-  const stateArr = docs.filter(d=>d.template===t).map(d=>d.templateState);
-  return stateArr.length?(
-    stateArr.includes('需新建')?'需新建':stateArr.includes('需微調')?'需微調':
-    stateArr.includes('已迭代')?'已迭代':stateArr.includes('可套用')?'可套用':'未分類'
-  ):'未分類';
-}
-function vaultAddSop(t){
-  const inp = document.getElementById('vaultSopInput');
-  const text = inp?.value.trim(); if(!text) return;
-  if(!tplData.sop[t]) tplData.sop[t]=[];
-  tplData.sop[t].push(text); saveTplData(); inp.value='';
-  renderVaultTabContent(t);
-}
-function vaultDelSop(t,i){
-  tplData.sop[t].splice(i,1); saveTplData(); renderVaultTabContent(t);
-}
-function vaultAddLog(t){
-  const inp = document.getElementById('vaultLogInput');
-  const note = inp?.value.trim(); if(!note) return;
-  if(!tplData.changelog[t]) tplData.changelog[t]=[];
-  const ver = 'v'+(tplData.changelog[t].length+1);
-  tplData.changelog[t].push({ver, date:todayISO(), note});
-  saveTplData(); inp.value=''; renderVaultTabContent(t); toast('已記錄迭代紀錄');
-}
-
-
-
-
-
-
-
-function filterByTpl(t){
-  document.getElementById('tplFilter').value=t; setView('list');
-}
-
-// ══════════════════════════════════
-//  Selects / Datalist
-// ══════════════════════════════════
-function initSelects(){
-  fillSel('catFilter',cats,'全部業務類別');
-  fillSel('tplFilter',allTemplates(),'全部例稿分類');
-  fillSel('statusFilter',STATUSES.map(s=>({v:s.id,t:s.label})),'全部狀態');
-  fillSel('fCat',cats);
-  fillSel('fStatus',STATUSES.map(s=>({v:s.id,t:s.label})));
-  fillSel('fTemplateState',TEMPLATE_STATES);
-  updateTplOptions();
-  updateSourceDatalist();
-}
-function fillSel(id,arr,first){
-  const el=document.getElementById(id); if(!el) return;
-  const cur=el.value;
-  el.innerHTML=(first?`<option value="all">${first}</option>`:'')+arr.map(x=>
-    typeof x==='string'?`<option value="${esc(x)}">${esc(x)}</option>`:`<option value="${esc(x.v)}">${esc(x.t)}</option>`
-  ).join('');
-  if(cur) el.value=cur;
-}
-function updateTplOptions(){
-  const cat=document.getElementById('fCat')?.value||cats[0];
-  const tpls=DEFAULT_TPLS_BY_CAT[cat]||allTemplates();
-  fillSel('fTemplate',tpls);
-}
-function updateSourceDatalist(){
-  const dl=document.getElementById('sourceList'); if(!dl) return;
-  dl.innerHTML=sources.map(s=>`<option value="${esc(s)}">`).join('');
-}
-
-// ══════════════════════════════════
-//  Workflow steps (in modal)
-// ══════════════════════════════════
-function renderWfSteps(){
-  document.getElementById('wfStepList').innerHTML=wfSteps.map((s,i)=>
-    `<div class="wf-step">
-      <input type="checkbox" class="wf-check" ${s.done?'checked':''} onchange="wfSteps[${i}].done=this.checked"/>
-      <span class="wf-step-text ${s.done?'checked':''}">${esc(s.text)}</span>
-      <button class="wf-step-del" onclick="wfSteps.splice(${i},1);renderWfSteps()">×</button>
-    </div>`
-  ).join('');
-}
-function addWfStep(){
-  const inp=document.getElementById('wfNewStep');
-  const text=inp?.value.trim(); if(!text) return;
-  wfSteps.push({text,done:false}); inp.value=''; renderWfSteps();
-}
-function loadSopSteps(){
-  const tpl=document.getElementById('fTemplate')?.value;
-  const sop=tplData.sop[tpl]||[];
-  if(!sop.length){ toast('此例稿尚未設定 SOP 步驟'); return; }
-  if(wfSteps.length && !confirm('套用 SOP 將覆蓋目前步驟，確定嗎？')) return;
-  wfSteps=sop.map(s=>({text:s,done:false}));
-  renderWfSteps(); toast('已套用例稿 SOP');
-}
-
-// ══════════════════════════════════
-//  Doc Modal
-// ══════════════════════════════════
-function openDoc(id){
-  editId=id||null;
-  const d=id?docs.find(x=>x.id===id):{
-    title:'',docNo:autoDocNo(),source:'',received:todayISO(),due:'',
-    cat:cats[0],template:'',status:'new',templateState:'未分類',
-    speed:'普通件',owner:'我',waiting:'no',next:'',link:'',note:'',steps:[]
-  };
-  document.getElementById('docModalTitle').textContent=id?'編輯公文':'新增公文';
-  document.getElementById('deleteBtn').style.display=id?'inline-block':'none';
-  ['Title','DocNo','Source','Received','Due','Next','Link','Note','Owner'].forEach(k=>{
-    const el=document.getElementById('f'+k); if(el) el.value=d[k.charAt(0).toLowerCase()+k.slice(1)]||'';
-  });
-  document.getElementById('fCat').value=d.cat||cats[0];
-  updateTplOptions();
-  document.getElementById('fTemplate').value=d.template||'';
-  document.getElementById('fStatus').value=d.status||'new';
-  document.getElementById('fTemplateState').value=d.templateState||'未分類';
-  document.getElementById('fSpeed').value=d.speed||'普通件';
-  document.getElementById('fWaiting').value=d.waiting||'no';
-  wfSteps=(d.steps||[]).map(s=>({...s}));
-  renderWfSteps();
-  document.getElementById('docBg').classList.add('show');
-}
-
-function formDoc(){
-  return {
-    id:editId||Date.now(),
-    title:document.getElementById('fTitle').value.trim(),
-    docNo:document.getElementById('fDocNo').value.trim(),
-    source:document.getElementById('fSource').value.trim(),
-    received:document.getElementById('fReceived').value,
-    due:document.getElementById('fDue').value,
-    cat:document.getElementById('fCat').value,
-    template:document.getElementById('fTemplate').value,
-    status:document.getElementById('fStatus').value,
-    templateState:document.getElementById('fTemplateState').value,
-    speed:document.getElementById('fSpeed').value,
-    owner:document.getElementById('fOwner').value.trim()||'我',
-    waiting:document.getElementById('fWaiting').value,
-    next:document.getElementById('fNext').value.trim(),
-    link:document.getElementById('fLink').value.trim(),
-    note:document.getElementById('fNote').value.trim(),
-    steps:wfSteps.map(s=>({...s}))
-  };
-}
-
-function saveDoc(){
-  const d=formDoc(); if(!d.title){ toast('請輸入主旨'); return; }
-  if(editId){ const i=docs.findIndex(x=>x.id===editId); if(i>=0) docs[i]=d; }
-  else docs.push(d);
-  saveDocs(); closeId('docBg'); toast('已儲存'); render();
-}
-function deleteDoc(){
-  if(!editId) return;
-  if(!confirm('確定刪除此件公文？')) return;
-  docs=docs.filter(d=>d.id!==editId);
-  saveDocs(); closeId('docBg'); toast('已刪除'); render();
-}
-function copyBrief(){
-  const d=formDoc();
-  const steps=d.steps.length?'\nWorkflow：\n'+d.steps.map((s,i)=>`  ${s.done?'☑':'☐'} ${s.text}`).join('\n'):'';
-  const txt=`${d.title}\n文號：${d.docNo||'未填'}\n業務類別：${d.cat}\n例稿：${d.template}（${d.templateState}）\n狀態：${statusLabel(d.status)}\n期限：${d.due||'未填'}\n下一步：${d.next||'未填'}${steps}`;
-  navigator.clipboard.writeText(txt).then(()=>toast('已複製摘要'));
-}
-
-// ══════════════════════════════════
-//  Capsule tag manager
-// ══════════════════════════════════
-function openSetup(){
-  document.getElementById('gasUrl').value=localStorage.getItem(GAS_KEY)||'';
-  document.getElementById('gasToken').value=localStorage.getItem(TOKEN_KEY)||'';
-  document.getElementById('gasTestResult').textContent='';
-  renderCapManager();
-  document.getElementById('setupBg').classList.add('show');
-}
-function renderCapManager(){
-  document.getElementById('capCats').innerHTML=cats.map((c,i)=>
-    `<div class="cap-tag">${esc(c)}<button onclick="removeCap('cat',${i})">×</button></div>`
-  ).join('');
-  document.getElementById('capSources').innerHTML=sources.map((s,i)=>
-    `<div class="cap-tag">${esc(s)}<button onclick="removeCap('source',${i})">×</button></div>`
-  ).join('');
-}
-function addCap(type){
-  const inp=document.getElementById(type==='cat'?'newCatInput':'newSourceInput');
-  const val=inp?.value.trim(); if(!val) return;
-  if(type==='cat'){ if(!cats.includes(val)){ cats.push(val); saveCats(); } }
-  else { if(!sources.includes(val)){ sources.push(val); saveSources(); } }
-  inp.value=''; renderCapManager(); initSelects();
-}
-function removeCap(type,i){
-  if(type==='cat'){ cats.splice(i,1); saveCats(); }
-  else { sources.splice(i,1); saveSources(); }
-  renderCapManager(); initSelects();
-}
-
-// ══════════════════════════════════
-//  Export / Import
-// ══════════════════════════════════
-function exportCSV(){
-  const rows=[
-    ['主旨','文號','來文單位','收文日期','辦理期限','業務類別','例稿分類','例稿狀態','流程狀態','速別','承辦人','等回復','下一步','連結','備註','Workflow進度'],
-    ...docs.map(d=>{
-      const steps=d.steps||[]; const done=steps.filter(s=>s.done).length;
-      return [d.title,d.docNo,d.source,d.received,d.due,d.cat,d.template,d.templateState,statusLabel(d.status),d.speed,d.owner,d.waiting==='yes'?'是':'否',d.next,d.link,d.note,steps.length?`${done}/${steps.length}`:''];
-    })
-  ];
-  const csv='\ufeff'+rows.map(r=>r.map(v=>'"'+String(v??'').replaceAll('"','""')+'"').join(',')).join('\n');
-  const url=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));
-  const a=document.createElement('a'); a.href=url; a.download=`公文承辦OS_${todayISO()}.csv`;
-  document.body.appendChild(a); a.click(); setTimeout(()=>{ a.remove(); URL.revokeObjectURL(url); },200);
-  toast('CSV 已匯出');
-  markBackupDone();
-}
-function importSample(){
-  if(!confirm('載入範例資料會覆蓋目前本機資料，確定嗎？')) return;
-  docs=sampleDocs(); saveDocs(); toast('已載入範例資料'); render();
-}
-
-// ══════════════════════════════════
-//  GAS 同步（雙表：docs + templates）
-// ══════════════════════════════════
-function syncDotState(state){
-  const d=document.getElementById('syncDot');
-  d.className='sync-dot'+(state==='ok'?' ok':state==='err'?' err':state==='ing'?' ing':'');
-}
-function saveSetup(){
-  localStorage.setItem(GAS_KEY,document.getElementById('gasUrl').value.trim());
-  localStorage.setItem(TOKEN_KEY,document.getElementById('gasToken').value.trim());
-  syncDotState('ok');
-  document.getElementById('syncStatus').textContent='已儲存同步設定';
-  toast('設定已儲存');
-}
-async function testGas(){
-  const url=document.getElementById('gasUrl').value.trim();
-  const token=document.getElementById('gasToken').value.trim();
-  if(!url){ toast('請先輸入 GAS URL'); return; }
-  document.getElementById('gasTestResult').textContent='連線測試中…';
-  try{
-    const u=new URL(url); u.searchParams.set('action','ping'); u.searchParams.set('token',token);
-    const r=await fetch(u.toString()); const j=await r.json();
-    document.getElementById('gasTestResult').textContent=j.ok?'✅ 連線成功！':'❌ 格式異常：'+JSON.stringify(j);
-  } catch(e){ document.getElementById('gasTestResult').textContent='❌ 連線失敗：'+e.message; }
-}
-async function syncPush(){
-  const url=localStorage.getItem(GAS_KEY); if(!url){ openSetup(); return; }
-  if(!confirm('將本機資料推送至 Google Sheet（覆蓋寫入）？')) return;
-  syncDotState('ing'); document.getElementById('syncStatus').textContent='同步中…';
-  try{
-    const r=await fetch(url,{method:'POST',headers:{'Content-Type':'text/plain'},
-      body:JSON.stringify({action:'push',token:localStorage.getItem(TOKEN_KEY)||'',data:docs,tplData})});
-    const j=await r.json();
-    if(j.ok){ syncDotState('ok'); document.getElementById('syncStatus').textContent='已同步至雲端 · '+new Date().toLocaleTimeString(); toast('雲端同步完成'); markBackupDone(); }
-    else{ syncDotState('err'); toast('同步失敗：'+(j.error||'未知')); }
-  } catch(e){ syncDotState('err'); toast('連線失敗'); }
-}
-async function syncPull(){
-  const url=localStorage.getItem(GAS_KEY); if(!url){ openSetup(); return; }
-  if(!confirm('從 Google Sheet 讀取並覆蓋本機資料？')) return;
-  syncDotState('ing'); document.getElementById('syncStatus').textContent='讀取中…';
-  try{
-    const u=new URL(url); u.searchParams.set('action','pull'); u.searchParams.set('token',localStorage.getItem(TOKEN_KEY)||'');
-    const r=await fetch(u.toString()); const j=await r.json();
-    if(j.ok&&Array.isArray(j.data)){
-      docs=j.data; saveDocs();
-      if(j.tplData){ tplData=j.tplData; saveTplData(); }
-      syncDotState('ok'); document.getElementById('syncStatus').textContent='已讀取雲端資料 · '+new Date().toLocaleTimeString();
-      toast(`已讀取 ${docs.length} 筆公文`); render();
-    } else { syncDotState('err'); toast('讀取失敗：'+(j.error||'格式不符')); }
-  } catch(e){ syncDotState('err'); toast('連線失敗'); }
-}
-
-// ══════════════════════════════════
-//  Toast
-// ══════════════════════════════════
-function toast(msg){
-  const t=document.getElementById('toast');
-  t.textContent=msg; t.classList.add('show');
-  clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove('show'),2300);
-}
-
-// ══════════════════════════════════
-//  Alert Banner (到期提醒)
-// ══════════════════════════════════
-const ALERT_KEY = 'govdoc-alert-dismissed';
-
-function checkAlerts(){
-  const today = todayISO();
-  const dismissed = JSON.parse(localStorage.getItem(ALERT_KEY)||'[]');
-  const urgent = docs.filter(d=>{
-    if(d.status==='done') return false;
-    if(dismissed.includes(String(d.id))) return false;
-    const l = lightOf(d);
-    return l.id==='red' || l.id==='orange';
-  });
-  const banner = document.getElementById('alertBanner');
-  const list = document.getElementById('alertList');
-  if(!urgent.length){ banner.classList.remove('show'); return; }
-  const late = urgent.filter(d=>lightOf(d).id==='red').length;
-  const todayDue = urgent.filter(d=>lightOf(d).id==='orange').length;
-  document.getElementById('alertTitle').textContent =
-    `⚠ 到期提醒：逾期 ${late} 件、今日到期 ${todayDue} 件`;
-  list.innerHTML = urgent.slice(0,6).map(d=>{
-    const l=lightOf(d);
-    return `<div class="alert-item" onclick="openDoc(${d.id})">
-      <span class="alert-badge ${l.id}">${l.label}</span>
-      <span class="alert-item-title">${esc(d.title)}</span>
-    </div>`;
+function renderVMain(t){
+  var main=g('vaultMain');if(!main)return;
+  var used=docs.filter(function(d){return d.template===t;});
+  var ts=topState(t),tsc=tssClass(ts),cl=tpl.changelog[t]||[],sop=tpl.sop[t]||[];
+  var li=cl.length?cl[cl.length-1].date:'尚未迭代';
+  var tabLabels={note:'筆記',preview:'預覽',sop:'SOP',log:'迭代紀錄',related:'關聯案件'};
+  var tabs=['note','preview','sop','log','related'].map(function(tb){
+    return '<button class="vt2'+(vaultTab===tb?' on':'')+'" onclick="swVT(\''+tb+'\',\''+t.replace(/'/g,"\\'")+'\')">'+tabLabels[tb]+'</button>';
   }).join('');
-  banner.classList.add('show');
+  main.innerHTML='<div class="vtbar"><div class="vtitle">'+esc(t)+'</div><span class="tpl-state '+tsc+'">'+esc(ts)+'</span><div class="vtabs2">'+tabs+'</div></div>'
+    +'<div class="vbody">'
+      +'<div class="fm">'
+        +'<div class="fmi"><div class="fml">使用案件</div><div>'+used.length+' 件</div></div>'
+        +'<div class="fmi"><div class="fml">待迭代</div><div>'+used.filter(function(d){return d.templateState==='需微調'||d.templateState==='需新建';}).length+' 件</div></div>'
+        +'<div class="fmi"><div class="fml">SOP 步驟</div><div>'+sop.length+' 步</div></div>'
+        +'<div class="fmi"><div class="fml">迭代版本</div><div>v'+cl.length+'</div></div>'
+        +'<div class="fmi"><div class="fml">最後迭代</div><div>'+esc(li)+'</div></div>'
+        +'<div class="fmi"><div class="fml">狀態</div><div>'+esc(ts)+'</div></div>'
+      +'</div>'
+      +'<div id="vtc"></div>'
+    +'</div>';
+  renderVTC(t);
 }
 
-function dismissAlert(){
-  const urgent = docs.filter(d=>{
-    if(d.status==='done') return false;
-    const l=lightOf(d); return l.id==='red'||l.id==='orange';
-  });
-  const ids = JSON.parse(localStorage.getItem(ALERT_KEY)||'[]');
-  urgent.forEach(d=>{ if(!ids.includes(String(d.id))) ids.push(String(d.id)); });
-  localStorage.setItem(ALERT_KEY, JSON.stringify(ids));
-  document.getElementById('alertBanner').classList.remove('show');
-}
+function swVT(tb,t){vaultTab=tb;renderVMain(t);}
 
-// ══════════════════════════════════
-//  Backup 備份提醒
-// ══════════════════════════════════
-const BACKUP_KEY = 'govdoc-last-backup';
-const BACKUP_DISMISS_KEY = 'govdoc-backup-dismissed-date';
-const BACKUP_DAYS = 3; // 超過幾天未同步就提醒
-
-function checkBackup(){
-  const banner = document.getElementById('backupBanner');
-  const msg = document.getElementById('backupMsg');
-  if(!banner||!msg) return;
-
-  // 今天已關閉過就不再顯示
-  const dismissedDate = localStorage.getItem(BACKUP_DISMISS_KEY)||'';
-  if(dismissedDate === todayISO()) return;
-
-  const lastBackup = localStorage.getItem(BACKUP_KEY);
-  const hasGas = !!localStorage.getItem(GAS_KEY);
-
-  if(!lastBackup){
-    // 從未同步過，且有資料
-    if(docs.length > 0){
-      msg.innerHTML = `⚠ <b>資料從未備份</b>——localStorage 清除後將全部遺失。建議設定 GAS 同步或定期匯出 CSV。`;
-      banner.classList.add('show');
-    }
-    return;
+function renderVTC(t){
+  var el=g('vtc');if(!el)return;
+  var sop=tpl.sop[t]||[],cl=tpl.changelog[t]||[],note=tpl.notes[t]||'';
+  var ts=t.replace(/'/g,"\\'");
+  if(vaultTab==='note'){
+    el.innerHTML='<textarea class="veditor" id="ved" placeholder="使用 Markdown 記錄…&#10;支援 [[例稿名稱]] 語法&#10;&#10;## 適用情境&#10;## 常用法規依據&#10;## 標準段落">'+esc(note)+'</textarea>'
+      +'<div class="veacts">'
+        +'<button class="small-btn pri" onclick="svNote(\''+ts+'\')">儲存</button>'
+        +'<button class="small-btn" onclick="swVT(\'preview\',\''+ts+'\')">預覽</button>'
+        +'<button class="small-btn" onclick="cpNote(\''+ts+'\')">複製</button>'
+        +'<button class="small-btn" onclick="ftTpl(\''+ts+'\')">篩選案件</button>'
+        +'<button class="small-btn" onclick="exMd(\''+ts+'\')">匯出 .md</button>'
+      +'</div>';
+  }else if(vaultTab==='preview'){
+    el.innerHTML='<div class="mdp">'+renderMd(note,t)+'</div><div style="margin-top:12px"><button class="small-btn" onclick="swVT(\'note\',\''+ts+'\')">&#8592; 返回編輯</button></div>';
+  }else if(vaultTab==='sop'){
+    var sh=sop.map(function(s,i){
+      return '<div class="sop-step"><div class="sopnum">'+(i+1)+'</div><div class="soptext">'+esc(s)+'</div><button class="sopdel" onclick="dSop(\''+ts+'\','+i+')">&#215;</button></div>';
+    }).join('');
+    el.innerHTML=(sh||'<div style="color:var(--muted);font-size:12px;padding:8px 0">尚未設定 SOP 步驟</div>')
+      +'<div class="add-row"><input id="sopInp" placeholder="新增步驟…" onkeydown="if(event.key===\'Enter\')aSop(\''+ts+'\')"/><button class="small-btn pri" onclick="aSop(\''+ts+'\')">＋</button></div>';
+  }else if(vaultTab==='log'){
+    var lh=cl.length?cl.map(function(e){return '<div class="cle"><span class="clv">'+esc(e.ver)+'</span>'+esc(e.date)+'｜'+esc(e.note)+'</div>';}).join(''):'<div style="color:var(--muted);font-size:12px">尚無迭代紀錄</div>';
+    el.innerHTML='<div class="cl">'+lh+'</div><div class="add-row" style="margin-top:10px"><input id="logInp" placeholder="本次修改摘要…"/><button class="small-btn pri" onclick="aLog(\''+ts+'\')">＋ 記錄</button></div>';
+  }else if(vaultTab==='related'){
+    var rel=docs.filter(function(d){return d.template===t;});
+    el.innerHTML=rel.length?rel.map(function(d){
+      var l=lightOf(d),color=catColor(d.cat||'');
+      return '<div class="rdoc" onclick="openDoc('+d.id+')">'
+        +'<span class="lt '+l.id+'">'+l.lb+'</span>'
+        +'<div class="rdoc-t">'+esc(d.title)+'</div>'
+        +'<span class="ctag" style="background:'+color+'18;color:'+color+'">'+esc(d.cat||'')+'</span>'
+        +'<span style="font-size:10px;color:var(--muted)">'+esc(d.due||'')+'</span>'
+        +'</div>';
+    }).join(''):'<div style="color:var(--muted);font-size:12px;padding:8px 0">尚無使用此例稿的案件</div>';
   }
-
-  const daysSince = Math.floor((new Date(todayISO()) - new Date(lastBackup)) / 86400000);
-  if(daysSince >= BACKUP_DAYS){
-    const action = hasGas ? '同步雲端或匯出 CSV' : '匯出 CSV';
-    msg.innerHTML = `📦 <b>距上次備份已 ${daysSince} 天</b>（${lastBackup}）——建議${action}，避免資料遺失。`;
-    banner.classList.add('show');
-  }
 }
 
-function dismissBackup(){
-  localStorage.setItem(BACKUP_DISMISS_KEY, todayISO());
-  document.getElementById('backupBanner').classList.remove('show');
+function renderMd(md,cur){
+  if(!md)return '<span style="color:var(--muted)">尚無內容，切換到「筆記」分頁開始撰寫。</span>';
+  var h=md.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  h=h.replace(/\[\[([^\]]+)\]\]/g,function(m,n){return '<a class="wikilink" onclick="openVF(\''+n.replace(/'/g,"\\'")+'\')">[['+n+']]</a>';});
+  h=h.replace(/^### (.+)$/gm,'<h3>$1</h3>').replace(/^## (.+)$/gm,'<h2>$1</h2>').replace(/^# (.+)$/gm,'<h1>$1</h1>');
+  h=h.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\*(.+?)\*/g,'<em>$1</em>').replace(/`([^`]+)`/g,'<code>$1</code>');
+  h=h.replace(/^&gt; (.+)$/gm,'<blockquote>$1</blockquote>').replace(/^---$/gm,'<hr>');
+  h=h.replace(/^[-*] (.+)$/gm,'<li>$1</li>').replace(/(<li>[^]*?<\/li>)/g,'<ul>$1</ul>');
+  h=h.split(/\n\n+/).map(function(b){if(/^<(h[1-3]|ul|ol|blockquote|hr)/.test(b.trim()))return b;return '<p>'+b.replace(/\n/g,'<br>')+'</p>';}).join('\n');
+  return h;
 }
 
-function markBackupDone(){
-  localStorage.setItem(BACKUP_KEY, todayISO());
-  document.getElementById('backupBanner').classList.remove('show');
-  localStorage.setItem(BACKUP_DISMISS_KEY, todayISO());
+function svNote(t){tpl.notes[t]=g('ved')?g('ved').value:'';saveTpl();toast('已儲存筆記');}
+function cpNote(t){navigator.clipboard.writeText(tpl.notes[t]||'').then(function(){toast('已複製');});}
+function ftTpl(t){g('tplFilter').value=t;setView('list');}
+function aSop(t){var inp=g('sopInp'),text=inp?inp.value.trim():'';if(!text)return;if(!tpl.sop[t])tpl.sop[t]=[];tpl.sop[t].push(text);saveTpl();if(inp)inp.value='';renderVTC(t);}
+function dSop(t,i){tpl.sop[t].splice(i,1);saveTpl();renderVTC(t);}
+function aLog(t){var inp=g('logInp'),note=inp?inp.value.trim():'';if(!note)return;if(!tpl.changelog[t])tpl.changelog[t]=[];var ver='v'+(tpl.changelog[t].length+1);tpl.changelog[t].push({ver:ver,date:today(),note:note});saveTpl();if(inp)inp.value='';renderVTC(t);toast('已記錄迭代紀錄');}
+function exMd(t){
+  var sop=tpl.sop[t]||[],cl=tpl.changelog[t]||[],note=tpl.notes[t]||'';
+  var used=docs.filter(function(d){return d.template===t;});
+  var fm='---\ntitle: '+t+'\nstate: '+topState(t)+'\nused: '+used.length+'\nexported: '+today()+'\n---\n\n';
+  var ss=sop.length?'\n\n## SOP 步驟\n'+sop.map(function(s,i){return(i+1)+'. '+s;}).join('\n'):'';
+  var ls=cl.length?'\n\n## 迭代紀錄\n'+cl.map(function(e){return '- **'+e.ver+'** '+e.date+'｜'+e.note;}).join('\n'):'';
+  var full=fm+note+ss+ls;
+  var url=URL.createObjectURL(new Blob([full],{type:'text/markdown;charset=utf-8'}));
+  var a=document.createElement('a');a.href=url;a.download=t+'.md';document.body.appendChild(a);a.click();setTimeout(function(){a.remove();URL.revokeObjectURL(url);},200);toast('已匯出 .md');
 }
 
-// ══════════════════════════════════
-//  Auto doc number
-// ══════════════════════════════════
 function autoDocNo(){
-  const year = new Date().getFullYear();
-  const existing = docs.map(d=>d.docNo||'').filter(n=>n.startsWith(year+'-'));
-  const nums = existing.map(n=>parseInt(n.split('-')[1]||0)).filter(n=>!isNaN(n));
-  const next = nums.length ? Math.max(...nums)+1 : 1;
-  return `${year}-${String(next).padStart(3,'0')}`;
+  var yr=new Date().getFullYear(),nums=docs.map(function(d){return d.docNo||'';}).filter(function(n){return n.startsWith(yr+'-');}).map(function(n){return parseInt(n.split('-')[1]||0,10);}).filter(function(n){return !isNaN(n);});
+  var next=nums.length?Math.max.apply(null,nums)+1:1;
+  return yr+'-'+('00'+next).slice(-3);
 }
 
-// ══════════════════════════════════
-//  Init
-// ══════════════════════════════════
-initSelects();
-if(localStorage.getItem(GAS_KEY)) syncDotState('ok');
+function openDoc(id){
+  editId=id||0;
+  var d=id?docs.find(function(x){return x.id===id;}):null;
+  if(!d)d={title:'',docNo:autoDocNo(),source:'',received:today(),due:'',cat:cats[0],template:'',status:'new',templateState:'未分類',speed:'普通件',owner:'我',waiting:'no',next:'',link:'',note:'',steps:[]};
+  g('docTitle').textContent=id?'編輯公文':'新增公文';
+  g('delBtn').style.display=id?'inline-block':'none';
+  ['Title','DocNo','Source','Received','Due','Next','Link','Note','Owner'].forEach(function(k){var el=g('f'+k);if(el)el.value=d[k.charAt(0).toLowerCase()+k.slice(1)]||'';});
+  g('fCat').value=d.cat||cats[0];updateTplOpts();
+  g('fTemplate').value=d.template||'';
+  g('fStatus').value=d.status||'new';
+  g('fTplState').value=d.templateState||'未分類';
+  g('fSpeed').value=d.speed||'普通件';
+  g('fWaiting').value=d.waiting||'no';
+  wfSteps=(d.steps||[]).map(function(s){return{text:s.text,done:s.done};});
+  renderWF();
+  g('docBg').classList.add('show');
+}
+
+function getDoc(){
+  return{id:editId||Date.now(),title:g('fTitle').value.trim(),docNo:g('fDocNo').value.trim(),source:g('fSource').value.trim(),received:g('fReceived').value,due:g('fDue').value,cat:g('fCat').value,template:g('fTemplate').value,status:g('fStatus').value,templateState:g('fTplState').value,speed:g('fSpeed').value,owner:g('fOwner').value.trim()||'我',waiting:g('fWaiting').value,next:g('fNext').value.trim(),link:g('fLink').value.trim(),note:g('fNote').value.trim(),steps:wfSteps.map(function(s){return{text:s.text,done:s.done};})};
+}
+
+function saveDoc(){var d=getDoc();if(!d.title){toast('請輸入主旨');return;}if(editId){var i=docs.findIndex(function(x){return x.id===editId;});if(i>=0)docs[i]=d;}else docs.push(d);save();closeM('docBg');toast('已儲存');render();}
+function deleteDoc(){if(!editId)return;if(!confirm('確定刪除此件公文？'))return;docs=docs.filter(function(d){return d.id!==editId;});save();closeM('docBg');toast('已刪除');render();}
+function copyBrief(){var d=getDoc();var sx=d.steps.length?'\nWorkflow：\n'+d.steps.map(function(s){return'  '+(s.done?'☑':'☐')+' '+s.text;}).join('\n'):'';navigator.clipboard.writeText(d.title+'\n文號：'+(d.docNo||'未填')+'\n業務：'+d.cat+'\n例稿：'+d.template+'（'+d.templateState+'）\n狀態：'+slb(d.status)+'\n期限：'+(d.due||'未填')+'\n下一步：'+(d.next||'未填')+sx).then(function(){toast('已複製摘要');});}
+
+function renderWF(){
+  g('wfList').innerHTML=wfSteps.map(function(s,i){
+    return '<div class="wf-step"><input type="checkbox" class="wf-chk"'+(s.done?' checked':'')+' onchange="wfSteps['+i+'].done=this.checked"><span class="wf-stxt'+(s.done?' ck':'')+'">'+esc(s.text)+'</span><button class="wf-sdel" onclick="wfSteps.splice('+i+',1);renderWF()">&#215;</button></div>';
+  }).join('');
+}
+function addWfStep(){var inp=g('wfInput'),text=inp?inp.value.trim():'';if(!text)return;wfSteps.push({text:text,done:false});if(inp)inp.value='';renderWF();}
+function loadSop(){var t=g('fTemplate').value,sop=tpl.sop[t]||[];if(!sop.length){toast('此例稿尚未設定 SOP 步驟');return;}if(wfSteps.length&&!confirm('套用 SOP 將覆蓋目前步驟，確定嗎？'))return;wfSteps=sop.map(function(s){return{text:s,done:false};});renderWF();toast('已套用例稿 SOP');}
+
+function openSetup(){g('gasUrl').value=localStorage.getItem(GK)||'';g('gasToken').value=localStorage.getItem(TK)||'';g('gasTest').textContent='';renderCap();g('setupBg').classList.add('show');}
+function renderCap(){
+  g('capCats').innerHTML=cats.map(function(c,i){return '<div class="cap-tag">'+esc(c)+'<button onclick="rmCap(\'cat\','+i+')">&#215;</button></div>';}).join('');
+  g('capSrcs').innerHTML=srcs.map(function(s,i){return '<div class="cap-tag">'+esc(s)+'<button onclick="rmCap(\'src\','+i+')">&#215;</button></div>';}).join('');
+}
+function addCap(type){var inp=g(type==='cat'?'newCatInp':'newSrcInp'),val=inp?inp.value.trim():'';if(!val)return;if(type==='cat'){if(cats.indexOf(val)<0){cats.push(val);saveCats();}}else{if(srcs.indexOf(val)<0){srcs.push(val);saveSrcs();}}if(inp)inp.value='';renderCap();buildSel();}
+function rmCap(type,i){if(type==='cat'){cats.splice(i,1);saveCats();}else{srcs.splice(i,1);saveSrcs();}renderCap();buildSel();}
+function saveSetup(){localStorage.setItem(GK,g('gasUrl').value.trim());localStorage.setItem(TK,g('gasToken').value.trim());dotS('ok');g('syncSt').textContent='已儲存同步設定';toast('設定已儲存');}
+async function testGas(){var url=g('gasUrl').value.trim(),tok=g('gasToken').value.trim();if(!url){toast('請先輸入 GAS URL');return;}g('gasTest').textContent='連線測試中…';try{var u=new URL(url);u.searchParams.set('action','ping');u.searchParams.set('token',tok);var r=await fetch(u.toString()),j=await r.json();g('gasTest').textContent=j.ok?'✅ 連線成功！':'❌ 格式異常：'+JSON.stringify(j);}catch(e){g('gasTest').textContent='❌ 連線失敗：'+e.message;}}
+
+function buildSel(){
+  fillS('catFilter',cats,'全部業務類別');fillS('tplFilter',allTpls(),'全部例稿分類');fillS('statusFilter',STS.map(function(s){return{v:s.id,t:s.lb};}),'全部狀態');
+  fillS('fCat',cats,null);fillS('fStatus',STS.map(function(s){return{v:s.id,t:s.lb};}),null);fillS('fTplState',TSS,null);
+  updateTplOpts();updateSrcDL();
+}
+function fillS(id,arr,first){var el=g(id);if(!el)return;var cur=el.value;el.innerHTML=(first?'<option value="all">'+first+'</option>':'')+arr.map(function(x){return typeof x==='string'?'<option value="'+esc(x)+'">'+esc(x)+'</option>':'<option value="'+esc(x.v)+'">'+esc(x.t)+'</option>';}).join('');el.value=cur;}
+function updateTplOpts(){var cat=g('fCat')?g('fCat').value:cats[0],tpls=DTPLS[cat]||allTpls();fillS('fTemplate',tpls,null);}
+function updateSrcDL(){var dl=g('srcList');if(!dl)return;dl.innerHTML=srcs.map(function(s){return'<option value="'+esc(s)+'">';}).join('');}
+
+function closeM(id){g(id).classList.remove('show');}
+
+function exportCSV(){
+  var rows=[['主旨','文號','來文單位','收文日期','辦理期限','業務類別','例稿分類','例稿狀態','流程狀態','速別','承辦人','等回復','下一步','連結','備註','WF進度']];
+  docs.forEach(function(d){var steps=d.steps||[],ds=steps.filter(function(s){return s.done;}).length;rows.push([d.title,d.docNo,d.source,d.received,d.due,d.cat,d.template,d.templateState,slb(d.status),d.speed,d.owner,d.waiting==='yes'?'是':'否',d.next,d.link,d.note,steps.length?ds+'/'+steps.length:'']);});
+  var csv='\ufeff'+rows.map(function(r){return r.map(function(v){return'"'+String(v==null?'':v).replace(/"/g,'""')+'"';}).join(',');}).join('\n');
+  var url=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));
+  var a=document.createElement('a');a.href=url;a.download='公文承辦OS_'+today()+'.csv';document.body.appendChild(a);a.click();setTimeout(function(){a.remove();URL.revokeObjectURL(url);},200);
+  toast('CSV 已匯出');markBK();
+}
+function importSample(){if(!confirm('載入範例資料會覆蓋目前本機資料，確定嗎？'))return;docs=sampleDocs();save();toast('已載入範例資料');render();}
+
+function dotS(s){var d=g('syncDot');d.className='sdot'+(s==='ok'?' ok':s==='err'?' err':s==='ing'?' ing':'');}
+async function syncPush(){var url=localStorage.getItem(GK);if(!url){openSetup();return;}if(!confirm('將本機資料推送至 Google Sheet？'))return;dotS('ing');g('syncSt').textContent='同步中…';try{var r=await fetch(url,{method:'POST',headers:{'Content-Type':'text/plain'},body:JSON.stringify({action:'push',token:localStorage.getItem(TK)||'',data:docs,tplData:tpl})});var j=await r.json();if(j.ok){dotS('ok');g('syncSt').textContent='已同步至雲端 · '+new Date().toLocaleTimeString();toast('雲端同步完成');markBK();}else{dotS('err');toast('同步失敗：'+(j.error||'未知'));}}catch(e){dotS('err');toast('連線失敗');}}
+async function syncPull(){var url=localStorage.getItem(GK);if(!url){openSetup();return;}if(!confirm('從 Google Sheet 讀取並覆蓋本機資料？'))return;dotS('ing');g('syncSt').textContent='讀取中…';try{var u=new URL(url);u.searchParams.set('action','pull');u.searchParams.set('token',localStorage.getItem(TK)||'');var r=await fetch(u.toString()),j=await r.json();if(j.ok&&Array.isArray(j.data)){docs=j.data;save();if(j.tplData){tpl=j.tplData;saveTpl();}dotS('ok');g('syncSt').textContent='已讀取雲端資料 · '+new Date().toLocaleTimeString();toast('已讀取 '+docs.length+' 筆公文');render();}else{dotS('err');toast('讀取失敗：'+(j.error||'格式不符'));}}catch(e){dotS('err');toast('連線失敗');}}
+
+function checkAlerts(){var dis=[];try{dis=JSON.parse(localStorage.getItem(AK)||'[]');}catch(e){}var urg=docs.filter(function(d){if(d.status==='done')return false;if(dis.indexOf(String(d.id))>=0)return false;var l=lightOf(d);return l.id==='red'||l.id==='orange';});var banner=g('alertBanner');if(!urg.length){banner.classList.remove('show');return;}var late=urg.filter(function(d){return lightOf(d).id==='red';}).length,tod=urg.filter(function(d){return lightOf(d).id==='orange';}).length;g('alertTitle').textContent='⚠ 到期提醒：逾期 '+late+' 件、今日到期 '+tod+' 件';g('alertList').innerHTML=urg.slice(0,6).map(function(d){var l=lightOf(d);return'<div class="ab-item" onclick="openDoc('+d.id+')">'+'<span class="ab-badge '+l.id+'">'+l.lb+'</span><span>'+esc(d.title)+'</span></div>';}).join('');banner.classList.add('show');}
+function dismissAlert(){var urg=docs.filter(function(d){if(d.status==='done')return false;var l=lightOf(d);return l.id==='red'||l.id==='orange';});var ids=[];try{ids=JSON.parse(localStorage.getItem(AK)||'[]');}catch(e){}urg.forEach(function(d){if(ids.indexOf(String(d.id))<0)ids.push(String(d.id));});localStorage.setItem(AK,JSON.stringify(ids));g('alertBanner').classList.remove('show');}
+
+function checkBackup(){var dis=localStorage.getItem(BDK)||'';if(dis===today())return;var last=localStorage.getItem(BK),hasGas=!!localStorage.getItem(GK),banner=g('backupBanner'),msg=g('backupMsg');if(!last&&docs.length>0){msg.innerHTML='⚠ <b>資料從未備份</b>——localStorage 清除後將全部遺失。建議設定 GAS 同步或定期匯出 CSV。';banner.classList.add('show');return;}if(last){var days=Math.floor((new Date(today())-new Date(last))/86400000);if(days>=3){msg.innerHTML='📦 <b>距上次備份已 '+days+' 天</b>（'+last+'）——建議'+(hasGas?'同步雲端或匯出 CSV':'匯出 CSV')+'，避免資料遺失。';banner.classList.add('show');}}}
+function dismissBackup(){localStorage.setItem(BDK,today());g('backupBanner').classList.remove('show');}
+function markBK(){localStorage.setItem(BK,today());g('backupBanner').classList.remove('show');localStorage.setItem(BDK,today());}
+
+function toast(msg){var t=g('toast');t.textContent=msg;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(function(){t.classList.remove('show');},2300);}
+
+load();
+buildSel();
+if(localStorage.getItem(GK))dotS('ok');
 render();
 checkAlerts();
 checkBackup();
