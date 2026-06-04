@@ -322,6 +322,25 @@ tr:last-child td{border-bottom:none}
 .project-add-row input{flex:1;border:1px solid var(--border2);border-radius:7px;background:var(--card);padding:7px 10px;color:var(--text);font-family:inherit;font-size:12px;outline:none}
 .project-add-row input:focus{border-color:var(--primary)}
 @media(max-width:960px){.project-layout{grid-template-columns:1fr}.project-side{position:static;max-height:none}.gtd-grid{grid-template-columns:1fr}.project-summary{grid-template-columns:repeat(2,1fr)}.project-kv{grid-template-columns:1fr 1fr}.follow-row{grid-template-columns:1fr;gap:3px}}
+
+/* 快速新增模式 */
+.quick-mode .adv-field{display:none!important}
+.mode-toggle-bar{display:flex;align-items:center;gap:8px;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.mode-pill{border:none;border-radius:999px;padding:5px 14px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;transition:.12s}
+.mode-pill.active{background:var(--primary);color:#fff}
+.mode-pill.inactive{background:var(--bg2);color:var(--sub);border:1px solid var(--border2)}
+.mode-pill.inactive:hover{border-color:var(--primary);color:var(--primary)}
+.incomplete-badge{font-size:9px;border-radius:3px;padding:1px 5px;background:#fff3cd;color:#856404;border:1px solid #ffc107;font-weight:700;flex-shrink:0}
+/* 健診樣式 */
+.diag-item{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px dashed var(--border);font-size:12px}
+.diag-item:last-child{border:none}
+.diag-icon{font-size:14px;flex-shrink:0;margin-top:1px}
+.diag-body{flex:1}
+.diag-title{font-weight:700;margin-bottom:2px}
+.diag-detail{color:var(--sub);font-size:11px;line-height:1.5}
+.diag-ok{color:var(--green)}.diag-warn{color:var(--orange)}.diag-err{color:var(--red)}
+.storage-bar{height:8px;background:var(--bg2);border-radius:999px;overflow:hidden;margin:8px 0 4px}
+.storage-fill{height:100%;border-radius:999px;background:var(--primary);transition:.3s}
 </style>
 </head>
 <body>
@@ -411,23 +430,28 @@ tr:last-child td{border-bottom:none}
 </div>
 <div class="mbg" id="docBg" onclick="if(event.target===this)closeM('docBg')">
   <div class="modal">
-    <div class="mhd"><div><h2 id="docTitle">新增公文</h2><p>填「例稿分類」與「下一步」最能累積承辦知識。</p></div><button class="mbtn sec" onclick="closeM('docBg')">關閉</button></div>
+    <div class="mhd"><div><h2 id="docTitle">新增公文</h2></div><button class="mbtn sec" onclick="closeM('docBg')">關閉</button></div>
+    <div class="mode-toggle-bar">
+      <button class="mode-pill active" id="modeQuick" onclick="setDocMode('quick')">⚡ 快速</button>
+      <button class="mode-pill inactive" id="modeFull" onclick="setDocMode('full')">☰ 完整</button>
+      <span id="modeHint" style="font-size:11px;color:var(--muted)">快速模式：只填必要欄位，其餘之後補</span>
+    </div>
     <div class="mform">
       <div class="field full"><label>主旨 / 案名</label><input id="fTitle"/></div>
-      <div class="field"><label>文號</label><input id="fDocNo"/></div>
-      <div class="field"><label>來文單位</label><input id="fSource" list="srcList"/><datalist id="srcList"></datalist></div>
-      <div class="field"><label>收文日期</label><input type="date" id="fReceived"/></div>
+      <div class="field adv-field"><label>文號</label><input id="fDocNo"/></div>
+      <div class="field adv-field"><label>來文單位</label><input id="fSource" list="srcList"/><datalist id="srcList"></datalist></div>
+      <div class="field adv-field"><label>收文日期</label><input type="date" id="fReceived"/></div>
       <div class="field"><label>辦理期限</label><input type="date" id="fDue"/></div>
       <div class="field"><label>業務類別</label><select id="fCat" onchange="updateTplOpts()"></select></div>
-      <div class="field"><label>例稿分類</label><select id="fTemplate"></select></div>
-      <div class="field"><label>流程狀態</label><select id="fStatus"></select></div>
-      <div class="field"><label>例稿狀態</label><select id="fTplState"></select></div>
-      <div class="field"><label>速別</label><select id="fSpeed"><option value="普通件">普通件</option><option value="速件">速件</option><option value="最速件">最速件</option></select></div>
-      <div class="field"><label>承辦人</label><input id="fOwner"/></div>
-      <div class="field"><label>等外部回復</label><select id="fWaiting"><option value="no">否</option><option value="yes">是，等他人回復</option></select></div>
-      <div class="field full"><label>下一步行動</label><input id="fNext"/></div>
-      <div class="field full"><label>連結</label><input id="fLink"/></div>
-      <div class="field full"><label>備註</label><textarea id="fNote"></textarea></div>
+      <div class="field adv-field"><label>例稿分類</label><select id="fTemplate"></select></div>
+      <div class="field adv-field"><label>流程狀態</label><select id="fStatus"></select></div>
+      <div class="field adv-field"><label>例稿狀態</label><select id="fTplState"></select></div>
+      <div class="field adv-field"><label>速別</label><select id="fSpeed"><option value="普通件">普通件</option><option value="速件">速件</option><option value="最速件">最速件</option></select></div>
+      <div class="field adv-field"><label>承辦人</label><input id="fOwner"/></div>
+      <div class="field adv-field"><label>等外部回復</label><select id="fWaiting"><option value="no">否</option><option value="yes">是，等他人回復</option></select></div>
+      <div class="field full adv-field"><label>下一步行動</label><input id="fNext"/></div>
+      <div class="field full adv-field"><label>連結</label><input id="fLink"/></div>
+      <div class="field full adv-field"><label>備註</label><textarea id="fNote"></textarea></div>
     </div>
     <!-- 議題模式 toggle -->
     <button class="gtd-modal-toggle" id="gtdToggle" onclick="toggleGtdMode()">🗂 議題模式（展開 GTD 欄位）</button>
@@ -476,7 +500,7 @@ tr:last-child td{border-bottom:none}
         <button class="small-btn" onclick="addGtdRow('ref')">＋ 新增參考資料</button>
       </div>
     </div>
-    <div class="wf-sec">
+    <div class="wf-sec adv-field">
       <div class="wf-sec-t">Workflow 子任務</div>
       <div id="wfList"></div>
       <div class="add-row" style="margin-top:8px">
@@ -510,6 +534,13 @@ tr:last-child td{border-bottom:none}
       <button class="mbtn sec" onclick="testGas()">測試連線</button>
       <button class="mbtn pri" onclick="saveSetup()">儲存設定</button>
     </div>
+    <div class="setup-sec">資料健診</div>
+    <div class="storage-bar"><div class="storage-fill" id="storageFill" style="width:0%"></div></div>
+    <div id="storageNote" style="font-size:11px;color:var(--muted);margin-bottom:10px"></div>
+    <div id="diagList" style="margin-bottom:6px"></div>
+    <div style="margin-top:8px">
+      <button class="small-btn" onclick="runDiag()">&#128300; 執行健診</button>
+    </div>
   </div>
 </div>
 <div class="toast" id="toast"></div>
@@ -528,6 +559,7 @@ var AK='govdoc-alert-dismissed',BK='govdoc-last-backup',BDK='govdoc-backup-dismi
 var docs,tpl,cats,srcs,tplMap,editId=0,curView='kanban',wfSteps=[];
 var vaultOpen,vaultOpenTpls,vaultTpl=null,vaultTab='note',dragId=null;
 var projectTags=[],activeProjectId=null,gtdState={},gtdMode=false;
+var docMode='quick'; // 'quick' | 'full'
 
 function g(id){return document.getElementById(id);}
 function esc(s){if(s==null)return '';return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
@@ -700,8 +732,7 @@ function cardHTML(d){
     :'<button class="qb" onclick="qWt('+d.id+',0)">&#9654; 繼續</button>';
   var quick='<div class="cquick" onclick="event.stopPropagation()">'+nBtn+dBtn+wBtn+'</div>';
   return '<article class="dc'+(d.status==='done'?' done':'')+'" style="border-left-color:'+color+'" draggable="true" ondragstart="cDS(event,'+d.id+')" ondragend="cDE(event)" onclick="openDoc('+d.id+')">'
-    +'<div class="ctop"><span class="dno">'+esc(d.docNo||'#'+d.id)+'</span><span class="lt '+l.id+'">'+l.lb+'</span></div>'
-    +'<div class="dtitle">'+esc(d.title)+'</div>'
+    +'<div class="ctop"><span class="dno">'+esc(d.docNo||'#'+d.id)+'</span>'+(isIncomplete(d)&&d.status!=='done'?'<span class="incomplete-badge">待補</span>':'')+'<span class="lt '+l.id+'">'+l.lb+'</span></div>'   +'<div class="dtitle">'+esc(d.title)+'</div>'
     +'<div class="dtags"><span class="ctag" style="background:'+color+'18;color:'+color+'">'+esc(d.cat||'其他')+'</span>'+(d.source?'<span class="stag">'+esc(d.source)+'</span>':'')+(d.projectId?'<span class="project-tag">'+esc(d.projectId)+'</span>':'')+spEl+'</div>'
     +(d.next?'<div class="dnext">&#9654; '+esc(d.next)+'</div>':'')
     +wfEl
@@ -1185,6 +1216,16 @@ function autoDocNo(){
   return yr+'-'+('00'+next).slice(-3);
 }
 
+function setDocMode(mode){
+  docMode=mode;
+  var modal=document.querySelector('#docBg .modal');
+  if(modal)modal.classList.toggle('quick-mode', mode==='quick');
+  var qBtn=g('modeQuick'),fBtn=g('modeFull'),hint=g('modeHint');
+  if(qBtn){qBtn.className='mode-pill '+(mode==='quick'?'active':'inactive');}
+  if(fBtn){fBtn.className='mode-pill '+(mode==='full'?'active':'inactive');}
+  if(hint)hint.textContent=mode==='quick'?'快速模式：只填必要欄位，其餘之後補':'完整模式：填寫所有欄位';
+}
+
 function openDoc(id){
   editId=id||0;
   var d=id?docs.find(function(x){return x.id===id;}):null;
@@ -1209,6 +1250,13 @@ function openDoc(id){
   if(toggle){toggle.textContent=gtdMode?'🗂 議題模式（點此收合）':'🗂 議題模式（展開 GTD 欄位）';}
   renderProjectPicker(d.projectId||'');
   renderGtdRows('next');
+  // 模式初始化：有 projectId 自動展開議題模式（已有的案件）
+  // 新案件或無 projectId 的案件：保持上次模式
+  setDocMode(docMode);
+  // 編輯已有議題案件：自動展開完整模式
+  if(id && d.projectId){
+    setDocMode('full');
+  }
   g('docBg').classList.add('show');
 }
 
@@ -1226,6 +1274,8 @@ function toggleGtdMode(){
   var sec=g('gtdSec'),toggle=g('gtdToggle');
   if(sec)sec.classList.toggle('show',gtdMode);
   if(toggle)toggle.textContent=gtdMode?'🗂 議題模式（點此收合）':'🗂 議題模式（展開 GTD 欄位）';
+  // 同步 full/quick 模式：開議題模式時自動切到完整模式
+  if(gtdMode&&docMode!=='full')setDocMode('full');
 }
 
 function switchGtdTab(tab){
@@ -1349,7 +1399,95 @@ function renderWF(){
 function addWfStep(){var inp=g('wfInput'),text=inp?inp.value.trim():'';if(!text)return;wfSteps.push({text:text,done:false});if(inp)inp.value='';renderWF();}
 function loadSop(){var t=g('fTemplate').value,sop=tpl.sop[t]||[];if(!sop.length){toast('此例稿尚未設定 SOP 步驟');return;}if(wfSteps.length&&!confirm('套用 SOP 將覆蓋目前步驟，確定嗎？'))return;wfSteps=sop.map(function(s){return{text:s,done:false};});renderWF();toast('已套用例稿 SOP');}
 
-function openSetup(){g('gasUrl').value=localStorage.getItem(GK)||'';g('gasToken').value=localStorage.getItem(TK)||'';g('gasTest').textContent='';renderCap();g('setupBg').classList.add('show');}
+function openSetup(){g('gasUrl').value=localStorage.getItem(GK)||'';g('gasToken').value=localStorage.getItem(TK)||'';g('gasTest').textContent='';renderCap();runDiag();g('setupBg').classList.add('show');}
+
+function runDiag(){
+  // localStorage 用量
+  var total=0;
+  var keys=[K,DK,CK,SK,PK,PTAG,AK,BK,BDK];
+  var details=[];
+  keys.forEach(function(k){
+    var v=localStorage.getItem(k)||'';
+    var bytes=new Blob([v]).size;
+    total+=bytes;
+    if(bytes>50000)details.push(k+'='+Math.round(bytes/1024)+'KB');
+  });
+  var maxBytes=5*1024*1024; // 5MB 估計上限
+  var pct=Math.min(100,Math.round(total/maxBytes*100));
+  var fill=g('storageFill'),note=g('storageNote');
+  if(fill)fill.style.width=pct+'%';
+  if(fill)fill.style.background=pct>80?'var(--red)':pct>50?'var(--orange)':'var(--primary)';
+  if(note)note.textContent='已用約 '+Math.round(total/1024)+'KB / 5MB（'+pct+'%）'+(details.length?' ｜ 大檔：'+details.join(', '):'');
+
+  // 健診項目
+  var items=[];
+
+  // 1. 公文資料完整性
+  var incomplete=docs.filter(function(d){return isIncomplete(d)&&d.status!=='done';});
+  if(incomplete.length===0){
+    items.push({ok:true,title:'公文欄位完整',detail:'所有進行中案件均已填寫期限、業務類別、來文單位、例稿分類'});
+  }else{
+    items.push({ok:false,warn:true,title:'有 '+incomplete.length+' 件公文資料不完整',
+      detail:'缺少期限/業務類別/來文單位/例稿分類：'+incomplete.slice(0,3).map(function(d){return d.title.slice(0,15);}).join('、')+(incomplete.length>3?'…等':'')});
+  }
+
+  // 2. GTD 結構
+  var gtdBad=docs.filter(function(d){return d.gtd&&typeof d.gtd!=='object';});
+  if(gtdBad.length===0){
+    items.push({ok:true,title:'GTD 結構正常',detail:'所有公文的 gtd 欄位格式正確'});
+  }else{
+    items.push({ok:false,warn:false,title:'GTD 結構異常（'+gtdBad.length+' 件）',detail:'請重新整理這些公文以修復'});
+  }
+
+  // 3. 例稿分類一致性（公文使用的例稿名稱是否都在 tplMap 裡）
+  var usedTpls={};docs.forEach(function(d){if(d.template)usedTpls[d.template]=true;});
+  var orphans=Object.keys(usedTpls).filter(function(t){return !tplMap[t];});
+  if(orphans.length===0){
+    items.push({ok:true,title:'例稿分類一致',detail:'所有公文使用的例稿名稱均已建立於例稿庫'});
+  }else{
+    items.push({ok:false,warn:true,title:'有 '+orphans.length+' 個例稿名稱未建立於例稿庫',
+      detail:orphans.slice(0,4).join('、')+(orphans.length>4?'…等':'')+'。可到例稿庫手動新增。'});
+  }
+
+  // 4. 備份狀態
+  var lastBk=localStorage.getItem(BK);
+  if(!lastBk){
+    items.push({ok:false,warn:true,title:'從未備份',detail:'建議設定 GAS 同步或定期匯出 CSV'});
+  }else{
+    var days=Math.floor((new Date(today())-new Date(lastBk))/86400000);
+    if(days<=3){
+      items.push({ok:true,title:'備份狀態良好',detail:'最後備份：'+lastBk+'（'+days+' 天前）'});
+    }else{
+      items.push({ok:false,warn:true,title:'距上次備份已 '+days+' 天',detail:'最後備份：'+lastBk+'。建議盡快同步或匯出。'});
+    }
+  }
+
+  // 5. 議題標籤孤兒（有 projectId 但不在 projectTags 裡）
+  var orphanPids=[];
+  docs.forEach(function(d){if(d.projectId&&projectTags.indexOf(d.projectId)<0&&orphanPids.indexOf(d.projectId)<0)orphanPids.push(d.projectId);});
+  if(orphanPids.length===0){
+    items.push({ok:true,title:'議題標籤一致',detail:'所有公文的議題標籤均已登錄'});
+  }else{
+    items.push({ok:false,warn:true,title:'有 '+orphanPids.length+' 個議題標籤未登錄',
+      detail:orphanPids.join('、')+'。儲存一次相關公文即可自動修復。'});
+  }
+
+  // 渲染
+  var el=g('diagList');
+  if(!el)return;
+  el.innerHTML=items.map(function(it){
+    var cls=it.ok?'diag-ok':it.warn?'diag-warn':'diag-err';
+    var icon=it.ok?'✅':it.warn?'⚠️':'❌';
+    return '<div class="diag-item">'
+      +'<span class="diag-icon">'+icon+'</span>'
+      +'<div class="diag-body">'
+        +'<div class="diag-title '+cls+'">'+it.title+'</div>'
+        +'<div class="diag-detail">'+it.detail+'</div>'
+      +'</div>'
+      +'</div>';
+  }).join('');
+}
+
 function renderCap(){
   g('capCats').innerHTML=cats.map(function(c,i){return '<div class="cap-tag">'+esc(c)+'<button onclick="rmCap(\'cat\','+i+')">&#215;</button></div>';}).join('');
   g('capSrcs').innerHTML=srcs.map(function(s,i){return '<div class="cap-tag">'+esc(s)+'<button onclick="rmCap(\'src\','+i+')">&#215;</button></div>';}).join('');
