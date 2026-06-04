@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>公文承辦 OS v3.2｜GTD 議題管理版</title>
+<title>公文承辦 OS v3.2.1｜GTD 議題管理版</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@400;700&display=swap" rel="stylesheet">
 <style>
@@ -771,7 +771,7 @@ function gtdCard(title,html,wide){return '<section class="gtd-card '+(wide?'wide
 function renderTemplates(){
   var root=g('templatesView');
   if(!root.querySelector('.vault')){
-    root.innerHTML='<div class="vault"><div class="vsb"><div class="vsb-hd">例稿知識庫</div><div id="vaultTree"></div></div><div class="vmain" id="vaultMain"><div class="vempty"><div><div style="font-size:32px;margin-bottom:8px">&#128194;</div><div>點選左側例稿開始編輯</div><div style="font-size:11px;margin-top:4px">支援 Markdown・[[雙向連結]]・SOP・迭代紀錄</div></div></div></div></div>';
+    root.innerHTML='<div class="vault"><div class="vsb"><div class="vsb-hd" style="display:flex;align-items:center;justify-content:space-between;gap:8px"><span>例稿知識庫</span><button class="small-btn pri" style="font-size:10px;padding:3px 8px" onclick="startAddTplGlobal()">＋ 新增</button></div><div id="vaultTree"></div></div><div class="vmain" id="vaultMain"><div class="vempty"><div><div style="font-size:32px;margin-bottom:8px">&#128194;</div><div>點選左側例稿開始編輯</div><div style="font-size:11px;margin-top:4px">支援 Markdown・[[雙向連結]]・SOP・迭代紀錄</div></div></div></div></div>';
   }
   renderVTree();
 }
@@ -795,6 +795,32 @@ function variantKeysOf(base){
   // 至少回傳預設
   if(!keys.length) keys.push(base);
   return keys;
+}
+
+
+function vkTopState(key){
+  var base=tplBase(key);
+  var cl=(tpl.changelog&&tpl.changelog[key])||[];
+  var note=(tpl.notes&&tpl.notes[key])||'';
+  var sop=(tpl.sop&&tpl.sop[key])||[];
+  var used=docs.filter(function(d){return d.template===base;});
+  var docStates=used.map(function(d){return d.templateState;});
+  if(docStates.indexOf('需新建')>=0)return '需新建';
+  if(docStates.indexOf('需微調')>=0)return '需微調';
+  if(cl.length>0)return '已迭代';
+  if(note.trim()||sop.length>0||docStates.indexOf('可套用')>=0)return '可套用';
+  return '未分類';
+}
+
+function startAddTplGlobal(){
+  var cat=prompt('請輸入要歸類的業務類別：\n'+cats.join('、'), cats[0]||'其他');
+  if(!cat||!cat.trim())return;
+  cat=cat.trim();
+  if(cats.indexOf(cat)<0){
+    if(!confirm('目前沒有「'+cat+'」這個業務類別，要一併新增嗎？'))return;
+    cats.push(cat);saveCats();
+  }
+  startAddTpl(cat);
 }
 
 function renderVTree(){
@@ -884,7 +910,7 @@ function openVF(key){
   var base=tplBase(key);
   vaultOpenTpls.add(base);
   // 確保業務類別展開
-  cats.forEach(function(cat){if((DTPLS[cat]||[]).indexOf(base)>=0)vaultOpen.add(cat);});
+  cats.forEach(function(cat){if(((tplMap&&tplMap[base])||[]).indexOf(cat)>=0)vaultOpen.add(cat);});
   renderVTree();
   renderVMain(key);
 }
