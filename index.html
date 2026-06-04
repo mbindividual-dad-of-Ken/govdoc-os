@@ -825,7 +825,7 @@ function buildSel(){
   fillS('fCat',cats,null);fillS('fStatus',STS.map(function(s){return{v:s.id,t:s.lb};}),null);fillS('fTplState',TSS,null);
   updateTplOpts();updateSrcDL();
 }
-function fillS(id,arr,first){var el=g(id);if(!el)return;var cur=el.value;el.innerHTML=(first?'<option value="all">'+first+'</option>':'')+arr.map(function(x){return typeof x==='string'?'<option value="'+esc(x)+'">'+esc(x)+'</option>':'<option value="'+esc(x.v)+'">'+esc(x.t)+'</option>';}).join('');el.value=cur;}
+function fillS(id,arr,first){var el=g(id);if(!el)return;var cur=el.value;el.innerHTML=(first?'<option value="all">'+first+'</option>':'')+arr.map(function(x){return typeof x==='string'?'<option value="'+esc(x)+'">'+esc(x)+'</option>':'<option value="'+esc(x.v)+'">'+esc(x.t)+'</option>';}).join('');if(cur&&el.querySelector('option[value="'+cur+'"]'))el.value=cur;else if(first)el.value='all';}
 function updateTplOpts(){var cat=g('fCat')?g('fCat').value:cats[0],tpls=DTPLS[cat]||allTpls();fillS('fTemplate',tpls,null);}
 function updateSrcDL(){var dl=g('srcList');if(!dl)return;dl.innerHTML=srcs.map(function(s){return'<option value="'+esc(s)+'">';}).join('');}
 
