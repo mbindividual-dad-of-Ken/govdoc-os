@@ -748,15 +748,18 @@ function cardHTML(d){
   const steps=d.steps||[];
   const doneSteps=steps.filter(s=>s.done).length;
   const speedEl=d.speed&&d.speed!=='普通件'?`<span class="speed-tag ${esc(d.speed)}">${esc(d.speed)}</span>`:'';
-  const wfEl=steps.length?`<div class="wf-mini">${steps.map(s=>`<div class="wf-dot${s.done?' done-step':''}"></div>`).join('')}<span class="wf-progress">${doneSteps}/${steps.length}</span></div>`:'';
+    const wfEl=steps.length?('<div class="wf-mini">'+steps.map(s=>'<div class="wf-dot'+(s.done?' done-step':'')+'"></div>').join('')+'<span class="wf-progress">'+doneSteps+'/'+steps.length+'</span></div>'):'';
   // next status for quick advance
   const si=STATUSES.findIndex(s=>s.id===d.status);
   const nextS=si>=0&&si<STATUSES.length-1?STATUSES[si+1]:null;
-  const quickBtns=`<div class="card-quick" onclick="event.stopPropagation()">
-    ${nextS?`<button class="qbtn" onclick="quickStatus(${d.id},'${nextS.id}')">→ ${nextS.label}</button>`:''}
-    ${d.status!=='done'?`<button class="qbtn green-btn" onclick="quickStatus(${d.id},'done')">✓ 結案</button>`:'<button class="qbtn" onclick="quickStatus('+d.id+','research')">↩ 重開</button>'}
-    ${d.waiting!=='yes'?`<button class="qbtn blue-btn" onclick="quickWait(${d.id},true)">⏸ 等回復</button>`:`<button class="qbtn" onclick="quickWait(${d.id},false)">▶ 繼續</button>`}
-  </div>`;
+  const doneBtn = d.status!=='done'
+    ? `<button class="qbtn green-btn" onclick="quickStatus(${d.id},'done')">✓ 結案</button>`
+    : `<button class="qbtn" onclick="quickStatus(${d.id},'research')">↩ 重開</button>`;
+  const waitBtn = d.waiting!=='yes'
+    ? `<button class="qbtn blue-btn" onclick="quickWait(${d.id},true)">⏸ 等回復</button>`
+    : `<button class="qbtn" onclick="quickWait(${d.id},false)">▶ 繼續</button>`;
+  const nextBtn = nextS ? `<button class="qbtn" onclick="quickStatus(${d.id},'${nextS.id}')">→ ${nextS.label}</button>` : '';
+  const quickBtns = `<div class="card-quick" onclick="event.stopPropagation()">${nextBtn}${doneBtn}${waitBtn}</div>`;
   return `<article class="doc-card ${d.status==='done'?'done':''}" style="border-left-color:${color}"
     draggable="true"
     data-id="${d.id}"
