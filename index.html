@@ -566,7 +566,7 @@ function esc(s){if(s==null)return '';return String(s).replace(/&/g,'&amp;').repl
 function today(){return new Date().toISOString().slice(0,10);}
 function addDays(n){var d=new Date();d.setDate(d.getDate()+n);return d.toISOString().slice(0,10);}
 function slb(id){var s=STS.find(function(x){return x.id===id;});return s?s.lb:id;}
-function allTpls(){return cats.reduce(function(a,c){return a.concat(DTPLS[c]||[]);},[])}
+function allTpls(){return Object.keys(tplMap||{});}
 function catColor(c){var i=cats.indexOf(c);return COLORS[i<0?COLORS.length-1:i%COLORS.length];}
 function tssClass(s){var i=TSS.indexOf(s);return i<0?'s0':TSSCLASS[i];}
 
@@ -966,7 +966,7 @@ function renderVTree(){
     var files=tpls.map(function(base){
       var vkeys=variantKeysOf(base);
       var bIsOpen=vaultOpenTpls.has(base);
-      var topTs=vkTopState(base+'_top'),topTsc=tssClass(topTs2(base));
+      var topTsc=tssClass(topTs2(base));
       var bs=base.replace(/'/g,"\'");
 
       var variantRows=vkeys.map(function(vk){
@@ -1541,9 +1541,13 @@ function toast(msg){var t=g('toast');t.textContent=msg;t.classList.add('show');c
 load();
 buildSel();
 if(localStorage.getItem(GK))dotS('ok');
-render();
+setView('kanban');
 checkAlerts();
-checkBackup();
+checkBackup();function isIncomplete(d){
+  return !d.due || !d.cat || !d.template || !d.source;
+}
+
+
 </script>
 </body>
 </html>
