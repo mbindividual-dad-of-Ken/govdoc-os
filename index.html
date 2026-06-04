@@ -304,6 +304,24 @@ tr:last-child td{border-bottom:none}
 .gtd-del{border:none;background:none;color:var(--muted);font-size:16px;cursor:pointer}
 .gtd-del:hover{color:var(--red)}
 @media(max-width:960px){.project-layout{grid-template-columns:1fr}.project-side{position:static;max-height:none}.gtd-grid{grid-template-columns:1fr}.project-summary{grid-template-columns:repeat(2,1fr)}.gtd-minirow,.gtd-minirow.change,.gtd-minirow.ref{grid-template-columns:1fr 28px}}
+.quick-mode .adv-field{display:none!important}
+.mode-toggle{border:1px solid var(--primary);background:var(--pbg);color:var(--primary);border-radius:7px;padding:6px 10px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap}
+.mode-toggle:hover{background:var(--primary);color:#fff}
+.quick-hint{font-size:11px;color:var(--muted);margin-top:6px}
+.project-kv{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}
+.project-kv .kv{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:9px 10px;min-height:54px}
+.project-kv .kv b{display:block;font-size:11px;color:var(--muted);margin-bottom:3px;letter-spacing:.04em}
+.project-kv .kv span{font-size:12px;color:var(--text);line-height:1.4}
+.project-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}
+.follow-table{background:var(--card);border:1px solid var(--border);border-radius:12px;box-shadow:var(--sh);margin:0 0 18px;overflow:hidden}
+.follow-head{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:11px 14px;background:var(--bg2);border-bottom:1px solid var(--border)}
+.follow-head b{font-size:12px;color:var(--sub);letter-spacing:.08em;text-transform:uppercase}
+.follow-row{display:grid;grid-template-columns:90px 1fr 120px 1.2fr 80px;gap:8px;align-items:center;padding:9px 14px;border-bottom:1px solid var(--border);font-size:12px;cursor:pointer}
+.follow-row:last-child{border-bottom:none}
+.follow-row:hover{background:#faf9f5}
+.follow-row .muted{color:var(--muted);font-size:11px}
+@media(max-width:960px){.project-kv{grid-template-columns:1fr 1fr}.follow-row{grid-template-columns:1fr;gap:3px}.follow-row>div:before{content:attr(data-label);display:block;color:var(--muted);font-size:10px;font-weight:700}}
+
 
 .toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:#1e1c18;color:#fff;padding:9px 18px;border-radius:8px;font-size:13px;opacity:0;pointer-events:none;transition:.2s;z-index:500;white-space:nowrap;box-shadow:0 8px 24px rgba(0,0,0,.2)}
 .toast.show{opacity:1}
@@ -318,7 +336,7 @@ tr:last-child td{border-bottom:none}
 <header class="hd">
   <div class="brand">
     <div class="bmark">文</div>
-    <div><div class="bname">公文承辦 OS</div><div class="bsub">職業安全衛生署・個人承辦版 v3.2.2</div></div>
+    <div><div class="bname">公文承辦 OS</div><div class="bsub">職業安全衛生署・個人承辦版 v3.2.4.2.2</div></div>
   </div>
   <div class="hd-r">
     <button class="sbtn" onclick="syncPull()"><div class="sdot" id="syncDot"></div>&#9729; 讀取</button>
@@ -396,11 +414,11 @@ tr:last-child td{border-bottom:none}
 <main id="todoView" style="display:none"><div id="todoContent"></div></main>
 <main id="projectsView" class="project-view"><div id="projectsContent"></div></main>
 <main id="templatesView" class="templates-view"></main>
-<div class="footer">公文承辦 OS v3.2.2 · localStorage + GAS 雙向同步 · GTD 議題標籤管理 · 例稿知識庫 · Workflow</div>
+<div class="footer">公文承辦 OS v3.2.4 · 快速新增 · GTD 議題首頁 · 追蹤日總表 · 例稿知識庫</div>
 </div>
 <div class="mbg" id="docBg" onclick="if(event.target===this)closeM('docBg')">
-  <div class="modal">
-    <div class="mhd"><div><h2 id="docTitle">新增公文</h2><p>填「例稿分類」與「下一步」最能累積承辦知識。</p></div><button class="mbtn sec" onclick="closeM('docBg')">關閉</button></div>
+  <div class="modal" id="docModal">
+    <div class="mhd"><div><h2 id="docTitle">新增公文</h2><p>填「例稿分類」與「下一步」最能累積承辦知識。</p><div class="quick-hint" id="quickHint">目前為快速新增：先收案，再補完整資料。</div></div><div style="display:flex;gap:7px;align-items:flex-start;flex-wrap:wrap"><button class="mode-toggle" id="quickToggleBtn" onclick="toggleQuickMode()">切換完整欄位</button><button class="mbtn sec" onclick="closeM('docBg')">關閉</button></div></div>
     <div class="mform">
       <div class="field full"><label>主旨 / 案名</label><input id="fTitle"/></div>
       <div class="field"><label>案件模式</label><select id="fCaseMode" onchange="toggleGtdSec()"><option value="single">單件公文</option><option value="project">議題型案件 / GTD</option><option value="template">例稿建置</option><option value="meeting">會議專案</option></select></div>
@@ -422,22 +440,22 @@ tr:last-child td{border-bottom:none}
           </div>
         </div>
       </div>
-      <div class="field"><label>文號</label><input id="fDocNo"/></div>
+      <div class="field adv-field"><label>文號</label><input id="fDocNo"/></div>
       <div class="field"><label>來文單位</label><input id="fSource" list="srcList"/><datalist id="srcList"></datalist></div>
-      <div class="field"><label>收文日期</label><input type="date" id="fReceived"/></div>
+      <div class="field adv-field"><label>收文日期</label><input type="date" id="fReceived"/></div>
       <div class="field"><label>辦理期限</label><input type="date" id="fDue"/></div>
       <div class="field"><label>業務類別</label><select id="fCat" onchange="updateTplOpts()"></select></div>
-      <div class="field"><label>例稿分類</label><select id="fTemplate"></select></div>
-      <div class="field"><label>流程狀態</label><select id="fStatus"></select></div>
-      <div class="field"><label>例稿狀態</label><select id="fTplState"></select></div>
-      <div class="field"><label>速別</label><select id="fSpeed"><option value="普通件">普通件</option><option value="速件">速件</option><option value="最速件">最速件</option></select></div>
-      <div class="field"><label>承辦人</label><input id="fOwner"/></div>
-      <div class="field"><label>等外部回復</label><select id="fWaiting"><option value="no">否</option><option value="yes">是，等他人回復</option></select></div>
+      <div class="field adv-field"><label>例稿分類</label><select id="fTemplate"></select></div>
+      <div class="field adv-field"><label>流程狀態</label><select id="fStatus"></select></div>
+      <div class="field adv-field"><label>例稿狀態</label><select id="fTplState"></select></div>
+      <div class="field adv-field"><label>速別</label><select id="fSpeed"><option value="普通件">普通件</option><option value="速件">速件</option><option value="最速件">最速件</option></select></div>
+      <div class="field adv-field"><label>承辦人</label><input id="fOwner"/></div>
+      <div class="field adv-field"><label>等外部回復</label><select id="fWaiting"><option value="no">否</option><option value="yes">是，等他人回復</option></select></div>
       <div class="field full"><label>下一步行動</label><input id="fNext"/></div>
-      <div class="field full"><label>連結</label><input id="fLink"/></div>
-      <div class="field full"><label>備註</label><textarea id="fNote"></textarea></div>
+      <div class="field full adv-field"><label>連結</label><input id="fLink"/></div>
+      <div class="field full adv-field"><label>備註</label><textarea id="fNote"></textarea></div>
     </div>
-    <div class="wf-sec">
+    <div class="wf-sec adv-field">
       <div class="wf-sec-t">Workflow 子任務</div>
       <div id="wfList"></div>
       <div class="add-row" style="margin-top:8px">
@@ -447,7 +465,7 @@ tr:last-child td{border-bottom:none}
       </div>
     </div>
 
-    <div class="gtd-sec" id="gtdSec">
+    <div class="gtd-sec adv-field" id="gtdSec">
       <div class="wf-sec-t">GTD 議題管理</div>
       <div class="gtd-tabs">
         <button class="gtd-tab on" data-gtd="inbox" onclick="setGtdTab('inbox')">Inbox 新進來文</button>
@@ -464,6 +482,7 @@ tr:last-child td{border-bottom:none}
       <div class="gtd-actions">
         <button class="small-btn" onclick="seedCrcGtd()">套用 CRC GTD 範例</button>
         <button class="small-btn" onclick="copyGtdSummary()">複製 GTD 摘要</button>
+        <button class="small-btn pri" onclick="copyHandlingSummary()">複製本次辦理摘要</button>
         <button class="small-btn" onclick="promoteGtdToWF()">Next Actions → Workflow</button>
       </div>
     </div>
@@ -509,6 +528,7 @@ var AK='govdoc-alert-dismissed',BK='govdoc-last-backup',BDK='govdoc-backup-dismi
 
 var docs,tpl,cats,srcs,tplMap,projectTags,editId=0,curView='kanban',wfSteps=[];
 var gtd={inbox:[],next:[],waiting:[],change:[],ref:[]},curGtdTab='inbox',activeProjectId='';
+var quickMode=true;
 var vaultOpen,vaultOpenTpls,vaultTpl=null,vaultTab='note',dragId=null;
 
 function g(id){return document.getElementById(id);}
@@ -725,19 +745,35 @@ function renderList(){
   }).join('');
 }
 
+function followupsHTML(){
+  var rows=[];
+  docs.forEach(function(d){normalizeGtd(d);(d.gtd.waiting||[]).forEach(function(w){if(!w.done)rows.push({doc:d,item:w});});});
+  rows.sort(function(a,b){return (a.item.followDate||'9999-99-99').localeCompare(b.item.followDate||'9999-99-99');});
+  if(!rows.length)return '';
+  return '<section class="follow-table"><div class="follow-head"><b>Waiting For 追蹤日總表</b><span style="font-size:11px;color:var(--muted)">依追蹤日排序，點擊可打開公文</span></div>'
+    +rows.slice(0,12).map(function(r){var l=r.item.followDate?(new Date(r.item.followDate)<new Date(today())?'red':'yellow'):'gray';return '<div class="follow-row" onclick="openDoc('+r.doc.id+')">'
+      +'<div data-label="追蹤日"><span class="lt '+l+'">'+esc(r.item.followDate||'未設')+'</span></div>'
+      +'<div data-label="議題"><strong>'+esc(r.doc.projectId||r.doc.title)+'</strong><div class="muted">'+esc(r.doc.title)+'</div></div>'
+      +'<div data-label="對象">'+esc(r.item.who||'待確認')+'</div>'
+      +'<div data-label="等待事項">'+esc(r.item.text||'')+'</div>'
+      +'<div data-label="狀態"><span class="stag">'+esc(slb(r.doc.status))+'</span></div>'
+    +'</div>';}).join('')+'</section>';
+}
 function renderTodo(){
   var active=docs.filter(function(d){return d.status!=='done'&&d.waiting!=='yes';});
-  var order={red:0,orange:1,yellow:2,green:3};
-  active.sort(function(a,b){return(order[lightOf(a).id]||9)-(order[lightOf(b).id]||9);});
+  function pri(d){var l=lightOf(d).id;var p={red:0,orange:1,yellow:3,green:6,blue:8,gray:9}[l]||7;if(d.speed==='最速件')p-=2;else if(d.speed==='速件')p-=1;return p;}
+  active.sort(function(a,b){var pa=pri(a),pb=pri(b);if(pa!==pb)return pa-pb;return (a.due||'9999-99-99').localeCompare(b.due||'9999-99-99');});
   var groups=[
     {k:'red',lb:'&#9888; 已逾期',c:'var(--red)',items:active.filter(function(d){return lightOf(d).id==='red';})},
     {k:'orange',lb:'&#128293; 今日到期',c:'var(--orange)',items:active.filter(function(d){return lightOf(d).id==='orange';})},
-    {k:'yellow',lb:'&#8987; 3日內到期',c:'var(--yellow)',items:active.filter(function(d){return lightOf(d).id==='yellow';})},
-    {k:'green',lb:'&#128203; 承辦中',c:'var(--primary)',items:active.filter(function(d){return lightOf(d).id==='green';})}
+    {k:'fast',lb:'&#9889; 速件 / 最速件',c:'var(--blue)',items:active.filter(function(d){return (d.speed==='速件'||d.speed==='最速件')&&['red','orange'].indexOf(lightOf(d).id)<0;})},
+    {k:'yellow',lb:'&#8987; 3日內到期',c:'var(--yellow)',items:active.filter(function(d){return lightOf(d).id==='yellow'&&!(d.speed==='速件'||d.speed==='最速件');})},
+    {k:'green',lb:'&#128203; 承辦中',c:'var(--primary)',items:active.filter(function(d){return lightOf(d).id==='green'&&!(d.speed==='速件'||d.speed==='最速件');})}
   ];
   var root=g('todoContent');
-  if(!active.length){root.innerHTML='<div class="todo-empty">&#127881; 目前沒有待辦案件</div>';return;}
-  root.innerHTML='<div class="todo-wrap">'+groups.filter(function(gr){return gr.items.length;}).map(function(gr){
+  var follow=followupsHTML();
+  if(!active.length){root.innerHTML=follow+'<div class="todo-empty">&#127881; 目前沒有待辦案件</div>';return;}
+  root.innerHTML=follow+'<div class="todo-wrap">'+groups.filter(function(gr){return gr.items.length;}).map(function(gr){
     return '<div class="tds">'
       +'<div class="tdsh"><span class="tdst" style="color:'+gr.c+'">'+gr.lb+'（'+gr.items.length+'）</span><div class="tddiv"></div></div>'
       +gr.items.map(function(d){
@@ -747,7 +783,7 @@ function renderTodo(){
         return '<div class="tdc" style="border-left-color:'+color+'">'
           +'<div class="tdc-l" onclick="openDoc('+d.id+')">'
             +'<div class="tdc-title">'+esc(d.title)+'</div>'
-            +'<div class="tdc-meta"><span class="lt '+l.id+'">'+l.lb+'</span><span class="ctag" style="background:'+color+'18;color:'+color+'">'+esc(d.cat||'')+'</span>'+(d.source?'<span class="stag">'+esc(d.source)+'</span>':'')+(d.due?'<span style="font-size:10px;color:var(--muted)">期限 '+esc(d.due)+'</span>':'')+'</div>'
+            +'<div class="tdc-meta"><span class="lt '+l.id+'">'+l.lb+'</span><span class="ctag" style="background:'+color+'18;color:'+color+'">'+esc(d.cat||'')+'</span>'+(d.source?'<span class="stag">'+esc(d.source)+'</span>':'')+(d.projectId?'<span class="project-tag">'+esc(d.projectId)+'</span>':'')+(d.speed&&d.speed!=='普通件'?'<span class="sptag '+spCls(d.speed)+'">'+esc(d.speed)+'</span>':'')+(d.due?'<span style="font-size:10px;color:var(--muted)">期限 '+esc(d.due)+'</span>':'')+'</div>'
             +(d.next?'<div class="tdc-next">&#9654; '+esc(d.next)+'</div>':'')
           +'</div>'
           +'<div class="tdc-r" onclick="event.stopPropagation()">'
@@ -763,8 +799,6 @@ function renderTodo(){
       +'</div>';
   }).join('')+'</div>';
 }
-
-
 function normalizeGtd(d){
   d.caseMode=d.caseMode||((d.projectId&&d.projectId.trim())?'project':'single');
   d.projectId=d.projectId||'';
@@ -789,9 +823,30 @@ function renderProjects(){
 }
 function flatGtd(arr,key){var out=[];arr.forEach(function(d){normalizeGtd(d);(d.gtd[key]||[]).forEach(function(x){out.push({doc:d,item:x});});});return out;}
 function projectDetailHTML(pid,arr){
-  var open=arr.filter(function(d){return d.status!=='done';}).length,wait=flatGtd(arr,'waiting').filter(function(x){return !x.item.done;}).length,next=flatGtd(arr,'next').filter(function(x){return !x.item.done;}).length,changes=flatGtd(arr,'change').length,refs=flatGtd(arr,'ref').length;
-  var hero='<div class="project-hero"><div class="project-title">'+esc(pid)+'</div><div class="hero-sub">長期議題管理：把多次來文、下一步、待跟進、修正紀錄與參考資料放在同一處。</div><div class="project-summary"><div class="project-stat"><b>'+arr.length+'</b><span>關聯公文</span></div><div class="project-stat"><b>'+open+'</b><span>未結案件</span></div><div class="project-stat"><b>'+next+'</b><span>下一步</span></div><div class="project-stat"><b>'+wait+'</b><span>待跟進</span></div><div class="project-stat"><b>'+changes+'</b><span>修正紀錄</span></div></div></div>';
+  if(!arr.length)return '<div class="vempty">尚無此議題資料</div>';
+  arr.forEach(normalizeGtd);
+  var open=arr.filter(function(d){return d.status!=='done';}).length;
+  var wait=flatGtd(arr,'waiting').filter(function(x){return !x.item.done;}).length;
+  var next=flatGtd(arr,'next').filter(function(x){return !x.item.done;}).length;
+  var changes=flatGtd(arr,'change').length;
   var inbox=flatGtd(arr,'inbox'),nxt=flatGtd(arr,'next'),w=flatGtd(arr,'waiting'),ch=flatGtd(arr,'change'),rf=flatGtd(arr,'ref');
+  var dueDocs=arr.filter(function(d){return d.status!=='done'&&d.due;}).sort(function(a,b){return a.due.localeCompare(b.due);});
+  var nextDue=dueDocs[0];
+  var waitSoon=w.filter(function(x){return !x.item.done;}).sort(function(a,b){return (a.item.followDate||'9999-99-99').localeCompare(b.item.followDate||'9999-99-99');})[0];
+  var recentChange=ch.slice().sort(function(a,b){return (b.item.date||'').localeCompare(a.item.date||'');})[0];
+  var recentInbox=inbox.slice().sort(function(a,b){return (b.item.date||b.doc.received||'').localeCompare(a.item.date||a.doc.received||'');})[0];
+  var firstNext=nxt.filter(function(x){return !x.item.done;})[0]||arr.filter(function(d){return d.next&&d.status!=='done';}).map(function(d){return{doc:d,item:{text:d.next}};})[0];
+  var blockPoint=waitSoon?('待 '+(waitSoon.item.who||'對象')+' 回復'):(nextDue&&lightOf(nextDue).id==='red'?'已逾期，需優先處理':(firstNext?'待我方辦理':'暫無明顯卡點'));
+  var hero='<div class="project-hero"><div class="project-title">'+esc(pid)+'</div><div class="hero-sub">議題首頁：集中看版本修正、追蹤日、下一步與關聯公文。</div>'
+    +'<div class="project-summary"><div class="project-stat"><b>'+arr.length+'</b><span>關聯公文</span></div><div class="project-stat"><b>'+open+'</b><span>未結案件</span></div><div class="project-stat"><b>'+next+'</b><span>下一步</span></div><div class="project-stat"><b>'+wait+'</b><span>待跟進</span></div><div class="project-stat"><b>'+changes+'</b><span>修正紀錄</span></div></div>'
+    +'<div class="project-kv">'
+      +'<div class="kv"><b>下一個期限</b><span>'+(nextDue?esc(nextDue.due)+'｜'+esc(nextDue.title):'目前無未結期限')+'</span></div>'
+      +'<div class="kv"><b>目前卡點</b><span>'+esc(blockPoint)+'</span></div>'
+      +'<div class="kv"><b>最近來文</b><span>'+(recentInbox?esc(recentInbox.item.date||recentInbox.doc.received||'')+'｜'+esc(recentInbox.item.text||recentInbox.doc.title):'尚無 Inbox')+'</span></div>'
+      +'<div class="kv"><b>最近修正</b><span>'+(recentChange?esc(recentChange.item.version||'')+'｜'+esc(recentChange.item.section||''):'尚無修正紀錄')+'</span></div>'
+    +'</div><div class="project-actions"><button class="small-btn pri" onclick="copyProjectHandlingSummary(\''+pid.replace(/\\/g,'\\\\').replace(/'/g,"\\'")+'\')">複製議題辦理摘要</button>'
+    +(nextDue?'<button class="small-btn" onclick="openDoc('+nextDue.id+')">打開下一期限公文</button>':'')
+    +(waitSoon?'<button class="small-btn" onclick="openDoc('+waitSoon.doc.id+')">打開最近追蹤事項</button>':'')+'</div></div>';
   return hero+'<div class="gtd-grid">'
     +gtdCard('Inbox 新進來文',inbox.map(function(x){return '<strong>'+esc(x.item.date||x.doc.received||'')+'</strong>｜'+esc(x.doc.title)+'<br>'+esc(x.item.text||'');}).join(''))
     +gtdCard('Next Actions 下一步',nxt.map(function(x){return '<div class="gtd-row '+(x.item.done?'done':'')+'">☐ '+esc(x.item.text||'')+'<br><span style="color:var(--muted)">來源：'+esc(x.doc.title)+'</span></div>';}).join(''),true)
@@ -1117,13 +1172,23 @@ function exMd(key){
 function cloneGtd(src){src=src||{};return {inbox:(src.inbox||[]).map(function(x){return{date:x.date||today(),source:x.source||'',text:x.text||''};}),next:(src.next||[]).map(function(x){return{text:x.text||'',done:!!x.done};}),waiting:(src.waiting||[]).map(function(x){return{who:x.who||'',text:x.text||'',followDate:x.followDate||'',done:!!x.done};}),change:(src.change||[]).map(function(x){return{date:x.date||today(),version:x.version||'',section:x.section||'',text:x.text||'',reason:x.reason||''};}),ref:(src.ref||[]).map(function(x){return{label:x.label||'',url:x.url||'',note:x.note||''};})};}
 
 function currentProjectValue(){var el=g('fProjectId');return el?(el.value||'').trim():'';}
+
+function applyQuickMode(){
+  var m=g('docModal');if(!m)return;
+  m.classList.toggle('quick-mode',!!quickMode);
+  if(g('quickToggleBtn'))g('quickToggleBtn').textContent=quickMode?'切換完整欄位':'切換快速新增';
+  if(g('quickHint'))g('quickHint').textContent=quickMode?'目前為快速新增：先收案，再補完整資料。':'目前為完整模式：可編輯例稿、Workflow 與 GTD 細節。';
+}
+function toggleQuickMode(){quickMode=!quickMode;applyQuickMode();}
+function setQuickMode(v){quickMode=!!v;applyQuickMode();}
+
 function projectUsageMap(){var m={};docs.forEach(function(d){var pid=(d.projectId||'').trim();if(pid)m[pid]=(m[pid]||0)+1;});return m;}
 function getProjectOptions(){var seen={},out=[];function add(x){x=(x||'').trim();if(!x||seen[x])return;seen[x]=1;out.push(x);} (projectTags||[]).forEach(add);docs.forEach(function(d){add(d.projectId);});add(currentProjectValue());return out.sort(function(a,b){return a.localeCompare(b,'zh-Hant');});}
 function renderProjectPicker(){
   var box=g('projectChips');if(!box)return;
   var cur=currentProjectValue(),usage=projectUsageMap(),opts=getProjectOptions();
   g('projectCurrent').innerHTML=cur?'目前議題：<b>'+esc(cur)+'</b>':'尚未選取議題；可點選既有標籤，或新增一個議題。';
-  box.innerHTML=opts.length?opts.map(function(pid){return '<button type="button" class="project-chip '+(pid===cur?'on':'')+'" onclick="selectProjectTag(\''+pid.replace(/\\/g,'\\\\').replace(/'/g,"\\'")+"\')">"+esc(pid)+(usage[pid]?'<span class="chip-count">'+usage[pid]+'</span>':'')+'</button>';}).join(''):'<div class="project-chip-empty">尚無議題標籤</div>';
+  box.innerHTML=opts.length?opts.map(function(pid){return '<button type="button" class="project-chip '+(pid===cur?'on':'')+'" data-project="'+esc(pid)+'" onclick="selectProjectTag(this.getAttribute(\'data-project\'))">'+esc(pid)+(usage[pid]?'<span class="chip-count">'+usage[pid]+'</span>':'')+'</button>';}).join(''):'<div class="project-chip-empty">尚無議題標籤</div>';
 }
 function selectProjectTag(pid){
   pid=(pid||'').trim();g('fProjectId').value=pid;
@@ -1185,6 +1250,31 @@ function seedCrcGtd(){
 function promoteGtdToWF(){var adds=gtd.next.filter(function(x){return !x.done;}).map(function(x){return{text:x.text,done:false};});if(!adds.length){toast('沒有可轉入 Workflow 的下一步');return;}wfSteps=wfSteps.concat(adds);renderWF();toast('已將 Next Actions 轉入 Workflow');}
 function copyGtdSummary(){var d=getDoc();var lines=['【'+(d.projectId||d.title)+'｜GTD 摘要】'];lines.push('本案：'+d.title);if(gtd.change.length){lines.push('\n本次修正：');gtd.change.forEach(function(x){lines.push('- '+(x.version||'')+' '+(x.section||'')+'：'+x.text);});}if(gtd.next.length){lines.push('\n下一步：');gtd.next.filter(function(x){return !x.done;}).forEach(function(x){lines.push('- '+x.text);});}if(gtd.waiting.length){lines.push('\n待跟進：');gtd.waiting.filter(function(x){return !x.done;}).forEach(function(x){lines.push('- '+(x.who||'待確認')+'｜'+x.text+(x.followDate?'（追蹤日：'+x.followDate+'）':''));});}navigator.clipboard.writeText(lines.join('\n')).then(function(){toast('已複製 GTD 摘要');});}
 
+
+function handlingSummaryLines(d){
+  normalizeGtd(d);
+  var lines=['【'+(d.projectId||d.title)+'｜本次辦理摘要】'];
+  lines.push('案件：'+(d.title||'未命名'));
+  lines.push('狀態：'+slb(d.status||'new')+'｜期限：'+(d.due||'未填')+'｜下一步：'+(d.next||'未填'));
+  var ch=(d.gtd.change||[]);
+  if(ch.length){lines.push('\n一、本次修正內容');ch.forEach(function(x){lines.push('- '+(x.version?x.version+'｜':'')+(x.section?x.section+'｜':'')+(x.text||''));});}
+  var waits=(d.gtd.waiting||[]).filter(function(x){return !x.done;});
+  if(waits.length){lines.push('\n二、目前待跟進事項');waits.forEach(function(x){lines.push('- '+(x.who||'待確認')+'｜'+(x.text||'')+(x.followDate?'（追蹤日：'+x.followDate+'）':''));});}
+  var next=(d.gtd.next||[]).filter(function(x){return !x.done;});
+  if(next.length||d.next){lines.push('\n三、下一步辦理事項');if(d.next)lines.push('- '+d.next);next.forEach(function(x){lines.push('- '+x.text);});}
+  var refs=(d.gtd.ref||[]).filter(function(x){return x.label||x.url;});
+  if(refs.length){lines.push('\n四、參考資料');refs.forEach(function(x){lines.push('- '+(x.label||'參考資料')+(x.url?'：'+x.url:''));});}
+  return lines;
+}
+function copyHandlingSummary(){var d=getDoc();navigator.clipboard.writeText(handlingSummaryLines(d).join('\n')).then(function(){toast('已複製本次辦理摘要');});}
+function copyProjectHandlingSummary(pid){var groups=projectGroups(),arr=groups[pid]||[];if(!arr.length){toast('此議題尚無資料');return;}var lines=['【'+pid+'｜議題辦理摘要】'];
+  var nextDue=arr.filter(function(d){return d.status!=='done'&&d.due;}).sort(function(a,b){return a.due.localeCompare(b.due);})[0];
+  lines.push('關聯公文：'+arr.length+' 件｜未結：'+arr.filter(function(d){return d.status!=='done';}).length+' 件'+(nextDue?'｜下一期限：'+nextDue.due+'（'+nextDue.title+'）':''));
+  var ch=flatGtd(arr,'change').slice(-5); if(ch.length){lines.push('\n一、近期修正');ch.forEach(function(x){lines.push('- '+(x.item.version||'')+'｜'+(x.item.section||'')+'｜'+(x.item.text||''));});}
+  var waits=flatGtd(arr,'waiting').filter(function(x){return !x.item.done;}).sort(function(a,b){return (a.item.followDate||'9999').localeCompare(b.item.followDate||'9999');}); if(waits.length){lines.push('\n二、待跟進');waits.slice(0,8).forEach(function(x){lines.push('- '+(x.item.followDate||'未設追蹤日')+'｜'+(x.item.who||'待確認')+'｜'+(x.item.text||'')+'（'+x.doc.title+'）');});}
+  var na=flatGtd(arr,'next').filter(function(x){return !x.item.done;}); if(na.length){lines.push('\n三、下一步');na.slice(0,8).forEach(function(x){lines.push('- '+x.item.text+'（'+x.doc.title+'）');});}
+  navigator.clipboard.writeText(lines.join('\n')).then(function(){toast('已複製議題辦理摘要');});}
+
 function autoDocNo(){
   var yr=new Date().getFullYear(),nums=docs.map(function(d){return d.docNo||'';}).filter(function(n){return n.startsWith(yr+'-');}).map(function(n){return parseInt(n.split('-')[1]||0,10);}).filter(function(n){return !isNaN(n);});
   var next=nums.length?Math.max.apply(null,nums)+1:1;
@@ -1196,6 +1286,7 @@ function openDoc(id){
   var d=id?docs.find(function(x){return x.id===id;}):null;
   if(!d)d={title:'',caseMode:'single',projectId:'',docNo:autoDocNo(),source:'',received:today(),due:'',cat:cats[0],template:'',status:'new',templateState:'未分類',speed:'普通件',owner:'我',waiting:'no',next:'',link:'',note:'',steps:[],gtd:{inbox:[],next:[],waiting:[],change:[],ref:[]}};normalizeGtd(d);
   g('docTitle').textContent=id?'編輯公文':'新增公文';
+  setQuickMode(!id);
   g('delBtn').style.display=id?'inline-block':'none';
   ['Title','DocNo','Source','Received','Due','Next','Link','Note','Owner'].forEach(function(k){var el=g('f'+k);if(el)el.value=d[k.charAt(0).toLowerCase()+k.slice(1)]||'';});
   g('fProjectId').value=d.projectId||'';renderProjectPicker();
