@@ -114,6 +114,44 @@ body{min-height:100vh;background:var(--bg);color:var(--text);font-family:"Noto S
 .wf-dot.done-step{background:var(--primary)}
 .wf-progress{font-size:10px;color:var(--muted);margin-left:4px}
 
+
+/* DRAG AND DROP */
+.doc-card[draggable]{cursor:grab}
+.doc-card[draggable]:active{cursor:grabbing}
+.doc-card.dragging{opacity:.35;transform:rotate(1.5deg);box-shadow:var(--shadow2)}
+.kb-col.drag-over{background:rgba(74,103,65,.08);border-color:var(--primary);border-style:dashed}
+.kb-col.drag-over .empty-col{border-color:var(--primary);color:var(--primary)}
+.drag-ghost{position:fixed;pointer-events:none;z-index:9999;opacity:.85;transform:rotate(2deg) scale(1.02);box-shadow:0 12px 32px rgba(30,28,24,.18);border-radius:8px;background:var(--card);padding:10px 12px;width:200px;font-size:12px;font-weight:500;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;border-left:3px solid var(--primary)}
+.kb-drop-indicator{height:3px;background:var(--primary);border-radius:999px;margin:3px 0;display:none}
+.kb-drop-indicator.show{display:block}
+
+/* CARD QUICK ACTIONS */
+.card-quick{display:flex;gap:4px;margin-top:7px;padding-top:6px;border-top:1px dashed var(--border);flex-wrap:wrap}
+.qbtn{border:1px solid var(--border);background:var(--bg2);border-radius:5px;padding:3px 7px;font-size:10px;color:var(--sub);cursor:pointer;font-family:inherit;font-weight:500;white-space:nowrap;transition:.1s;line-height:1.4}
+.qbtn:hover{border-color:var(--primary);color:var(--primary);background:var(--pbg)}
+.qbtn.green-btn{border-color:var(--green);color:var(--green);background:var(--green-bg)}
+.qbtn.blue-btn{border-color:var(--blue);color:var(--blue);background:var(--blue-bg)}
+
+
+/* BACKUP BANNER */
+.backup-banner{background:#fdf8e6;border:1px solid #f0d87a;border-radius:10px;padding:12px 16px;margin-bottom:14px;display:none;align-items:center;gap:12px;flex-wrap:wrap}
+.backup-banner.show{display:flex}
+.backup-banner-text{flex:1;font-size:12px;color:var(--text);min-width:180px}
+.backup-banner-text b{color:var(--amber,#9a7818)}
+.backup-banner-actions{display:flex;gap:7px;flex-shrink:0}
+/* ALERT BANNER */
+.alert-banner{background:#fdf0ef;border:1px solid #f0c8c4;border-radius:10px;padding:12px 16px;margin-bottom:14px;display:none}
+.alert-banner.show{display:block}
+.alert-banner-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.alert-banner-title{font-size:13px;font-weight:700;color:var(--red)}
+.alert-close{border:none;background:none;color:var(--muted);cursor:pointer;font-size:18px;line-height:1;padding:0}
+.alert-list{display:flex;flex-direction:column;gap:5px}
+.alert-item{font-size:12px;color:var(--text);display:flex;align-items:center;gap:7px;cursor:pointer;padding:2px 0}
+.alert-item:hover .alert-item-title{text-decoration:underline;color:var(--primary)}
+.alert-badge{font-size:10px;border-radius:4px;padding:1px 6px;font-weight:700;flex-shrink:0}
+.alert-badge.red{background:var(--red-bg);color:var(--red)}
+.alert-badge.orange{background:var(--orange-bg);color:var(--orange)}
+
 /* LIST VIEW */
 .list-view{display:none}
 .table-wrap{overflow-x:auto;background:var(--card);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow)}
@@ -125,46 +163,98 @@ tr:last-child td{border-bottom:none}
 
 /* TEMPLATE VIEW */
 .templates-view{display:none}
-.tpl-section{margin-bottom:22px}
-.tpl-section-head{display:flex;align-items:center;gap:8px;margin-bottom:10px}
-.tpl-section-title{font-size:12px;font-weight:700;color:var(--sub);letter-spacing:.06em;text-transform:uppercase}
-.tpl-divider{flex:1;height:1px;background:var(--border)}
-.tpl-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.tpl-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px;box-shadow:var(--shadow)}
-.tpl-card h3{font-size:14px;font-weight:700;margin-bottom:3px;color:var(--text)}
-.tpl-meta{font-size:11px;color:var(--sub);margin-bottom:8px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
-.tpl-state{font-size:10px;border-radius:3px;padding:1px 6px;font-weight:700}
-.tpl-state.已迭代{background:#e8f4ee;color:#3a7055}.tpl-state.可套用{background:#e8f0f9;color:#2060a0}
-.tpl-state.需微調{background:#fdf8e6;color:#9a7818}.tpl-state.需新建{background:#fdf0ef;color:#b83a35}
-.tpl-state.未分類{background:var(--bg2);color:var(--sub)}
-.tpl-tabs{display:flex;gap:4px;margin-bottom:8px}
-.tpl-tab{border:1px solid var(--border2);background:var(--bg2);border-radius:5px;padding:3px 9px;font-size:11px;color:var(--sub);cursor:pointer;font-family:inherit;transition:.12s}
-.tpl-tab.on{background:var(--primary);color:#fff;border-color:var(--primary)}
-.tpl-card textarea{width:100%;min-height:80px;border:1px solid var(--border);border-radius:7px;padding:8px 10px;background:var(--bg2);color:var(--text);font-family:inherit;font-size:12px;resize:vertical;outline:none}
-.tpl-card textarea:focus{border-color:var(--primary)}
-.tpl-actions{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+/* ── OBSIDIAN-STYLE TEMPLATE VAULT ── */
+.vault-wrap{display:grid;grid-template-columns:220px 1fr;gap:0;background:var(--card);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow);min-height:560px;overflow:hidden}
+.vault-sidebar{background:var(--bg2);border-right:1px solid var(--border);padding:12px 0;overflow-y:auto;min-height:560px}
+.vault-sidebar-head{padding:6px 14px 10px;font-size:10px;font-weight:700;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;border-bottom:1px solid var(--border);margin-bottom:6px}
+.vault-folder{margin-bottom:2px}
+.vault-folder-btn{width:100%;border:none;background:none;display:flex;align-items:center;gap:7px;padding:6px 14px;font-size:12px;font-weight:700;color:var(--sub);cursor:pointer;font-family:inherit;text-align:left;transition:.1s}
+.vault-folder-btn:hover{background:var(--border);color:var(--text)}
+.vault-folder-btn.open{color:var(--primary)}
+.vault-folder-icon{font-size:11px;transition:.15s;flex-shrink:0}
+.vault-folder-icon.open{transform:rotate(90deg)}
+.vault-folder-color{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.vault-file-list{display:none;padding:0 0 4px}
+.vault-file-list.open{display:block}
+.vault-file-btn{width:100%;border:none;background:none;display:flex;align-items:center;gap:7px;padding:5px 14px 5px 32px;font-size:12px;color:var(--sub);cursor:pointer;font-family:inherit;text-align:left;transition:.1s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.vault-file-btn:hover{background:rgba(74,103,65,.08);color:var(--text)}
+.vault-file-btn.active{background:var(--pbg);color:var(--primary);font-weight:600}
+.vault-file-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.vault-file-dot.已迭代{background:#3a7055}.vault-file-dot.可套用{background:#2060a0}
+.vault-file-dot.需微調{background:#9a7818}.vault-file-dot.需新建{background:#b83a35}
+.vault-file-dot.未分類{background:var(--muted)}
+.vault-main{display:flex;flex-direction:column;min-height:0;overflow:hidden}
+.vault-toolbar{display:flex;align-items:center;gap:8px;padding:10px 16px;border-bottom:1px solid var(--border);background:var(--card);flex-wrap:wrap}
+.vault-title{font-family:"Noto Serif TC",serif;font-size:15px;font-weight:700;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.vault-meta{font-size:11px;color:var(--muted);white-space:nowrap}
+.vault-tabs{display:flex;gap:3px;background:var(--bg2);border-radius:7px;padding:2px}
+.vault-tab{border:none;background:transparent;border-radius:5px;padding:4px 10px;font-size:11px;font-weight:500;color:var(--sub);cursor:pointer;font-family:inherit;transition:.1s;white-space:nowrap}
+.vault-tab.on{background:var(--card);color:var(--text);box-shadow:0 1px 3px rgba(0,0,0,.07)}
+.vault-body{flex:1;overflow-y:auto;padding:16px 20px}
+.vault-empty{display:grid;place-items:center;min-height:300px;color:var(--muted);font-size:13px;text-align:center;line-height:2}
+
+/* Markdown preview */
+.md-preview{font-size:13px;line-height:1.8;color:var(--text)}
+.md-preview h1{font-family:"Noto Serif TC",serif;font-size:20px;font-weight:700;margin:0 0 12px;padding-bottom:8px;border-bottom:2px solid var(--border)}
+.md-preview h2{font-size:15px;font-weight:700;margin:16px 0 8px;color:var(--primary)}
+.md-preview h3{font-size:13px;font-weight:700;margin:12px 0 6px;color:var(--sub)}
+.md-preview p{margin:0 0 10px}
+.md-preview ul,.md-preview ol{margin:0 0 10px;padding-left:20px}
+.md-preview li{margin:3px 0}
+.md-preview code{background:var(--bg2);border-radius:3px;padding:1px 5px;font-size:12px;font-family:monospace}
+.md-preview pre{background:var(--bg2);border-radius:7px;padding:12px;overflow-x:auto;margin:0 0 10px}
+.md-preview pre code{background:none;padding:0}
+.md-preview blockquote{border-left:3px solid var(--plight);margin:0 0 10px;padding:6px 12px;background:var(--pbg);border-radius:0 6px 6px 0;color:var(--sub)}
+.md-preview hr{border:none;border-top:1px solid var(--border);margin:16px 0}
+.md-preview strong{font-weight:700;color:var(--text)}
+.md-preview em{font-style:italic;color:var(--sub)}
+.md-preview .wikilink{background:var(--pbg);color:var(--primary);border:1px solid var(--plight);border-radius:4px;padding:1px 6px;font-size:12px;cursor:pointer;text-decoration:none;display:inline-block}
+.md-preview .wikilink:hover{background:var(--primary);color:#fff}
+
+/* Frontmatter block */
+.frontmatter{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:10px 14px;margin-bottom:14px;font-size:11px;display:grid;grid-template-columns:repeat(3,1fr);gap:6px 14px}
+.fm-item{display:flex;flex-direction:column;gap:2px}
+.fm-label{font-weight:700;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;font-size:10px}
+.fm-value{color:var(--text)}
+
+/* Editor */
+.vault-editor{width:100%;min-height:280px;border:1px solid var(--border);border-radius:8px;padding:12px 14px;background:var(--bg2);color:var(--text);font-family:"Noto Sans TC",monospace,sans-serif;font-size:13px;line-height:1.8;resize:vertical;outline:none;transition:.12s}
+.vault-editor:focus{border-color:var(--primary);background:var(--card)}
+.vault-editor-actions{display:flex;gap:7px;margin-top:10px;flex-wrap:wrap}
+
+/* SOP in vault */
+.sop-step{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px dashed var(--border)}
+.sop-step:last-child{border:none}
+.sop-num{width:20px;height:20px;border-radius:50%;background:var(--pbg);border:1px solid var(--plight);display:grid;place-items:center;font-size:10px;font-weight:700;color:var(--primary);flex-shrink:0}
+.sop-text{flex:1;font-size:13px;color:var(--text)}
+.sop-del{border:none;background:none;color:var(--muted);cursor:pointer;font-size:15px;padding:0 2px;line-height:1}
+.sop-del:hover{color:var(--red)}
+.sop-add-row{display:flex;gap:6px;margin-top:10px}
+.sop-add-row input{flex:1;border:1px solid var(--border2);border-radius:6px;padding:7px 10px;font-size:12px;color:var(--text);outline:none;background:var(--card);font-family:inherit}
+.sop-add-row input:focus{border-color:var(--primary)}
+
+/* Changelog in vault */
+.changelog{font-size:12px;color:var(--sub);background:var(--bg2);border-radius:8px;padding:10px 12px;line-height:1.7;max-height:200px;overflow-y:auto}
+.changelog-entry{border-bottom:1px dashed var(--border);padding-bottom:6px;margin-bottom:6px}
+.changelog-entry:last-child{border:none;margin:0;padding:0}
+.changelog-ver{font-weight:700;color:var(--primary);margin-right:6px}
+.changelog-add-row{display:flex;gap:7px;margin-top:10px}
+.changelog-add-row input{flex:1;border:1px solid var(--border2);border-radius:6px;padding:7px 10px;font-size:12px;color:var(--text);outline:none;background:var(--card);font-family:inherit}
+.changelog-add-row input:focus{border-color:var(--primary)}
+
+/* Related docs */
+.related-doc{display:flex;align-items:center;gap:8px;padding:7px 10px;background:var(--bg2);border-radius:7px;margin-bottom:6px;cursor:pointer;transition:.1s;border:1px solid var(--border)}
+.related-doc:hover{border-color:var(--primary);background:var(--pbg)}
+.related-doc-title{flex:1;font-size:12px;font-weight:500;color:var(--text);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
 .small-btn{border:1px solid var(--border2);background:var(--card);color:var(--sub);border-radius:6px;padding:5px 10px;font-size:11px;font-weight:500;cursor:pointer;font-family:inherit;transition:.12s}
 .small-btn:hover{border-color:var(--primary);color:var(--primary)}
 .small-btn.pri{background:var(--primary);color:#fff;border-color:var(--primary)}
 .small-btn.pri:hover{background:var(--primary2)}
-
-/* CHANGELOG */
-.changelog{margin-top:8px;max-height:120px;overflow-y:auto;font-size:11px;color:var(--sub);background:var(--bg2);border-radius:6px;padding:7px 9px;line-height:1.7}
-.changelog-entry{border-bottom:1px dashed var(--border);padding-bottom:4px;margin-bottom:4px}
-.changelog-entry:last-child{border:none;margin:0;padding:0}
-.changelog-ver{font-weight:700;color:var(--primary);margin-right:6px}
-
-/* SOP steps in template */
-.sop-wrap{margin-top:6px}
-.sop-step{display:flex;align-items:center;gap:7px;padding:4px 0;border-bottom:1px dashed var(--border)}
-.sop-step:last-child{border:none}
-.sop-num{width:18px;height:18px;border-radius:50%;background:var(--pbg);border:1px solid var(--plight);display:grid;place-items:center;font-size:10px;font-weight:700;color:var(--primary);flex-shrink:0}
-.sop-text{flex:1;font-size:12px;color:var(--text)}
-.sop-del{border:none;background:none;color:var(--muted);cursor:pointer;font-size:14px;padding:0 2px;line-height:1}
-.sop-del:hover{color:var(--red)}
-.sop-add-row{display:flex;gap:6px;margin-top:8px}
-.sop-add-row input{flex:1;border:1px solid var(--border2);border-radius:6px;padding:6px 9px;font-size:12px;color:var(--text);outline:none;background:var(--card);font-family:inherit}
-.sop-add-row input:focus{border-color:var(--primary)}
+.tpl-state{font-size:10px;border-radius:3px;padding:1px 6px;font-weight:700}
+.tpl-state.已迭代{background:#e8f4ee;color:#3a7055}.tpl-state.可套用{background:#e8f0f9;color:#2060a0}
+.tpl-state.需微調{background:#fdf8e6;color:#9a7818}.tpl-state.需新建{background:#fdf0ef;color:#b83a35}
+.tpl-state.未分類{background:var(--bg2);color:var(--sub)}
 
 /* MODAL */
 .modal-bg{display:none;position:fixed;inset:0;background:rgba(20,18,14,.4);z-index:100;backdrop-filter:blur(4px);padding:16px;align-items:center;justify-content:center}
@@ -219,6 +309,23 @@ tr:last-child td{border-bottom:none}
 .toast.show{opacity:1}
 .footer{margin-top:36px;color:var(--muted);font-size:11px;text-align:center;letter-spacing:.04em}
 
+/* TODO VIEW */
+.todo-wrap{max-width:600px;margin:0 auto}
+.todo-section{margin-bottom:20px}
+.todo-section-head{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.todo-section-title{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+.todo-divider{flex:1;height:1px;background:var(--border)}
+.todo-card{background:var(--card);border:1px solid var(--border);border-left:3px solid var(--border2);border-radius:0 10px 10px 0;padding:12px 14px;margin-bottom:8px;cursor:pointer;transition:.12s;display:flex;gap:12px;align-items:flex-start}
+.todo-card:hover{box-shadow:var(--shadow2)}
+.todo-card-left{flex:1;min-width:0}
+.todo-card-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:5px;line-height:1.4}
+.todo-card-meta{display:flex;flex-wrap:wrap;gap:5px;align-items:center;margin-bottom:5px}
+.todo-card-next{font-size:11px;color:var(--primary);background:var(--pbg);border-radius:4px;padding:3px 7px;line-height:1.4;margin-top:4px}
+.todo-card-right{display:flex;flex-direction:column;align-items:flex-end;gap:5px;flex-shrink:0}
+.todo-wf{font-size:11px;color:var(--muted);white-space:nowrap}
+.todo-quick{display:flex;flex-direction:column;gap:4px}
+.todo-empty{text-align:center;color:var(--muted);font-size:13px;padding:32px 0}
+
 /* RESPONSIVE */
 @media(max-width:1280px){.kanban{grid-template-columns:repeat(4,1fr)}.insight{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:960px){.dashboard{grid-template-columns:1fr}.stats-grid{grid-template-columns:repeat(3,1fr)}.kanban{grid-template-columns:repeat(2,1fr)}.tpl-grid{grid-template-columns:1fr 1fr}.form{grid-template-columns:1fr}}
@@ -252,6 +359,7 @@ tr:last-child td{border-bottom:none}
     <div class="view-toggle">
       <button class="vbtn active" data-view="kanban" onclick="setView('kanban')">看板</button>
       <button class="vbtn" data-view="list" onclick="setView('list')">清單</button>
+      <button class="vbtn" data-view="todo" onclick="setView('todo')">待辦</button>
       <button class="vbtn" data-view="templates" onclick="setView('templates')">例稿庫</button>
     </div>
   </div>
@@ -285,6 +393,23 @@ tr:last-child td{border-bottom:none}
   <div class="insight-card"><h3>承辦負荷</h3><div id="ownerBars"></div></div>
 </section>
 
+<div class="backup-banner" id="backupBanner">
+  <div class="backup-banner-text" id="backupMsg"></div>
+  <div class="backup-banner-actions">
+    <button class="tbtn" onclick="syncPush();dismissBackup()">↑ 立即同步雲端</button>
+    <button class="tbtn sec" onclick="exportCSV();dismissBackup()">匯出 CSV</button>
+    <button class="tbtn sec" onclick="dismissBackup()">稍後提醒</button>
+  </div>
+</div>
+
+<div class="alert-banner" id="alertBanner">
+  <div class="alert-banner-head">
+    <span class="alert-banner-title" id="alertTitle">⚠ 到期提醒</span>
+    <button class="alert-close" onclick="dismissAlert()">×</button>
+  </div>
+  <div class="alert-list" id="alertList"></div>
+</div>
+
 <div class="toolbar">
   <input id="search" placeholder="搜尋主旨、文號、來文單位…" oninput="render()"/>
   <select id="catFilter" onchange="render()"></select>
@@ -301,6 +426,9 @@ tr:last-child td{border-bottom:none}
   <button class="tbtn sec" onclick="importSample()">範例</button>
 </div>
 
+<main id="todoView" style="display:none">
+  <div id="todoContent"></div>
+</main>
 <main id="kanbanView"><div class="kanban" id="kanban"></div></main>
 <main id="listView" class="list-view">
   <div class="table-wrap">
@@ -553,6 +681,7 @@ function setView(v){
   document.querySelectorAll('.vbtn').forEach(b=>b.classList.toggle('active',b.dataset.view===v));
   document.getElementById('kanbanView').style.display=v==='kanban'?'block':'none';
   document.getElementById('listView').style.display=v==='list'?'block':'none';
+  document.getElementById('todoView').style.display=v==='todo'?'block':'none';
   document.getElementById('templatesView').style.display=v==='templates'?'block':'none';
   render();
 }
@@ -563,6 +692,7 @@ function setView(v){
 function render(){
   if(curView==='kanban') renderKanban();
   if(curView==='list') renderList();
+  if(curView==='todo') renderTodo();
   if(curView==='templates') renderTemplates();
   renderStats();
 }
@@ -600,9 +730,14 @@ function renderKanban(){
   const list=filtered();
   document.getElementById('kanban').innerHTML=STATUSES.map(s=>{
     const cards=list.filter(d=>d.status===s.id);
-    return `<section class="kb-col">
+    return `<section class="kb-col"
+      data-status="${s.id}"
+      ondragover="onColDragOver(event,this)"
+      ondragleave="onColDragLeave(this)"
+      ondrop="onColDrop(event,this)">
       <div class="kb-head"><span class="kb-name">${s.label}</span><span class="kb-count">${cards.length}</span></div>
-      ${cards.length?cards.map(cardHTML).join(''):'<div class="empty-col">尚無案件</div>'}
+      <div class="kb-drop-indicator" id="di_${s.id}"></div>
+      ${cards.length?cards.map(cardHTML).join(''):'<div class="empty-col" id="empty_${s.id}">拖曳至此</div>'}
     </section>`;
   }).join('');
 }
@@ -614,7 +749,20 @@ function cardHTML(d){
   const doneSteps=steps.filter(s=>s.done).length;
   const speedEl=d.speed&&d.speed!=='普通件'?`<span class="speed-tag ${esc(d.speed)}">${esc(d.speed)}</span>`:'';
   const wfEl=steps.length?`<div class="wf-mini">${steps.map(s=>`<div class="wf-dot${s.done?' done-step':''}"></div>`).join('')}<span class="wf-progress">${doneSteps}/${steps.length}</span></div>`:'';
-  return `<article class="doc-card ${d.status==='done'?'done':''}" style="border-left-color:${color}" onclick="openDoc(${d.id})">
+  // next status for quick advance
+  const si=STATUSES.findIndex(s=>s.id===d.status);
+  const nextS=si>=0&&si<STATUSES.length-1?STATUSES[si+1]:null;
+  const quickBtns=`<div class="card-quick" onclick="event.stopPropagation()">
+    ${nextS?`<button class="qbtn" onclick="quickStatus(${d.id},'${nextS.id}')">→ ${nextS.label}</button>`:''}
+    ${d.status!=='done'?`<button class="qbtn green-btn" onclick="quickStatus(${d.id},'done')">✓ 結案</button>`:'<button class="qbtn" onclick="quickStatus('+d.id+','research')">↩ 重開</button>'}
+    ${d.waiting!=='yes'?`<button class="qbtn blue-btn" onclick="quickWait(${d.id},true)">⏸ 等回復</button>`:`<button class="qbtn" onclick="quickWait(${d.id},false)">▶ 繼續</button>`}
+  </div>`;
+  return `<article class="doc-card ${d.status==='done'?'done':''}" style="border-left-color:${color}"
+    draggable="true"
+    data-id="${d.id}"
+    ondragstart="onCardDragStart(event,${d.id})"
+    ondragend="onCardDragEnd(event)"
+    onclick="openDoc(${d.id})">
     <div class="card-top">
       <span class="doc-no">${esc(d.docNo||('#'+d.id))}</span>
       <span class="light ${l.id}">${l.label}</span>
@@ -631,7 +779,89 @@ function cardHTML(d){
       <span style="max-width:90px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(d.template||'')}</span>
       <span class="pill">${esc(d.templateState||'未分類')}</span>
     </div>
+    ${quickBtns}
   </article>`;
+}
+
+
+// ══════════════════════════════════
+//  Drag & Drop Kanban
+// ══════════════════════════════════
+let dragId = null;
+let dragGhost = null;
+
+function onCardDragStart(e, id){
+  dragId = id;
+  const d = docs.find(x=>x.id===id);
+  e.dataTransfer.effectAllowed = 'move';
+  e.dataTransfer.setData('text/plain', String(id));
+
+  // 自訂 ghost
+  dragGhost = document.createElement('div');
+  dragGhost.className = 'drag-ghost';
+  dragGhost.textContent = d ? d.title : '';
+  const color = d ? catColor(d.cat||'') : 'var(--primary)';
+  dragGhost.style.borderLeftColor = color;
+  document.body.appendChild(dragGhost);
+  e.dataTransfer.setDragImage(dragGhost, 20, 20);
+
+  // 延遲加 dragging class，讓瀏覽器先截圖
+  setTimeout(()=>{ e.target.classList.add('dragging'); }, 0);
+}
+
+function onCardDragEnd(e){
+  e.target.classList.remove('dragging');
+  if(dragGhost){ dragGhost.remove(); dragGhost=null; }
+  // 清除所有 drag-over 樣式
+  document.querySelectorAll('.kb-col').forEach(c=>c.classList.remove('drag-over'));
+  document.querySelectorAll('.kb-drop-indicator').forEach(i=>i.classList.remove('show'));
+  dragId = null;
+}
+
+function onColDragOver(e, col){
+  e.preventDefault();
+  e.dataTransfer.dropEffect = 'move';
+  col.classList.add('drag-over');
+  const statusId = col.dataset.status;
+  const ind = document.getElementById('di_'+statusId);
+  if(ind) ind.classList.add('show');
+}
+
+function onColDragLeave(col){
+  col.classList.remove('drag-over');
+  const statusId = col.dataset.status;
+  const ind = document.getElementById('di_'+statusId);
+  if(ind) ind.classList.remove('show');
+}
+
+function onColDrop(e, col){
+  e.preventDefault();
+  col.classList.remove('drag-over');
+  const statusId = col.dataset.status;
+  const ind = document.getElementById('di_'+statusId);
+  if(ind) ind.classList.remove('show');
+
+  const id = parseInt(e.dataTransfer.getData('text/plain')||dragId);
+  if(!id || !statusId) return;
+  const d = docs.find(x=>x.id===id);
+  if(!d || d.status===statusId) return;
+
+  const oldStatus = statusLabel(d.status);
+  d.status = statusId;
+  saveDocs();
+  render();
+  toast(`${d.title.slice(0,12)}… → ${statusLabel(statusId)}`);
+}
+
+function quickStatus(id, statusId){
+  const d=docs.find(x=>x.id===id); if(!d) return;
+  d.status=statusId; saveDocs(); render();
+  toast('已更新：'+statusLabel(statusId));
+}
+function quickWait(id, isWaiting){
+  const d=docs.find(x=>x.id===id); if(!d) return;
+  d.waiting=isWaiting?'yes':'no'; saveDocs(); render();
+  toast(isWaiting?'已標記等外部回復':'已繼續承辦');
 }
 
 function renderList(){
@@ -655,107 +885,393 @@ function renderList(){
   }).join('');
 }
 
+function renderTodo(){
+  const active = docs.filter(d=>{
+    if(d.status==='done') return false;
+    if(d.waiting==='yes') return false;
+    return true;
+  });
+
+  // 排序：逾期 > 今日 > 3日內 > 其他
+  const order = {red:0, orange:1, yellow:2, green:3, blue:4, gray:5};
+  active.sort((a,b)=>{
+    const la=lightOf(a), lb=lightOf(b);
+    return (order[la.id]??9)-(order[lb.id]??9);
+  });
+
+  // 分組：依燈號
+  const groups = [
+    {key:'red', label:'⚠ 已逾期', color:'var(--red)', items: active.filter(d=>lightOf(d).id==='red')},
+    {key:'orange', label:'🔥 今日到期', color:'var(--orange)', items: active.filter(d=>lightOf(d).id==='orange')},
+    {key:'yellow', label:'⏰ 3日內到期', color:'var(--yellow)', items: active.filter(d=>lightOf(d).id==='yellow')},
+    {key:'green', label:'📋 承辦中', color:'var(--primary)', items: active.filter(d=>lightOf(d).id==='green')},
+  ];
+
+  const root = document.getElementById('todoContent');
+  if(!active.length){
+    root.innerHTML = '<div class="todo-empty">🎉 目前沒有待辦案件</div>';
+    return;
+  }
+
+  root.innerHTML = '<div class="todo-wrap">' +
+    groups.filter(g=>g.items.length).map(g=>{
+      return `<div class="todo-section">
+        <div class="todo-section-head">
+          <span class="todo-section-title" style="color:${g.color}">${g.label}（${g.items.length}）</span>
+          <div class="todo-divider"></div>
+        </div>
+        ${g.items.map(d=>todoCardHTML(d)).join('')}
+      </div>`;
+    }).join('') + '</div>';
+}
+
+function todoCardHTML(d){
+  const l = lightOf(d);
+  const color = catColor(d.cat||'其他');
+  const steps = d.steps||[];
+  const doneSteps = steps.filter(s=>s.done).length;
+  const si = STATUSES.findIndex(s=>s.id===d.status);
+  const nextS = si>=0&&si<STATUSES.length-1?STATUSES[si+1]:null;
+  return `<div class="todo-card" style="border-left-color:${color}">
+    <div class="todo-card-left" onclick="openDoc(${d.id})" style="cursor:pointer">
+      <div class="todo-card-title">${esc(d.title)}</div>
+      <div class="todo-card-meta">
+        <span class="light ${l.id}">${l.label}</span>
+        <span class="cat-tag" style="background:${color}18;color:${color}">${esc(d.cat||'')}</span>
+        ${d.source?`<span class="src-tag">${esc(d.source)}</span>`:''}
+        ${d.speed&&d.speed!=='普通件'?`<span class="speed-tag ${esc(d.speed)}">${esc(d.speed)}</span>`:''}
+        ${d.due?`<span style="font-size:10px;color:var(--muted)">期限 ${esc(d.due)}</span>`:''}
+      </div>
+      ${d.next?`<div class="todo-card-next">▶ ${esc(d.next)}</div>`:''}
+    </div>
+    <div class="todo-card-right" onclick="event.stopPropagation()">
+      <span class="todo-wf">${steps.length?`WF ${doneSteps}/${steps.length}`:esc(statusLabel(d.status))}</span>
+      <div class="todo-quick">
+        ${nextS?`<button class="qbtn" onclick="quickStatus(${d.id},'${nextS.id}')">→ ${nextS.label}</button>`:''}
+        <button class="qbtn green-btn" onclick="quickStatus(${d.id},'done')">✓ 結案</button>
+        <button class="qbtn blue-btn" onclick="quickWait(${d.id},true)">⏸ 等回復</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+
 function renderTemplates(){
   const root=document.getElementById('templatesView');
-  root.innerHTML=cats.map(cat=>{
-    const tpls=DEFAULT_TPLS_BY_CAT[cat]||[];
-    if(!tpls.length) return '';
-    const cards=tpls.map(t=>{
-      const used=docs.filter(d=>d.template===t).length;
-      const needIter=docs.filter(d=>d.template===t&&['需微調','需新建'].includes(d.templateState)).length;
-      const stateArr=docs.filter(d=>d.template===t).map(d=>d.templateState);
-      const topState=stateArr.length?(
+  // 確保 vault 架構只建一次，避免每次 render 都重建
+  if(!root.querySelector('.vault-wrap')){
+    root.innerHTML=`
+    <div class="vault-wrap">
+      <div class="vault-sidebar">
+        <div class="vault-sidebar-head">例稿知識庫</div>
+        <div id="vaultTree"></div>
+      </div>
+      <div class="vault-main" id="vaultMain">
+        <div class="vault-empty">
+          <div>
+            <div style="font-size:32px;margin-bottom:8px">📂</div>
+            <div>點選左側例稿開始編輯</div>
+            <div style="font-size:11px;margin-top:4px">支援 Markdown・[[雙向連結]]・SOP・迭代紀錄</div>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }
+  renderVaultTree();
+}
+
+let vaultOpenFolders = new Set(cats.slice(0,2).map(c=>c)); // 預設展開前兩個
+let vaultActiveTpl = null;
+let vaultActiveTab = 'note';
+
+function renderVaultTree(){
+  const tree = document.getElementById('vaultTree');
+  if(!tree) return;
+  tree.innerHTML = cats.map(cat=>{
+    const tpls = DEFAULT_TPLS_BY_CAT[cat]||[];
+    const color = catColor(cat);
+    const isOpen = vaultOpenFolders.has(cat);
+    const files = tpls.map(t=>{
+      const stateArr = docs.filter(d=>d.template===t).map(d=>d.templateState);
+      const topState = stateArr.length?(
         stateArr.includes('需新建')?'需新建':stateArr.includes('需微調')?'需微調':
         stateArr.includes('已迭代')?'已迭代':stateArr.includes('可套用')?'可套用':'未分類'
       ):'未分類';
-      const tid='tn_'+t.replace(/[^\w]/g,'_');
-      const sopId='sop_'+t.replace(/[^\w]/g,'_');
-      const sop=tplData.sop[t]||[];
-      const cl=tplData.changelog[t]||[];
-      return `<div class="tpl-card">
-        <h3>${esc(t)}<span class="tpl-state ${esc(topState)}" style="margin-left:6px">${esc(topState)}</span></h3>
-        <div class="tpl-meta">使用 ${used} 件｜待迭代 ${needIter} 件</div>
-        <div class="tpl-tabs">
-          <button class="tpl-tab on" onclick="tplTab(this,'note','${tid}','${sopId}')">筆記</button>
-          <button class="tpl-tab" onclick="tplTab(this,'sop','${tid}','${sopId}')">SOP 步驟</button>
-          <button class="tpl-tab" onclick="tplTab(this,'log','${tid}','${sopId}')">迭代紀錄</button>
-        </div>
-        <div id="${tid}_note">
-          <textarea id="${tid}" placeholder="記錄常用開頭、法規依據、標準段落…">${esc(tplData.notes[t]||'')}</textarea>
-        </div>
-        <div id="${tid}_sop" style="display:none">
-          <div class="sop-wrap" id="${sopId}">
-            ${sop.map((s,i)=>`<div class="sop-step"><div class="sop-num">${i+1}</div><div class="sop-text">${esc(s)}</div><button class="sop-del" onclick="delSopStep('${esc(t)}',${i})">×</button></div>`).join('')}
-          </div>
-          <div class="sop-add-row">
-            <input id="${sopId}_input" placeholder="新增 SOP 步驟…" onkeydown="if(event.key==='Enter')addSopStep('${esc(t)}','${sopId}')"/>
-            <button class="small-btn pri" onclick="addSopStep('${esc(t)}','${sopId}')">＋</button>
-          </div>
-        </div>
-        <div id="${tid}_log" style="display:none">
-          <div class="changelog" id="${tid}_loglist">
-            ${cl.length?cl.map(e=>`<div class="changelog-entry"><span class="changelog-ver">${esc(e.ver)}</span>${esc(e.date)}｜${esc(e.note)}</div>`).join(''):'<span style="color:var(--muted)">尚無迭代紀錄</span>'}
-          </div>
-          <div class="sop-add-row" style="margin-top:8px">
-            <input id="${tid}_lognote" placeholder="記錄本次修改摘要…"/>
-            <button class="small-btn pri" onclick="addChangelog('${esc(t)}','${tid}')">＋ 記錄</button>
-          </div>
-        </div>
-        <div class="tpl-actions">
-          <button class="small-btn pri" onclick="saveTplNote('${esc(t)}','${tid}')">儲存筆記</button>
-          <button class="small-btn" onclick="copyTplNote('${tid}')">複製筆記</button>
-          <button class="small-btn" onclick="filterByTpl('${esc(t)}')">篩選案件</button>
-        </div>
-      </div>`;
+      const isActive = vaultActiveTpl===t;
+      return `<button class="vault-file-btn${isActive?' active':''}" onclick="openVaultFile('${esc(t)}')">
+        <div class="vault-file-dot ${esc(topState)}"></div>
+        <span style="overflow:hidden;text-overflow:ellipsis">${esc(t)}</span>
+      </button>`;
     }).join('');
-    return `<div class="tpl-section">
-      <div class="tpl-section-head">
-        <span class="tpl-section-title" style="color:${catColor(cat)}">${esc(cat)}</span>
-        <div class="tpl-divider"></div>
-      </div>
-      <div class="tpl-grid">${cards}</div>
+    return `<div class="vault-folder">
+      <button class="vault-folder-btn${isOpen?' open':''}" onclick="toggleFolder('${esc(cat)}')">
+        <span class="vault-folder-icon${isOpen?' open':''}">▶</span>
+        <div class="vault-folder-color" style="background:${color}"></div>
+        <span style="flex:1">${esc(cat)}</span>
+        <span style="font-size:10px;color:var(--muted)">${tpls.length}</span>
+      </button>
+      <div class="vault-file-list${isOpen?' open':''}">${files}</div>
     </div>`;
   }).join('');
 }
 
-function tplTab(btn,tab,tid,sopId){
-  const card=btn.closest('.tpl-card');
-  card.querySelectorAll('.tpl-tab').forEach(b=>b.classList.remove('on'));
-  btn.classList.add('on');
-  card.querySelector('#'+tid+'_note').style.display=tab==='note'?'block':'none';
-  card.querySelector('#'+tid+'_sop').style.display=tab==='sop'?'block':'none';
-  card.querySelector('#'+tid+'_log').style.display=tab==='log'?'block':'none';
+function toggleFolder(cat){
+  if(vaultOpenFolders.has(cat)) vaultOpenFolders.delete(cat);
+  else vaultOpenFolders.add(cat);
+  renderVaultTree();
 }
 
-function saveTplNote(t,tid){
-  tplData.notes[t]=document.getElementById(tid)?.value||'';
+function openVaultFile(t){
+  vaultActiveTpl = t;
+  vaultActiveTab = vaultActiveTab||'note';
+  renderVaultTree();
+  renderVaultMain(t);
+}
+
+function renderVaultMain(t){
+  const main = document.getElementById('vaultMain');
+  if(!main) return;
+  const used = docs.filter(d=>d.template===t);
+  const stateArr = used.map(d=>d.templateState);
+  const topState = stateArr.length?(
+    stateArr.includes('需新建')?'需新建':stateArr.includes('需微調')?'需微調':
+    stateArr.includes('已迭代')?'已迭代':stateArr.includes('可套用')?'可套用':'未分類'
+  ):'未分類';
+  const needIter = used.filter(d=>['需微調','需新建'].includes(d.templateState)).length;
+  const cl = tplData.changelog[t]||[];
+  const sop = tplData.sop[t]||[];
+  const lastIter = cl.length ? cl[cl.length-1].date : '尚未迭代';
+
+  main.innerHTML = `
+    <div class="vault-toolbar">
+      <div class="vault-title">${esc(t)}</div>
+      <span class="tpl-state ${esc(topState)}">${esc(topState)}</span>
+      <div class="vault-tabs">
+        <button class="vault-tab${vaultActiveTab==='note'?' on':''}" onclick="switchVaultTab('note','${esc(t)}')">筆記</button>
+        <button class="vault-tab${vaultActiveTab==='preview'?' on':''}" onclick="switchVaultTab('preview','${esc(t)}')">預覽</button>
+        <button class="vault-tab${vaultActiveTab==='sop'?' on':''}" onclick="switchVaultTab('sop','${esc(t)}')">SOP</button>
+        <button class="vault-tab${vaultActiveTab==='log'?' on':''}" onclick="switchVaultTab('log','${esc(t)}')">迭代紀錄</button>
+        <button class="vault-tab${vaultActiveTab==='related'?' on':''}" onclick="switchVaultTab('related','${esc(t)}')">關聯案件</button>
+      </div>
+    </div>
+    <div class="vault-body">
+      <div class="frontmatter">
+        <div class="fm-item"><div class="fm-label">使用案件</div><div class="fm-value">${used.length} 件</div></div>
+        <div class="fm-item"><div class="fm-label">待迭代</div><div class="fm-value">${needIter} 件</div></div>
+        <div class="fm-item"><div class="fm-label">SOP 步驟</div><div class="fm-value">${sop.length} 步</div></div>
+        <div class="fm-item"><div class="fm-label">迭代版本</div><div class="fm-value">v${cl.length||0}</div></div>
+        <div class="fm-item"><div class="fm-label">最後迭代</div><div class="fm-value">${esc(lastIter)}</div></div>
+        <div class="fm-item"><div class="fm-label">狀態</div><div class="fm-value">${esc(topState)}</div></div>
+      </div>
+      <div id="vaultTabContent"></div>
+    </div>`;
+
+  renderVaultTabContent(t);
+}
+
+function switchVaultTab(tab, t){
+  vaultActiveTab = tab;
+  // 只更新 tab 按鈕 active 狀態
+  document.querySelectorAll('.vault-tab').forEach(b=>{
+    b.classList.toggle('on', b.textContent===({note:'筆記',preview:'預覽',sop:'SOP',log:'迭代紀錄',related:'關聯案件'}[tab]));
+  });
+  renderVaultTabContent(t);
+}
+
+function renderVaultTabContent(t){
+  const el = document.getElementById('vaultTabContent');
+  if(!el) return;
+  const sop = tplData.sop[t]||[];
+  const cl = tplData.changelog[t]||[];
+  const note = tplData.notes[t]||'';
+
+  if(vaultActiveTab==='note'){
+    el.innerHTML = `
+      <textarea class="vault-editor" id="vaultEditor" placeholder="使用 Markdown 記錄例稿內容。
+支援 [[例稿名稱]] 語法連結到其他例稿。
+
+建議結構：
+## 適用情境
+## 常用法規依據
+## 標準段落
+## 注意事項">${esc(note)}</textarea>
+      <div class="vault-editor-actions">
+        <button class="small-btn pri" onclick="saveVaultNote('${esc(t)}')">儲存</button>
+        <button class="small-btn" onclick="switchVaultTab('preview','${esc(t)}')">預覽</button>
+        <button class="small-btn" onclick="copyVaultNote('${esc(t)}')">複製</button>
+        <button class="small-btn" onclick="filterByTpl('${esc(t)}')">篩選案件</button>
+        <button class="small-btn" onclick="exportVaultMd('${esc(t)}')">匯出 .md</button>
+      </div>`;
+  }
+  else if(vaultActiveTab==='preview'){
+    el.innerHTML = `
+      <div class="md-preview">${renderMarkdown(note, t)}</div>
+      <div style="margin-top:12px">
+        <button class="small-btn" onclick="switchVaultTab('note','${esc(t)}')">← 返回編輯</button>
+      </div>`;
+  }
+  else if(vaultActiveTab==='sop'){
+    const steps = sop.map((s,i)=>`
+      <div class="sop-step">
+        <div class="sop-num">${i+1}</div>
+        <div class="sop-text">${esc(s)}</div>
+        <button class="sop-del" onclick="vaultDelSop('${esc(t)}',${i})">×</button>
+      </div>`).join('');
+    el.innerHTML = `
+      <div style="margin-bottom:12px;font-size:12px;color:var(--sub)">新增公文時可一鍵套用此 SOP 步驟清單。</div>
+      <div id="vaultSopList">${steps||'<div style="color:var(--muted);font-size:12px;padding:8px 0">尚未設定 SOP 步驟</div>'}</div>
+      <div class="sop-add-row">
+        <input id="vaultSopInput" placeholder="新增步驟…" onkeydown="if(event.key==='Enter')vaultAddSop('${esc(t)}')"/>
+        <button class="small-btn pri" onclick="vaultAddSop('${esc(t)}')">＋ 新增</button>
+      </div>`;
+  }
+  else if(vaultActiveTab==='log'){
+    const entries = cl.length ? cl.map(e=>`
+      <div class="changelog-entry">
+        <span class="changelog-ver">${esc(e.ver)}</span>${esc(e.date)}｜${esc(e.note)}
+      </div>`).join('') : '<div style="color:var(--muted);font-size:12px">尚無迭代紀錄</div>';
+    el.innerHTML = `
+      <div style="margin-bottom:10px;font-size:12px;color:var(--sub)">每次修改筆記後，記錄一筆修改摘要。紀錄只累加，不刪除。</div>
+      <div class="changelog">${entries}</div>
+      <div class="changelog-add-row">
+        <input id="vaultLogInput" placeholder="本次修改摘要，如：補入勞基法第 32 條新函釋…"/>
+        <button class="small-btn pri" onclick="vaultAddLog('${esc(t)}')">＋ 記錄</button>
+      </div>`;
+  }
+  else if(vaultActiveTab==='related'){
+    const related = docs.filter(d=>d.template===t);
+    const html = related.length ? related.map(d=>{
+      const l=lightOf(d); const color=catColor(d.cat||'');
+      return `<div class="related-doc" onclick="openDoc(${d.id})">
+        <span class="light ${l.id}" style="flex-shrink:0">${l.label}</span>
+        <div class="related-doc-title">${esc(d.title)}</div>
+        <span class="cat-tag" style="background:${color}18;color:${color};flex-shrink:0">${esc(d.cat||'')}</span>
+        <span style="font-size:10px;color:var(--muted);flex-shrink:0">${esc(d.due||'')}</span>
+      </div>`;
+    }).join('') : '<div style="color:var(--muted);font-size:12px;padding:8px 0">尚無使用此例稿的案件</div>';
+    el.innerHTML = `
+      <div style="margin-bottom:10px;font-size:12px;color:var(--sub)">所有使用「${esc(t)}」的案件。點擊可開啟編輯。</div>
+      ${html}`;
+  }
+}
+
+// ── Markdown 渲染（輕量版，支援 [[wikilink]]）──
+function renderMarkdown(md, currentTpl){
+  if(!md) return '<span style="color:var(--muted)">尚無內容，切換到「筆記」分頁開始撰寫。</span>';
+  let html = esc(md);
+  // 還原 esc 對 markdown 語法的影響
+  html = md
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  // wikilink [[xxx]]
+  html = html.replace(/\[\[([^\]]+)\]\]/g,(m,name)=>{
+    return `<a class="wikilink" onclick="openVaultFile('${name.replace(/'/g,"\'")}')">[[${name}]]</a>`;
+  });
+  // headings
+  html = html.replace(/^### (.+)$/gm,'<h3>$1</h3>');
+  html = html.replace(/^## (.+)$/gm,'<h2>$1</h2>');
+  html = html.replace(/^# (.+)$/gm,'<h1>$1</h1>');
+  // bold / italic
+  html = html.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');
+  html = html.replace(/\*(.+?)\*/g,'<em>$1</em>');
+  // inline code
+  html = html.replace(/`([^`]+)`/g,'<code>$1</code>');
+  // blockquote
+  html = html.replace(/^&gt; (.+)$/gm,'<blockquote>$1</blockquote>');
+  // hr
+  html = html.replace(/^---$/gm,'<hr>');
+  // ul
+  html = html.replace(/^[-*] (.+)$/gm,'<li>$1</li>');
+  html = html.replace(/(<li>.*<\/li>)/gs, '<ul>$1</ul>');
+  // ol
+  html = html.replace(/^\d+\. (.+)$/gm,'<li>$1</li>');
+  // paragraphs
+  html = html.split(/
+
++/).map(block=>{
+    if(/^<(h[1-3]|ul|ol|blockquote|hr|pre)/.test(block.trim())) return block;
+    return `<p>${block.replace(/
+/g,'<br>')}</p>`;
+  }).join('
+');
+  return html;
+}
+
+// ── Vault 操作函式 ──
+function saveVaultNote(t){
+  const val = document.getElementById('vaultEditor')?.value||'';
+  tplData.notes[t] = val;
   saveTplData(); toast('已儲存筆記');
 }
-function copyTplNote(tid){
-  navigator.clipboard.writeText(document.getElementById(tid)?.value||'').then(()=>toast('已複製'));
+function copyVaultNote(t){
+  navigator.clipboard.writeText(tplData.notes[t]||'').then(()=>toast('已複製'));
 }
-function filterByTpl(t){
-  document.getElementById('tplFilter').value=t; setView('list');
-}
+function exportVaultMd(t){
+  const sop = tplData.sop[t]||[];
+  const cl = tplData.changelog[t]||[];
+  const note = tplData.notes[t]||'';
+  const used = docs.filter(d=>d.template===t);
+  const frontmatter = `---
+title: ${t}
+state: ${getTopState(t)}
+used: ${used.length}
+sop_steps: ${sop.length}
+changelog_count: ${cl.length}
+exported: ${todayISO()}
+---
 
-function addSopStep(t,sopId){
-  const inp=document.getElementById(sopId+'_input');
-  const text=inp?.value.trim(); if(!text) return;
+`;
+  const sopSection = sop.length ? `
+
+## SOP 步驟
+${sop.map((s,i)=>`${i+1}. ${s}`).join('
+')}` : '';
+  const logSection = cl.length ? `
+
+## 迭代紀錄
+${cl.map(e=>`- **${e.ver}** ${e.date}｜${e.note}`).join('
+')}` : '';
+  const full = frontmatter + note + sopSection + logSection;
+  const url = URL.createObjectURL(new Blob([full],{type:'text/markdown;charset=utf-8'}));
+  const a = document.createElement('a');
+  a.href=url; a.download=`${t}.md`;
+  document.body.appendChild(a); a.click();
+  setTimeout(()=>{ a.remove(); URL.revokeObjectURL(url); }, 200);
+  toast('已匯出 .md 檔案');
+}
+function getTopState(t){
+  const stateArr = docs.filter(d=>d.template===t).map(d=>d.templateState);
+  return stateArr.length?(
+    stateArr.includes('需新建')?'需新建':stateArr.includes('需微調')?'需微調':
+    stateArr.includes('已迭代')?'已迭代':stateArr.includes('可套用')?'可套用':'未分類'
+  ):'未分類';
+}
+function vaultAddSop(t){
+  const inp = document.getElementById('vaultSopInput');
+  const text = inp?.value.trim(); if(!text) return;
   if(!tplData.sop[t]) tplData.sop[t]=[];
   tplData.sop[t].push(text); saveTplData(); inp.value='';
-  renderTemplates();
+  renderVaultTabContent(t);
 }
-function delSopStep(t,i){
-  tplData.sop[t].splice(i,1); saveTplData(); renderTemplates();
+function vaultDelSop(t,i){
+  tplData.sop[t].splice(i,1); saveTplData(); renderVaultTabContent(t);
+}
+function vaultAddLog(t){
+  const inp = document.getElementById('vaultLogInput');
+  const note = inp?.value.trim(); if(!note) return;
+  if(!tplData.changelog[t]) tplData.changelog[t]=[];
+  const ver = 'v'+(tplData.changelog[t].length+1);
+  tplData.changelog[t].push({ver, date:todayISO(), note});
+  saveTplData(); inp.value=''; renderVaultTabContent(t); toast('已記錄迭代紀錄');
 }
 
-function addChangelog(t,tid){
-  const inp=document.getElementById(tid+'_lognote');
-  const note=inp?.value.trim(); if(!note) return;
-  if(!tplData.changelog[t]) tplData.changelog[t]=[];
-  const ver='v'+(tplData.changelog[t].length+1);
-  tplData.changelog[t].push({ver, date:todayISO(), note});
-  saveTplData(); inp.value=''; renderTemplates(); toast('已記錄迭代紀錄');
+
+
+
+
+
+
+function filterByTpl(t){
+  document.getElementById('tplFilter').value=t; setView('list');
 }
 
 // ══════════════════════════════════
@@ -821,7 +1337,7 @@ function loadSopSteps(){
 function openDoc(id){
   editId=id||null;
   const d=id?docs.find(x=>x.id===id):{
-    title:'',docNo:'',source:'',received:todayISO(),due:'',
+    title:'',docNo:autoDocNo(),source:'',received:todayISO(),due:'',
     cat:cats[0],template:'',status:'new',templateState:'未分類',
     speed:'普通件',owner:'我',waiting:'no',next:'',link:'',note:'',steps:[]
   };
@@ -930,6 +1446,7 @@ function exportCSV(){
   const a=document.createElement('a'); a.href=url; a.download=`公文承辦OS_${todayISO()}.csv`;
   document.body.appendChild(a); a.click(); setTimeout(()=>{ a.remove(); URL.revokeObjectURL(url); },200);
   toast('CSV 已匯出');
+  markBackupDone();
 }
 function importSample(){
   if(!confirm('載入範例資料會覆蓋目前本機資料，確定嗎？')) return;
@@ -952,10 +1469,11 @@ function saveSetup(){
 }
 async function testGas(){
   const url=document.getElementById('gasUrl').value.trim();
+  const token=document.getElementById('gasToken').value.trim();
   if(!url){ toast('請先輸入 GAS URL'); return; }
   document.getElementById('gasTestResult').textContent='連線測試中…';
   try{
-    const u=new URL(url); u.searchParams.set('action','ping');
+    const u=new URL(url); u.searchParams.set('action','ping'); u.searchParams.set('token',token);
     const r=await fetch(u.toString()); const j=await r.json();
     document.getElementById('gasTestResult').textContent=j.ok?'✅ 連線成功！':'❌ 格式異常：'+JSON.stringify(j);
   } catch(e){ document.getElementById('gasTestResult').textContent='❌ 連線失敗：'+e.message; }
@@ -968,7 +1486,7 @@ async function syncPush(){
     const r=await fetch(url,{method:'POST',headers:{'Content-Type':'text/plain'},
       body:JSON.stringify({action:'push',token:localStorage.getItem(TOKEN_KEY)||'',data:docs,tplData})});
     const j=await r.json();
-    if(j.ok){ syncDotState('ok'); document.getElementById('syncStatus').textContent='已同步至雲端 · '+new Date().toLocaleTimeString(); toast('雲端同步完成'); }
+    if(j.ok){ syncDotState('ok'); document.getElementById('syncStatus').textContent='已同步至雲端 · '+new Date().toLocaleTimeString(); toast('雲端同步完成'); markBackupDone(); }
     else{ syncDotState('err'); toast('同步失敗：'+(j.error||'未知')); }
   } catch(e){ syncDotState('err'); toast('連線失敗'); }
 }
@@ -998,11 +1516,113 @@ function toast(msg){
 }
 
 // ══════════════════════════════════
+//  Alert Banner (到期提醒)
+// ══════════════════════════════════
+const ALERT_KEY = 'govdoc-alert-dismissed';
+
+function checkAlerts(){
+  const today = todayISO();
+  const dismissed = JSON.parse(localStorage.getItem(ALERT_KEY)||'[]');
+  const urgent = docs.filter(d=>{
+    if(d.status==='done') return false;
+    if(dismissed.includes(String(d.id))) return false;
+    const l = lightOf(d);
+    return l.id==='red' || l.id==='orange';
+  });
+  const banner = document.getElementById('alertBanner');
+  const list = document.getElementById('alertList');
+  if(!urgent.length){ banner.classList.remove('show'); return; }
+  const late = urgent.filter(d=>lightOf(d).id==='red').length;
+  const todayDue = urgent.filter(d=>lightOf(d).id==='orange').length;
+  document.getElementById('alertTitle').textContent =
+    `⚠ 到期提醒：逾期 ${late} 件、今日到期 ${todayDue} 件`;
+  list.innerHTML = urgent.slice(0,6).map(d=>{
+    const l=lightOf(d);
+    return `<div class="alert-item" onclick="openDoc(${d.id})">
+      <span class="alert-badge ${l.id}">${l.label}</span>
+      <span class="alert-item-title">${esc(d.title)}</span>
+    </div>`;
+  }).join('');
+  banner.classList.add('show');
+}
+
+function dismissAlert(){
+  const urgent = docs.filter(d=>{
+    if(d.status==='done') return false;
+    const l=lightOf(d); return l.id==='red'||l.id==='orange';
+  });
+  const ids = JSON.parse(localStorage.getItem(ALERT_KEY)||'[]');
+  urgent.forEach(d=>{ if(!ids.includes(String(d.id))) ids.push(String(d.id)); });
+  localStorage.setItem(ALERT_KEY, JSON.stringify(ids));
+  document.getElementById('alertBanner').classList.remove('show');
+}
+
+// ══════════════════════════════════
+//  Backup 備份提醒
+// ══════════════════════════════════
+const BACKUP_KEY = 'govdoc-last-backup';
+const BACKUP_DISMISS_KEY = 'govdoc-backup-dismissed-date';
+const BACKUP_DAYS = 3; // 超過幾天未同步就提醒
+
+function checkBackup(){
+  const banner = document.getElementById('backupBanner');
+  const msg = document.getElementById('backupMsg');
+  if(!banner||!msg) return;
+
+  // 今天已關閉過就不再顯示
+  const dismissedDate = localStorage.getItem(BACKUP_DISMISS_KEY)||'';
+  if(dismissedDate === todayISO()) return;
+
+  const lastBackup = localStorage.getItem(BACKUP_KEY);
+  const hasGas = !!localStorage.getItem(GAS_KEY);
+
+  if(!lastBackup){
+    // 從未同步過，且有資料
+    if(docs.length > 0){
+      msg.innerHTML = `⚠ <b>資料從未備份</b>——localStorage 清除後將全部遺失。建議設定 GAS 同步或定期匯出 CSV。`;
+      banner.classList.add('show');
+    }
+    return;
+  }
+
+  const daysSince = Math.floor((new Date(todayISO()) - new Date(lastBackup)) / 86400000);
+  if(daysSince >= BACKUP_DAYS){
+    const action = hasGas ? '同步雲端或匯出 CSV' : '匯出 CSV';
+    msg.innerHTML = `📦 <b>距上次備份已 ${daysSince} 天</b>（${lastBackup}）——建議${action}，避免資料遺失。`;
+    banner.classList.add('show');
+  }
+}
+
+function dismissBackup(){
+  localStorage.setItem(BACKUP_DISMISS_KEY, todayISO());
+  document.getElementById('backupBanner').classList.remove('show');
+}
+
+function markBackupDone(){
+  localStorage.setItem(BACKUP_KEY, todayISO());
+  document.getElementById('backupBanner').classList.remove('show');
+  localStorage.setItem(BACKUP_DISMISS_KEY, todayISO());
+}
+
+// ══════════════════════════════════
+//  Auto doc number
+// ══════════════════════════════════
+function autoDocNo(){
+  const year = new Date().getFullYear();
+  const existing = docs.map(d=>d.docNo||'').filter(n=>n.startsWith(year+'-'));
+  const nums = existing.map(n=>parseInt(n.split('-')[1]||0)).filter(n=>!isNaN(n));
+  const next = nums.length ? Math.max(...nums)+1 : 1;
+  return `${year}-${String(next).padStart(3,'0')}`;
+}
+
+// ══════════════════════════════════
 //  Init
 // ══════════════════════════════════
 initSelects();
 if(localStorage.getItem(GAS_KEY)) syncDotState('ok');
 render();
+checkAlerts();
+checkBackup();
 </script>
 </body>
 </html>
