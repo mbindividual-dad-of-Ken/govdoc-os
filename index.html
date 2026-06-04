@@ -601,7 +601,7 @@ function load(){
   try{srcs=JSON.parse(localStorage.getItem(SK))||null;}catch(e){srcs=null;}
   if(!srcs)srcs=DSRCS.slice();
   try{tplMap=JSON.parse(localStorage.getItem(PK))||null;}catch(e){tplMap=null;}
-  if(!tplMap){
+  if(!tplMap||Object.keys(tplMap).length===0){
     // migrate 從 DTPLS 常數建立初始 tplMap
     tplMap={};
     Object.keys(DTPLS).forEach(function(cat){
