@@ -602,6 +602,8 @@ function load(){
   if(!srcs)srcs=DSRCS.slice();
   try{tplMap=JSON.parse(localStorage.getItem(PK))||null;}catch(e){tplMap=null;}
   if(!tplMap||Object.keys(tplMap).length===0){
+    // 清除 localStorage 裡的舊空值，確保 migrate 後能存入
+    localStorage.removeItem(PK);
     // migrate 從 DTPLS 常數建立初始 tplMap
     tplMap={};
     Object.keys(DTPLS).forEach(function(cat){
@@ -1020,6 +1022,19 @@ function renderVTree(){
 }
 
 // 例稿整體狀態（取各 variant 中最嚴重的）
+function vkTopState(key){
+  var cl=(tpl.changelog&&tpl.changelog[key])||[];
+  var note=(tpl.notes&&tpl.notes[key])||'';
+  var sop=(tpl.sop&&tpl.sop[key])||[];
+  var base=tplBase(key);
+  var docStates=docs.filter(function(d){return d.template===base;}).map(function(d){return d.templateState;});
+  if(docStates.indexOf('需新建')>=0)return '需新建';
+  if(docStates.indexOf('需微調')>=0)return '需微調';
+  if(cl.length>0)return '已迭代';
+  if(sop.length>0||note.trim().length>0)return '可套用';
+  return '未分類';
+}
+
 function topTs2(base){
   var vkeys=variantKeysOf(base);
   var states=vkeys.map(vkTopState);
