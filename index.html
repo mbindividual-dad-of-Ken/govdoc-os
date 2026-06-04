@@ -341,6 +341,42 @@ tr:last-child td{border-bottom:none}
 .diag-ok{color:var(--green)}.diag-warn{color:var(--orange)}.diag-err{color:var(--red)}
 .storage-bar{height:8px;background:var(--bg2);border-radius:999px;overflow:hidden;margin:8px 0 4px}
 .storage-fill{height:100%;border-radius:999px;background:var(--primary);transition:.3s}
+
+/* 案件類型 radio */
+.case-type-bar{display:flex;align-items:center;gap:8px;margin-bottom:14px;padding:10px 14px;background:var(--bg2);border-radius:9px;border:1px solid var(--border)}
+.case-type-bar label{display:flex;align-items:center;gap:6px;cursor:pointer;font-size:13px;font-weight:500;padding:4px 12px;border-radius:7px;transition:.12s;border:1px solid transparent}
+.case-type-bar label:has(input:checked){background:var(--primary);color:#fff;border-color:var(--primary)}
+.case-type-bar label input{display:none}
+.case-type-bar .ct-hint{font-size:11px;color:var(--muted);margin-left:8px}
+/* 承辦日誌 */
+.log-sec{margin-top:14px;padding-top:14px;border-top:1px solid var(--border)}
+.log-sec-t{font-size:11px;font-weight:700;color:var(--sub);letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between}
+.log-add-bar{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap}
+.log-add-bar button{border:1px solid var(--border2);background:var(--card);border-radius:6px;padding:5px 10px;font-size:11px;font-weight:500;cursor:pointer;font-family:inherit;transition:.12s}
+.log-add-bar button:hover{border-color:var(--primary);color:var(--primary)}
+.log-entry{display:flex;gap:8px;padding:8px 10px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;margin-bottom:6px;align-items:flex-start}
+.log-icon{font-size:14px;flex-shrink:0;margin-top:2px}
+.log-body{flex:1;min-width:0}
+.log-date{font-size:10px;color:var(--muted);margin-bottom:3px}
+.log-text{font-size:12px;line-height:1.5;white-space:pre-wrap;word-break:break-all}
+.log-followup{display:flex;gap:6px;margin-top:4px;flex-wrap:wrap;align-items:center}
+.log-who{font-size:11px;color:var(--blue);font-weight:600}
+.log-fdate{font-size:10px;border-radius:3px;padding:1px 6px;font-weight:700}
+.log-fdate.overdue{background:var(--red-bg);color:var(--red)}
+.log-fdate.upcoming{background:var(--yellow-bg);color:var(--yellow)}
+.log-fdate.ok{background:var(--pbg);color:var(--primary)}
+.log-done-badge{font-size:10px;color:var(--green);font-weight:700}
+.log-del{border:none;background:none;color:var(--muted);cursor:pointer;font-size:14px;padding:0 2px;flex-shrink:0;margin-top:2px}
+.log-del:hover{color:var(--red)}
+/* log 輸入表單 */
+.log-form{background:var(--pbg);border:1px solid var(--plight);border-radius:9px;padding:12px;margin-bottom:10px;display:none}
+.log-form.show{display:block}
+.log-form .lf-row{display:flex;gap:6px;margin-bottom:6px;flex-wrap:wrap;align-items:center}
+.log-form .lf-row label{font-size:11px;color:var(--sub);font-weight:700;min-width:40px;flex-shrink:0}
+.log-form .lf-row input,.log-form .lf-row textarea,.log-form .lf-row select{flex:1;border:1px solid var(--border2);border-radius:6px;padding:6px 8px;font-size:12px;font-family:inherit;outline:none;background:var(--card);min-width:100px}
+.log-form .lf-row input:focus,.log-form .lf-row textarea:focus{border-color:var(--primary)}
+.log-form textarea{min-height:60px;resize:vertical;width:100%}
+.log-form .lf-acts{display:flex;gap:6px;justify-content:flex-end;margin-top:6px}
 </style>
 </head>
 <body>
@@ -431,10 +467,17 @@ tr:last-child td{border-bottom:none}
 <div class="mbg" id="docBg" onclick="if(event.target===this)closeM('docBg')">
   <div class="modal">
     <div class="mhd"><div><h2 id="docTitle">新增公文</h2></div><button class="mbtn sec" onclick="closeM('docBg')">關閉</button></div>
+    <!-- 案件類型 -->
+    <div class="case-type-bar">
+      <label><input type="radio" name="caseType" value="single" checked onchange="setCaseType('single')">📄 單次公文</label>
+      <label><input type="radio" name="caseType" value="project" onchange="setCaseType('project')">🗂 議題型案件</label>
+      <span class="ct-hint" id="caseTypeHint">單次辦理，不需跨案件追蹤</span>
+    </div>
+    <!-- 快速/完整切換 -->
     <div class="mode-toggle-bar">
       <button class="mode-pill active" id="modeQuick" onclick="setDocMode('quick')">⚡ 快速</button>
       <button class="mode-pill inactive" id="modeFull" onclick="setDocMode('full')">☰ 完整</button>
-      <span id="modeHint" style="font-size:11px;color:var(--muted)">快速模式：只填必要欄位，其餘之後補</span>
+      <span id="modeHint" style="font-size:11px;color:var(--muted)">快速模式：只填必要欄位</span>
     </div>
     <div class="mform">
       <div class="field full"><label>主旨 / 案名</label><input id="fTitle"/></div>
@@ -453,11 +496,9 @@ tr:last-child td{border-bottom:none}
       <div class="field full adv-field"><label>連結</label><input id="fLink"/></div>
       <div class="field full adv-field"><label>備註</label><textarea id="fNote"></textarea></div>
     </div>
-    <!-- 議題模式 toggle -->
-    <button class="gtd-modal-toggle" id="gtdToggle" onclick="toggleGtdMode()">🗂 議題模式（展開 GTD 欄位）</button>
-    <!-- GTD 欄位區（預設隱藏） -->
-    <div class="gtd-modal-sec" id="gtdSec">
-      <div class="field full" style="margin-bottom:8px">
+    <!-- 議題標籤（議題型案件才顯示） -->
+    <div id="projectSection" style="display:none;margin-top:12px">
+      <div class="field full">
         <label>議題標籤</label>
         <div class="project-picker" id="projectPicker">
           <div class="project-picker-head">
@@ -471,35 +512,8 @@ tr:last-child td{border-bottom:none}
           </div>
         </div>
       </div>
-      <!-- GTD 分頁 -->
-      <div class="gtd-tabs">
-        <button class="gtd-tab on" data-gtab="next" onclick="switchGtdTab('next')">Next Actions</button>
-        <button class="gtd-tab" data-gtab="waiting" onclick="switchGtdTab('waiting')">Waiting For</button>
-        <button class="gtd-tab" data-gtab="inbox" onclick="switchGtdTab('inbox')">Inbox</button>
-        <button class="gtd-tab" data-gtab="change" onclick="switchGtdTab('change')">Change Log</button>
-        <button class="gtd-tab" data-gtab="ref" onclick="switchGtdTab('ref')">Reference</button>
-      </div>
-      <div class="gtd-pane on" id="gtab-next">
-        <div id="nextRows"></div>
-        <button class="small-btn" onclick="addGtdRow('next')">＋ 新增下一步</button>
-      </div>
-      <div class="gtd-pane" id="gtab-waiting">
-        <div id="waitingRows"></div>
-        <button class="small-btn" onclick="addGtdRow('waiting')">＋ 新增等待事項</button>
-      </div>
-      <div class="gtd-pane" id="gtab-inbox">
-        <div id="inboxRows"></div>
-        <button class="small-btn" onclick="addGtdRow('inbox')">＋ 新增 Inbox</button>
-      </div>
-      <div class="gtd-pane" id="gtab-change">
-        <div id="changeRows"></div>
-        <button class="small-btn" onclick="addGtdRow('change')">＋ 新增修正紀錄</button>
-      </div>
-      <div class="gtd-pane" id="gtab-ref">
-        <div id="refRows"></div>
-        <button class="small-btn" onclick="addGtdRow('ref')">＋ 新增參考資料</button>
-      </div>
     </div>
+    <!-- Workflow 子任務 -->
     <div class="wf-sec adv-field">
       <div class="wf-sec-t">Workflow 子任務</div>
       <div id="wfList"></div>
@@ -508,6 +522,28 @@ tr:last-child td{border-bottom:none}
         <button class="small-btn pri" onclick="addWfStep()">＋</button>
         <button class="small-btn" onclick="loadSop()">套用 SOP</button>
       </div>
+    </div>
+    <!-- 承辦日誌 -->
+    <div class="log-sec adv-field">
+      <div class="log-sec-t">
+        <span>承辦日誌</span>
+        <span id="logCount" style="font-size:11px;color:var(--muted);font-weight:400"></span>
+      </div>
+      <div class="log-add-bar">
+        <button onclick="showLogForm('note')">📝 紀錄</button>
+        <button onclick="showLogForm('followup')">⏸ 待跟進</button>
+        <button onclick="showLogForm('milestone')">✅ 里程碑</button>
+      </div>
+      <!-- 日誌輸入表單（動態顯示） -->
+      <div class="log-form" id="logForm">
+        <div id="logFormFields"></div>
+        <div class="lf-acts">
+          <button class="small-btn" onclick="cancelLogForm()">取消</button>
+          <button class="small-btn pri" onclick="submitLogEntry()">新增</button>
+        </div>
+      </div>
+      <!-- 日誌列表 -->
+      <div id="logList"></div>
     </div>
     <div class="macts">
       <button class="mbtn del" id="delBtn" style="display:none" onclick="deleteDoc()">刪除</button>
@@ -554,12 +590,13 @@ var TSSCLASS=['s0','s1','s2','s3','s4'];
 var COLORS=['#9b6a1a','#4a4598','#1d5c8a','#8a3020','#2d7060','#5f5e5a','#7a5a20','#3a6080'];
 var K='govdoc-os-v3',GK='govdoc-os-gas-url',TK='govdoc-os-gas-token';
 var DK='govdoc-os-tpl',CK='govdoc-os-cats',SK='govdoc-os-sources',PK='govdoc-os-tplmap',PTAG='govdoc-os-ptags';
+// log 欄位整合在 docs 裡（d.log 陣列），不需要額外 key
 var AK='govdoc-alert-dismissed',BK='govdoc-last-backup',BDK='govdoc-backup-dismissed';
 
 var docs,tpl,cats,srcs,tplMap,editId=0,curView='kanban',wfSteps=[];
 var vaultOpen,vaultOpenTpls,vaultTpl=null,vaultTab='note',dragId=null;
-var projectTags=[],activeProjectId=null,gtdState={},gtdMode=false;
-var docMode='quick'; // 'quick' | 'full'
+var projectTags=[],activeProjectId=null,logState=[],logFormType=null;
+var docMode='quick',caseType='single'; // docMode: quick|full, caseType: single|project
 
 function g(id){return document.getElementById(id);}
 function esc(s){if(s==null)return '';return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
@@ -579,6 +616,10 @@ function lightOf(d){
   if(diff===0)return{id:'orange',lb:'今日到期'};
   if(diff<=3)return{id:'yellow',lb:diff+'日後'};
   return{id:'green',lb:diff+'日後'};
+}
+
+function isIncomplete(d){
+  return !d.due || !d.cat || !d.template || !d.source;
 }
 
 function topState(t){
@@ -620,8 +661,19 @@ function load(){
 function save(){localStorage.setItem(K,JSON.stringify(docs));}
 function saveTplMap(){localStorage.setItem(PK,JSON.stringify(tplMap));}
 function saveProjectTags(){localStorage.setItem(PTAG,JSON.stringify(projectTags));}
-function normalizeGtd(d){if(!d.gtd)d.gtd={};['inbox','next','waiting','change','ref'].forEach(function(k){if(!Array.isArray(d.gtd[k]))d.gtd[k]=[];});}
-function cloneGtd(src){src=src||{};return{inbox:(src.inbox||[]).map(function(x){return{date:x.date||today(),source:x.source||'',text:x.text||''};}),next:(src.next||[]).map(function(x){return{text:x.text||'',done:!!x.done};}),waiting:(src.waiting||[]).map(function(x){return{who:x.who||'',text:x.text||'',followDate:x.followDate||'',done:!!x.done};}),change:(src.change||[]).map(function(x){return{date:x.date||today(),version:x.version||'',section:x.section||'',text:x.text||'',reason:x.reason||''};}),ref:(src.ref||[]).map(function(x){return{label:x.label||'',url:x.url||'',note:x.note||''};})};}
+function normalizeDoc(d){
+  // migrate 舊 gtd 結構 → log
+  if(d.gtd&&typeof d.gtd==='object'&&!d.log){
+    d.log=[];
+    ((d.gtd&&d.gtd.next)||[]).forEach(function(x){if(x&&x.text)d.log.push({id:Date.now()+Math.random(),date:today(),type:'note',text:'[Next Action] '+x.text,done:!!x.done});});
+    ((d.gtd&&d.gtd.waiting)||[]).forEach(function(x){if(x&&x.text)d.log.push({id:Date.now()+Math.random(),date:today(),type:'followup',text:x.text,who:x.who||'',followDate:x.followDate||'',done:!!x.done});});
+    delete d.gtd;
+  }
+  if(!Array.isArray(d.log))d.log=[];
+  if(!d.caseType)d.caseType=d.projectId?'project':'single';
+}
+// 向後相容別名
+function normalizeGtd(d){normalizeDoc(d);}
 function saveTpl(){localStorage.setItem(DK,JSON.stringify(tpl));}
 function saveCats(){localStorage.setItem(CK,JSON.stringify(cats));}
 function saveSrcs(){localStorage.setItem(SK,JSON.stringify(srcs));}
@@ -817,24 +869,72 @@ function renderTodo(){
   }).join('')+'</div>';
 }
 
+
+function renderTodo(){
+  var active=docs.filter(function(d){return d.status!=='done'&&d.waiting!=='yes';});
+  function pri(d){var l=lightOf(d).id;var p={red:0,orange:1,yellow:3,green:6,blue:8,gray:9}[l]||7;if(d.speed==='最速件')p-=2;else if(d.speed==='速件')p-=1;return p;}
+  active.sort(function(a,b){var pa=pri(a),pb=pri(b);if(pa!==pb)return pa-pb;return(a.due||'9999-99-99').localeCompare(b.due||'9999-99-99');});
+  var groups=[
+    {k:'red',lb:'&#9888; 已逾期',c:'var(--red)',items:active.filter(function(d){return lightOf(d).id==='red';})},
+    {k:'orange',lb:'&#128293; 今日到期',c:'var(--orange)',items:active.filter(function(d){return lightOf(d).id==='orange';})},
+    {k:'fast',lb:'&#9889; 速件 / 最速件',c:'var(--blue)',items:active.filter(function(d){return(d.speed==='速件'||d.speed==='最速件')&&['red','orange'].indexOf(lightOf(d).id)<0;})},
+    {k:'yellow',lb:'&#8987; 3日內到期',c:'var(--yellow)',items:active.filter(function(d){return lightOf(d).id==='yellow'&&!(d.speed==='速件'||d.speed==='最速件');})},
+    {k:'green',lb:'&#128203; 承辦中',c:'var(--primary)',items:active.filter(function(d){return lightOf(d).id==='green'&&!(d.speed==='速件'||d.speed==='最速件');})}
+  ];
+  var root=g('todoContent');
+  var follow=followupsHTML();
+  if(!active.length){root.innerHTML=follow+'<div class="todo-empty">&#127881; 目前沒有待辦案件</div>';return;}
+  root.innerHTML=follow+'<div class="todo-wrap">'+groups.filter(function(gr){return gr.items.length;}).map(function(gr){
+    return '<div class="tds">'
+      +'<div class="tdsh"><span class="tdst" style="color:'+gr.c+'">'+gr.lb+'（'+gr.items.length+'）</span><div class="tddiv"></div></div>'
+      +gr.items.map(function(d){
+        var l=lightOf(d),color=catColor(d.cat||''),steps=d.steps||[],ds=steps.filter(function(s){return s.done;}).length;
+        var si=STS.findIndex(function(s){return s.id===d.status;});
+        var ns=(si>=0&&si<STS.length-1)?STS[si+1]:null;
+        return '<div class="tdc" style="border-left-color:'+color+'">'
+          +'<div class="tdc-l" onclick="openDoc('+d.id+')">'
+            +'<div class="tdc-title">'+esc(d.title)+'</div>'
+            +'<div class="tdc-meta"><span class="lt '+l.id+'">'+l.lb+'</span><span class="ctag" style="background:'+color+'18;color:'+color+'">'+esc(d.cat||'')+'</span>'+(d.source?'<span class="stag">'+esc(d.source)+'</span>':'')+(d.projectId?'<span class="project-tag">'+esc(d.projectId)+'</span>':'')+(d.speed&&d.speed!=='普通件'?'<span class="sptag '+spCls(d.speed)+'">'+esc(d.speed)+'</span>':'')+(d.due?'<span style="font-size:10px;color:var(--muted)">期限 '+esc(d.due)+'</span>':'')+'</div>'
+            +(d.next?'<div class="tdc-next">&#9654; '+esc(d.next)+'</div>':'')
+          +'</div>'
+          +'<div class="tdc-r" onclick="event.stopPropagation()">'
+            +'<span class="tdc-wf">'+(steps.length?'WF '+ds+'/'+steps.length:slb(d.status))+'</span>'
+            +'<div class="tdc-btns">'
+              +(ns?'<button class="qb" onclick="qSt('+d.id+',\''+ns.id+'\')">'+'&#8594; '+ns.lb+'</button>':'')
+              +'<button class="qb g" onclick="qSt('+d.id+',\'done\')">✓ 結案</button>'
+              +'<button class="qb b" onclick="qWt('+d.id+',1)">&#9646; 等回復</button>'
+            +'</div>'
+          +'</div>'
+          +'</div>';
+      }).join('')
+      +'</div>';
+  }).join('')+'</div>';
+}
+
 function followupsHTML(){
   var rows=[];
-  docs.forEach(function(d){normalizeGtd(d);(d.gtd.waiting||[]).forEach(function(w){if(!w.done)rows.push({doc:d,item:w});});});
-  rows.sort(function(a,b){return(a.item.followDate||'9999-99-99').localeCompare(b.item.followDate||'9999-99-99');});
+  docs.forEach(function(d){
+    normalizeDoc(d);
+    (d.log||[]).forEach(function(e){
+      if(e.type==='followup'&&!e.done)rows.push({doc:d,entry:e});
+    });
+  });
+  rows.sort(function(a,b){return(a.entry.followDate||'9999-99-99').localeCompare(b.entry.followDate||'9999-99-99');});
   if(!rows.length)return '';
-  return '<section class="follow-table"><div class="follow-head"><b>Waiting For 追蹤日總表</b><span style="font-size:11px;color:var(--muted)">依追蹤日排序・點擊可開啟公文</span></div>'
+  return '<section class="follow-table"><div class="follow-head"><b>&#9646; Waiting For 追蹤總表</b><span style="font-size:11px;color:var(--muted)">依追蹤日排序・點擊可開啟公文</span></div>'
     +rows.slice(0,12).map(function(r){
-      var l=r.item.followDate?(new Date(r.item.followDate)<new Date(today())?'red':'yellow'):'gray';
-      return '<div class="follow-row" onclick="openDoc('+r.doc.id+')">'
-        +'<div data-label="追蹤日"><span class="lt '+l+'">'+esc(r.item.followDate||'未設')+'</span></div>'
-        +'<div data-label="議題"><strong>'+esc(r.doc.projectId||r.doc.title)+'</strong><div class="muted">'+esc(r.doc.title)+'</div></div>'
-        +'<div data-label="對象">'+esc(r.item.who||'待確認')+'</div>'
-        +'<div data-label="等待事項">'+esc(r.item.text||'')+'</div>'
-        +'<div data-label="狀態"><span class="stag">'+esc(slb(r.doc.status))+'</span></div>'
+      var e=r.entry,d=r.doc;
+      var diff=e.followDate?Math.ceil((new Date(e.followDate)-new Date(today()))/86400000):999;
+      var l=diff<0?'red':diff<=3?'yellow':'gray';
+      return '<div class="follow-row" onclick="openDoc('+d.id+')">'
+        +'<div data-label="追蹤日"><span class="lt '+l+'">'+esc(e.followDate||'未設')+'</span></div>'
+        +'<div data-label="公文"><strong>'+esc(d.projectId||d.title.slice(0,20))+'</strong><div class="muted">'+esc(d.title)+'</div></div>'
+        +'<div data-label="等待對象">'+esc(e.who||'待確認')+'</div>'
+        +'<div data-label="等待事項">'+esc(e.text||'')+'</div>'
+        +'<div data-label="狀態"><span class="stag">'+esc(slb(d.status))+'</span></div>'
         +'</div>';
     }).join('')+'</section>';
 }
-
 
 function projectGroups(){
   var m={};docs.forEach(function(d){normalizeGtd(d);var pid=(d.projectId||'').trim();if(!pid)return;if(!m[pid])m[pid]=[];m[pid].push(d);});return m;
@@ -859,53 +959,74 @@ function renderProjects(){
   root.innerHTML='<div class="project-layout">'+side+'<section class="project-main">'+projectDetailHTML(activeProjectId,docsIn)+'</section></div>';
 }
 
-function flatGtd(arr,key){var out=[];arr.forEach(function(d){normalizeGtd(d);(d.gtd[key]||[]).forEach(function(x){out.push({doc:d,item:x});});});return out;}
+function flatGtd(arr,type){
+  var out=[];
+  arr.forEach(function(d){
+    normalizeDoc(d);
+    (d.log||[]).forEach(function(e){
+      if(e.type===type)out.push({doc:d,item:e});
+    });
+  });
+  return out;
+}
 
 function projectDetailHTML(pid,arr){
   if(!arr||!arr.length)return '<div class="vempty">尚無此議題資料</div>';
-  arr.forEach(normalizeGtd);
+  arr.forEach(normalizeDoc);
   var open=arr.filter(function(d){return d.status!=='done';}).length;
-  var wait=flatGtd(arr,'waiting').filter(function(x){return !x.item.done;}).length;
-  var next=flatGtd(arr,'next').filter(function(x){return !x.item.done;}).length;
-  var changes=flatGtd(arr,'change').length;
-  var inbox=flatGtd(arr,'inbox'),nxt=flatGtd(arr,'next'),w=flatGtd(arr,'waiting'),ch=flatGtd(arr,'change'),rf=flatGtd(arr,'ref');
+  var allLogs=[];arr.forEach(function(d){(d.log||[]).forEach(function(e){allLogs.push({doc:d,entry:e});});});
+  var followups=allLogs.filter(function(x){return x.entry.type==='followup'&&!x.entry.done;});
+  var notes=allLogs.filter(function(x){return x.entry.type==='note';});
+  var milestones=allLogs.filter(function(x){return x.entry.type==='milestone';});
+  followups.sort(function(a,b){return(a.entry.followDate||'9999').localeCompare(b.entry.followDate||'9999');});
+  allLogs.sort(function(a,b){return b.entry.date.localeCompare(a.entry.date);});
   var dueDocs=arr.filter(function(d){return d.status!=='done'&&d.due;}).sort(function(a,b){return a.due.localeCompare(b.due);});
   var nextDue=dueDocs[0];
-  var waitSoon=w.filter(function(x){return !x.item.done;}).sort(function(a,b){return(a.item.followDate||'9999-99-99').localeCompare(b.item.followDate||'9999-99-99');})[0];
-  var recentChange=ch.slice().sort(function(a,b){return(b.item.date||'').localeCompare(a.item.date||'');})[0];
-  var recentInbox=inbox.slice().sort(function(a,b){return(b.item.date||b.doc.received||'').localeCompare(a.item.date||a.doc.received||'');})[0];
-  var firstNext=nxt.filter(function(x){return !x.item.done;})[0];
-  var blockPoint=waitSoon?'待 '+(waitSoon.item.who||'對象')+'回復':(nextDue&&lightOf(nextDue).id==='red'?'已逾期，需優先處理':(firstNext?'待我方辦理：'+firstNext.item.text:'暫無明顯卡點'));
+  var nextFollowup=followups[0];
+  var lastMilestone=milestones.slice().sort(function(a,b){return b.entry.date.localeCompare(a.entry.date);})[0];
+  var blockPoint=nextFollowup?'等 '+(nextFollowup.entry.who||'對方')+'：'+nextFollowup.entry.text.slice(0,20):(nextDue&&lightOf(nextDue).id==='red'?'已逾期，需優先處理':'待我方辦理');
   var pids=pid.replace(/'/g,"\'");
   var hero='<div class="project-hero">'
     +'<div class="project-title">'+esc(pid)+'</div>'
-    +'<div class="hero-sub">議題首頁：集中看下一步、追蹤事項、卡點與關聯公文。</div>'
+    +'<div class="hero-sub">議題首頁：集中看承辦日誌、待跟進與關聯公文。</div>'
     +'<div class="project-summary">'
       +'<div class="project-stat"><b>'+arr.length+'</b><span>關聯公文</span></div>'
       +'<div class="project-stat"><b>'+open+'</b><span>未結案件</span></div>'
-      +'<div class="project-stat"><b>'+next+'</b><span>下一步</span></div>'
-      +'<div class="project-stat"><b>'+wait+'</b><span>待跟進</span></div>'
-      +'<div class="project-stat"><b>'+changes+'</b><span>修正紀錄</span></div>'
+      +'<div class="project-stat"><b>'+followups.length+'</b><span>待跟進</span></div>'
+      +'<div class="project-stat"><b>'+notes.length+'</b><span>紀錄筆數</span></div>'
+      +'<div class="project-stat"><b>'+milestones.length+'</b><span>里程碑</span></div>'
     +'</div>'
     +'<div class="project-kv">'
       +'<div class="kv"><b>下一個期限</b><span>'+(nextDue?esc(nextDue.due)+'｜'+esc(nextDue.title):'目前無未結期限')+'</span></div>'
       +'<div class="kv"><b>目前卡點</b><span>'+esc(blockPoint)+'</span></div>'
-      +'<div class="kv"><b>最近來文</b><span>'+(recentInbox?esc(recentInbox.item.date||recentInbox.doc.received||'')+'｜'+esc(recentInbox.item.text||recentInbox.doc.title):'尚無 Inbox')+'</span></div>'
-      +'<div class="kv"><b>最近修正</b><span>'+(recentChange?esc(recentChange.item.version||'')+'｜'+esc(recentChange.item.section||''):'尚無修正紀錄')+'</span></div>'
+      +'<div class="kv"><b>最近里程碑</b><span>'+(lastMilestone?esc(lastMilestone.entry.date)+'｜'+esc(lastMilestone.entry.text):'尚無里程碑')+'</span></div>'
+      +'<div class="kv"><b>最新日誌</b><span>'+(allLogs[0]?esc(allLogs[0].entry.date)+'｜'+esc(allLogs[0].entry.text.slice(0,25)):'尚無日誌')+'</span></div>'
     +'</div>'
     +'<div class="project-actions">'
-      +'<button class="small-btn pri" onclick="copyProjectSummary(\'"+pids+"\')">複製議題辦理摘要</button>'
+      +'<button class="small-btn pri" onclick="copyProjectSummary(\''+pids+'\')">複製議題辦理摘要</button>'
       +(nextDue?'<button class="small-btn" onclick="openDoc('+nextDue.id+')">開啟下一期限公文</button>':'')
-      +(waitSoon?'<button class="small-btn" onclick="openDoc('+waitSoon.doc.id+')">開啟最近追蹤事項</button>':'')
+      +(nextFollowup?'<button class="small-btn" onclick="openDoc('+nextFollowup.doc.id+')">開啟最近追蹤事項</button>':'')
     +'</div>'
     +'</div>';
 
+  // 合併時間軸
+  var timeline=allLogs.slice(0,20).map(function(x){
+    var e=x.entry,d=x.doc;
+    var icon=e.type==='note'?'📝':e.type==='followup'?'⏸':'✅';
+    var extra=e.type==='followup'&&e.who?'<span style="color:var(--blue);font-weight:600;font-size:11px;margin-left:6px">'+esc(e.who)+'</span>'+(e.followDate?'<span style="font-size:10px;color:var(--muted);margin-left:4px">追蹤 '+esc(e.followDate)+'</span>':''):'';
+    return '<div class="gtd-row'+(e.done?' done':'')+'">'+icon+' <strong>'+esc(e.date)+'</strong>｜'+esc(e.text)+(extra?extra:'')+'<br><span style="color:var(--muted);font-size:10px">來源：'+esc(d.title)+'</span></div>';
+  }).join('');
+
+  var followHtml=followups.map(function(x){
+    var e=x.entry,d=x.doc;
+    var diff=e.followDate?Math.ceil((new Date(e.followDate)-new Date(today()))/86400000):999;
+    var l=diff<0?'red':diff<=3?'yellow':'green';
+    return '<div class="gtd-row"><span class="lt '+l+'">'+(e.followDate||'未設')+'</span> <strong>'+esc(e.who||'待確認')+'</strong>｜'+esc(e.text)+'<br><span style="color:var(--muted);font-size:10px">'+esc(d.title)+'</span></div>';
+  }).join('');
+
   return hero+'<div class="gtd-grid">'
-    +gtdCard('Inbox 新進來文',inbox.map(function(x){return '<div class="gtd-row"><strong>'+esc(x.item.date||x.doc.received||'')+'</strong>｜'+esc(x.doc.title)+'<br>'+esc(x.item.text||'')+'</div>';}).join(''),false)
-    +gtdCard('Next Actions 下一步',nxt.map(function(x){return '<div class="gtd-row'+(x.item.done?' done':'')+'">&#9744; '+esc(x.item.text||'')+'<br><span style="color:var(--muted)">'+esc(x.doc.title)+'</span></div>';}).join(''),true)
-    +gtdCard('Waiting For 待跟進',w.map(function(x){var due=x.item.followDate?'<span class="lt '+(new Date(x.item.followDate)<new Date(today())&&!x.item.done?'red':'yellow')+'">追蹤 '+esc(x.item.followDate)+'</span> ':'';return '<div class="gtd-row'+(x.item.done?' done':'')+'">'+due+'<strong>'+esc(x.item.who||'待確認')+'</strong>｜'+esc(x.item.text||'')+'<br><span style="color:var(--muted)">'+esc(x.doc.title)+'</span></div>';}).join(''),true)
-    +gtdCard('Change Log 本次修正',ch.map(function(x){return '<div class="gtd-row"><strong>'+esc(x.item.version||'')+'</strong>｜'+esc(x.item.date||'')+'｜'+esc(x.item.section||'')+'<br>'+esc(x.item.text||'')+'</div>';}).join(''),true)
-    +gtdCard('Reference 參考資料',rf.map(function(x){return '<div class="gtd-row"><strong>'+esc(x.item.label||'參考資料')+'</strong><br>'+esc(x.item.url||'')+(x.item.note?'<br>'+esc(x.item.note):'')+'</div>';}).join(''),false)
+    +gtdCard('⏸ 待跟進（Waiting For）',followHtml,false)
+    +gtdCard('📋 承辦日誌時間軸',timeline||'<div class="gtd-empty">尚無日誌</div>',true)
     +gtdCard('關聯公文',arr.map(function(d){var l=lightOf(d);return '<div class="rdoc" onclick="openDoc('+d.id+')"><span class="lt '+l.id+'">'+l.lb+'</span><div class="rdoc-t">'+esc(d.title)+'</div><span class="stag">'+esc(slb(d.status))+'</span></div>';}).join(''),true)
     +'</div>';
 }
@@ -916,15 +1037,14 @@ function gtdCard(title,html,wide){
 
 function copyProjectSummary(pid){
   var groups=projectGroups(),arr=groups[pid]||[];
-  arr.forEach(normalizeGtd);
+  arr.forEach(normalizeDoc);
   var open=arr.filter(function(d){return d.status!=='done';}).length;
-  var nexts=flatGtd(arr,'next').filter(function(x){return !x.item.done;});
-  var waits=flatGtd(arr,'waiting').filter(function(x){return !x.item.done;});
+  var allLogs=[];arr.forEach(function(d){(d.log||[]).forEach(function(e){allLogs.push({doc:d,entry:e});});});
+  var followups=allLogs.filter(function(x){return x.entry.type==='followup'&&!x.entry.done;});
   var dueDocs=arr.filter(function(d){return d.status!=='done'&&d.due;}).sort(function(a,b){return a.due.localeCompare(b.due);});
   var lines=['【'+pid+'】議題辦理摘要 '+today(),'關聯公文：'+arr.length+' 件｜未結：'+open+' 件'];
   if(dueDocs[0])lines.push('最近期限：'+dueDocs[0].due+'｜'+dueDocs[0].title);
-  if(nexts.length){lines.push('');lines.push('▶ Next Actions：');nexts.forEach(function(x){lines.push('  ・'+x.item.text+'（'+x.doc.title+'）');});}
-  if(waits.length){lines.push('');lines.push('⏸ Waiting For：');waits.forEach(function(x){lines.push('  ・'+(x.item.who||'待確認')+'：'+x.item.text+(x.item.followDate?'（追蹤日 '+x.item.followDate+'）':'')+'（'+x.doc.title+'）');});}
+  if(followups.length){lines.push('');lines.push('⏸ 待跟進：');followups.forEach(function(x){var e=x.entry;lines.push('  ・'+(e.who||'待確認')+'：'+e.text+(e.followDate?'（追蹤 '+e.followDate+'）':'')+'（'+x.doc.title+'）');});}
   navigator.clipboard.writeText(lines.join('\n')).then(function(){toast('已複製議題辦理摘要');});
 }
 
@@ -1244,7 +1364,8 @@ function setDocMode(mode){
 function openDoc(id){
   editId=id||0;
   var d=id?docs.find(function(x){return x.id===id;}):null;
-  if(!d)d={title:'',docNo:autoDocNo(),source:'',received:today(),due:'',cat:cats[0],template:'',status:'new',templateState:'未分類',speed:'普通件',owner:'我',waiting:'no',next:'',link:'',note:'',steps:[]};
+  if(!d)d={title:'',docNo:autoDocNo(),source:'',received:today(),due:'',cat:cats[0],template:'',status:'new',templateState:'未分類',speed:'普通件',owner:'我',waiting:'no',next:'',link:'',note:'',steps:[],log:[],caseType:'single',projectId:''};
+  normalizeDoc(d);
   g('docTitle').textContent=id?'編輯公文':'新增公文';
   g('delBtn').style.display=id?'inline-block':'none';
   ['Title','DocNo','Source','Received','Due','Next','Link','Note','Owner'].forEach(function(k){var el=g('f'+k);if(el)el.value=d[k.charAt(0).toLowerCase()+k.slice(1)]||'';});
@@ -1256,49 +1377,155 @@ function openDoc(id){
   g('fWaiting').value=d.waiting||'no';
   wfSteps=(d.steps||[]).map(function(s){return{text:s.text,done:s.done};});
   renderWF();
-  // GTD 初始化
-  normalizeGtd(d);
-  gtdState=cloneGtd(d.gtd);
-  gtdMode=!!(d.projectId);
-  var sec=g('gtdSec'),toggle=g('gtdToggle');
-  if(sec){sec.classList.toggle('show',gtdMode);}
-  if(toggle){toggle.textContent=gtdMode?'🗂 議題模式（點此收合）':'🗂 議題模式（展開 GTD 欄位）';}
+  // 案件類型
+  caseType=d.caseType||'single';
+  setCaseType(caseType,true);
+  // 日誌
+  logState=(d.log||[]).map(function(e){return Object.assign({},e);});
+  logFormType=null;
+  var lf=g('logForm');if(lf)lf.classList.remove('show');
+  renderLogList();
+  // 議題標籤
   renderProjectPicker(d.projectId||'');
-  renderGtdRows('next');
-  // 模式初始化：有 projectId 自動展開議題模式（已有的案件）
-  // 新案件或無 projectId 的案件：保持上次模式
-  setDocMode(docMode);
-  // 編輯已有議題案件：自動展開完整模式
-  if(id && d.projectId){
-    setDocMode('full');
-  }
+  // 快速/完整模式
+  if(id&&d.projectId){setDocMode('full');}else{setDocMode(docMode);}
   g('docBg').classList.add('show');
 }
-
 function getDoc(){
-  return{id:editId||Date.now(),title:g('fTitle').value.trim(),docNo:g('fDocNo').value.trim(),source:g('fSource').value.trim(),received:g('fReceived').value,due:g('fDue').value,cat:g('fCat').value,template:g('fTemplate').value,status:g('fStatus').value,templateState:g('fTplState').value,speed:g('fSpeed').value,owner:g('fOwner').value.trim()||'我',waiting:g('fWaiting').value,next:g('fNext').value.trim(),link:g('fLink').value.trim(),note:g('fNote').value.trim(),steps:wfSteps.map(function(s){return{text:s.text,done:s.done};})};
+  var pid=currentProjectValue();
+  var ct=caseType;
+  return{
+    id:editId||Date.now(),
+    title:g('fTitle').value.trim(),
+    docNo:g('fDocNo').value.trim(),
+    source:g('fSource').value.trim(),
+    received:g('fReceived').value,
+    due:g('fDue').value,
+    cat:g('fCat').value,
+    template:g('fTemplate').value,
+    status:g('fStatus').value,
+    templateState:g('fTplState').value,
+    speed:g('fSpeed').value,
+    owner:g('fOwner').value.trim()||'我',
+    waiting:g('fWaiting').value,
+    next:g('fNext').value.trim(),
+    link:g('fLink').value.trim(),
+    note:g('fNote').value.trim(),
+    steps:wfSteps.map(function(s){return{text:s.text,done:s.done};}),
+    caseType:ct,
+    projectId:ct==='project'?pid:'',
+    log:logState.map(function(e){return Object.assign({},e);})
+  };
+}
+// ── 案件類型 ──────────────────────────────────────
+function setCaseType(ct, silent){
+  caseType=ct;
+  // radio 同步
+  document.querySelectorAll('input[name="caseType"]').forEach(function(r){r.checked=(r.value===ct);});
+  // 議題標籤區顯示
+  var ps=g('projectSection');
+  if(ps)ps.style.display=ct==='project'?'block':'none';
+  // hint 文字
+  var hint=g('caseTypeHint');
+  if(hint)hint.textContent=ct==='project'?'議題型：可跨多件公文追蹤，歸屬議題標籤':'單次辦理，不需跨案件追蹤';
+  // 議題型自動切完整模式
+  if(ct==='project'&&!silent)setDocMode('full');
 }
 
-function saveDoc(){var d=getDoc();if(!d.title){toast('請輸入主旨');return;}if(d.projectId&&projectTags.indexOf(d.projectId)<0){projectTags.push(d.projectId);saveProjectTags();}if(editId){var i=docs.findIndex(function(x){return x.id===editId;});if(i>=0)docs[i]=d;}else docs.push(d);save();closeM('docBg');toast('已儲存');render();}
-function deleteDoc(){if(!editId)return;if(!confirm('確定刪除此件公文？'))return;docs=docs.filter(function(d){return d.id!==editId;});save();closeM('docBg');toast('已刪除');render();}
-function copyBrief(){var d=getDoc();var sx=d.steps.length?'\nWorkflow：\n'+d.steps.map(function(s){return'  '+(s.done?'☑':'☐')+' '+s.text;}).join('\n'):'';navigator.clipboard.writeText(d.title+'\n文號：'+(d.docNo||'未填')+'\n業務：'+d.cat+'\n例稿：'+d.template+'（'+d.templateState+'）\n狀態：'+slb(d.status)+'\n期限：'+(d.due||'未填')+'\n下一步：'+(d.next||'未填')+sx).then(function(){toast('已複製摘要');});}
+// ── 承辦日誌 ──────────────────────────────────────
+var logFormType=null;
 
-
-function toggleGtdMode(){
-  gtdMode=!gtdMode;
-  var sec=g('gtdSec'),toggle=g('gtdToggle');
-  if(sec)sec.classList.toggle('show',gtdMode);
-  if(toggle)toggle.textContent=gtdMode?'🗂 議題模式（點此收合）':'🗂 議題模式（展開 GTD 欄位）';
-  // 同步 full/quick 模式：開議題模式時自動切到完整模式
-  if(gtdMode&&docMode!=='full')setDocMode('full');
+function showLogForm(type){
+  logFormType=type;
+  var form=g('logForm'),fields=g('logFormFields');
+  if(!form||!fields)return;
+  var html='';
+  if(type==='note'){
+    html='<div class="lf-row"><label>日期</label><input type="date" id="lfDate" value="'+today()+'"/></div>'
+       +'<div class="lf-row"><label>內容</label></div>'
+       +'<div class="lf-row"><textarea id="lfText" placeholder="記錄辦理過程、通話摘要、會議重點…" style="width:100%"></textarea></div>';
+  }else if(type==='followup'){
+    html='<div class="lf-row"><label>日期</label><input type="date" id="lfDate" value="'+today()+'"/></div>'
+       +'<div class="lf-row"><label>等待對象</label><input id="lfWho" placeholder="教育部王科長、立院辦公室…"/></div>'
+       +'<div class="lf-row"><label>等待事項</label><input id="lfText" placeholder="等回函、等核准、等資料…"/></div>'
+       +'<div class="lf-row"><label>追蹤日</label><input type="date" id="lfFollowDate"/></div>';
+  }else if(type==='milestone'){
+    html='<div class="lf-row"><label>日期</label><input type="date" id="lfDate" value="'+today()+'"/></div>'
+       +'<div class="lf-row"><label>里程碑</label><input id="lfText" placeholder="已陳核、已發文、已結案…"/></div>';
+  }
+  fields.innerHTML=html;
+  form.classList.add('show');
+  var firstInput=form.querySelector('input:not([type="date"]),textarea');
+  if(firstInput)setTimeout(function(){firstInput.focus();},50);
 }
 
-function switchGtdTab(tab){
-  document.querySelectorAll('.gtd-tab').forEach(function(b){b.classList.toggle('on',b.dataset.gtab===tab);});
-  document.querySelectorAll('.gtd-pane').forEach(function(p){p.classList.toggle('on',p.id==='gtab-'+tab);});
-  renderGtdRows(tab);
+function cancelLogForm(){
+  var form=g('logForm');
+  if(form)form.classList.remove('show');
+  logFormType=null;
 }
 
+function submitLogEntry(){
+  if(!logFormType)return;
+  var date=g('lfDate')?g('lfDate').value:today();
+  var text=(g('lfText')?g('lfText').value.trim():'');
+  if(!text){toast('請填寫內容');return;}
+  var entry={id:Date.now(),date:date,type:logFormType,text:text,done:false};
+  if(logFormType==='followup'){
+    entry.who=g('lfWho')?g('lfWho').value.trim():'';
+    entry.followDate=g('lfFollowDate')?g('lfFollowDate').value:'';
+  }
+  logState.push(entry);
+  cancelLogForm();
+  renderLogList();
+}
+
+function toggleLogDone(id){
+  var e=logState.find(function(x){return x.id===id;});
+  if(e)e.done=!e.done;
+  renderLogList();
+}
+
+function deleteLogEntry(id){
+  logState=logState.filter(function(x){return x.id!==id;});
+  renderLogList();
+}
+
+function renderLogList(){
+  var el=g('logList'),cnt=g('logCount');
+  if(!el)return;
+  if(cnt)cnt.textContent=logState.length?logState.length+' 筆':'';
+  if(!logState.length){el.innerHTML='<div style="color:var(--muted);font-size:12px;padding:6px 0">尚無日誌，點上方按鈕新增</div>';return;}
+  var sorted=logState.slice().sort(function(a,b){return b.date.localeCompare(a.date);});
+  el.innerHTML=sorted.map(function(e){
+    var icon=e.type==='note'?'📝':e.type==='followup'?'⏸':'✅';
+    var extra='';
+    if(e.type==='followup'){
+      var fdCls='ok';
+      if(e.followDate&&!e.done){
+        var diff=Math.ceil((new Date(e.followDate)-new Date(today()))/86400000);
+        fdCls=diff<0?'overdue':diff<=3?'upcoming':'ok';
+      }
+      extra='<div class="log-followup">'
+        +(e.who?'<span class="log-who">'+esc(e.who)+'</span>':'')
+        +(e.followDate?'<span class="log-fdate '+fdCls+'">追蹤 '+esc(e.followDate)+'</span>':'')
+        +(e.done?'<span class="log-done-badge">✓ 已完成</span>':'')
+        +'</div>';
+    }
+    return '<div class="log-entry">'
+      +'<span class="log-icon">'+icon+'</span>'
+      +'<div class="log-body">'
+        +'<div class="log-date">'+esc(e.date)+'</div>'
+        +'<div class="log-text'+(e.done?' "style="opacity:.55;text-decoration:line-through"':'" ')+'>'+esc(e.text)+'</div>'
+        +extra
+      +'</div>'
+      +(e.type==='followup'?'<button class="log-del" onclick="toggleLogDone('+e.id+')" title="標記完成">'+( e.done?'↩':'✓')+'</button>':'')
+      +'<button class="log-del" onclick="deleteLogEntry('+e.id+')">&#215;</button>'
+      +'</div>';
+  }).join('');
+}
+
+// ── 議題標籤（沿用）──────────────────────────────
 function renderProjectPicker(cur){
   var box=g('projectChipbox'),cur2=g('pickerCurrent');
   if(!box)return;
@@ -1306,23 +1533,19 @@ function renderProjectPicker(cur){
     ?projectTags.map(function(pt){
       var on=pt===cur;
       return '<button class="project-chip'+(on?' on':'')+'" data-pid="'+esc(pt)+'" onclick="selectProject(\''+pt.replace(/'/g,"\\'")+'\')">'
-        +esc(pt)
-        +'</button>';
+        +esc(pt)+'</button>';
     }).join('')
     :'<div class="project-chip-empty">尚無議題標籤，輸入後新增</div>';
   if(cur2)cur2.textContent=cur||'無';
 }
-
 function selectProject(pt){
   document.querySelectorAll('#projectChipbox .project-chip').forEach(function(b){b.classList.toggle('on',b.dataset.pid===pt);});
   var cur=g('pickerCurrent');if(cur)cur.textContent=pt;
 }
-
 function clearProject(){
   document.querySelectorAll('#projectChipbox .project-chip').forEach(function(b){b.classList.remove('on');});
   var cur=g('pickerCurrent');if(cur)cur.textContent='無';
 }
-
 function addProjectTag(){
   var inp=g('newProjectInp'),val=inp?inp.value.trim():'';if(!val)return;
   if(projectTags.indexOf(val)<0){projectTags.push(val);saveProjectTags();}
@@ -1330,194 +1553,26 @@ function addProjectTag(){
   renderProjectPicker(val);selectProject(val);
 }
 
-function renderGtdRows(tab){
-  var el=g(tab+'Rows');if(!el)return;
-  var rows=gtdState[tab]||[];
-  var html='';
-  if(tab==='next'){
-    html=rows.map(function(r,i){
-      return '<div class="gtd-minirow">'
-        +'<input placeholder="下一步行動…" value="'+esc(r.text||'')+'" oninput="gtdState.next['+i+'].text=this.value"/>'
-        +'<input placeholder="備註" value="'+esc(r.note||'')+'" oninput="gtdState.next['+i+'].note=this.value"/>'
-        +'<select onchange="gtdState.next['+i+'].done=(this.selectedIndex>0)">'
-          +'<option'+(r.done?'':' selected')+'>進行中</option>'
-          +'<option'+(r.done?' selected':'')+' value="done">已完成</option>'
-        +'</select>'
-        +'<button class="gtd-del" onclick="gtdState.next.splice('+i+',1);renderGtdRows(\'next\')">&#215;</button>'
-        +'</div>';
-    }).join('');
-  }else if(tab==='waiting'){
-    html=rows.map(function(r,i){
-      return '<div class="gtd-minirow">'
-        +'<input placeholder="等待對象…" value="'+esc(r.who||'')+'" oninput="gtdState.waiting['+i+'].who=this.value"/>'
-        +'<input placeholder="等待事項…" value="'+esc(r.text||'')+'" oninput="gtdState.waiting['+i+'].text=this.value"/>'
-        +'<input type="date" value="'+esc(r.followDate||'')+'" oninput="gtdState.waiting['+i+'].followDate=this.value"/>'
-        +'<button class="gtd-del" onclick="gtdState.waiting.splice('+i+',1);renderGtdRows(\'waiting\')">&#215;</button>'
-        +'</div>';
-    }).join('');
-  }else if(tab==='inbox'){
-    html=rows.map(function(r,i){
-      return '<div class="gtd-minirow">'
-        +'<input type="date" value="'+esc(r.date||today())+'" oninput="gtdState.inbox['+i+'].date=this.value"/>'
-        +'<textarea oninput="gtdState.inbox['+i+'].text=this.value" placeholder="來文摘要…">'+esc(r.text||'')+'</textarea>'
-        +'<input placeholder="來源" value="'+esc(r.source||'')+'" oninput="gtdState.inbox['+i+'].source=this.value"/>'
-        +'<button class="gtd-del" onclick="gtdState.inbox.splice('+i+',1);renderGtdRows(\'inbox\')">&#215;</button>'
-        +'</div>';
-    }).join('');
-  }else if(tab==='change'){
-    html=rows.map(function(r,i){
-      return '<div class="gtd-minirow change">'
-        +'<input type="date" value="'+esc(r.date||today())+'" oninput="gtdState.change['+i+'].date=this.value"/>'
-        +'<input placeholder="版本號…" value="'+esc(r.version||'')+'" oninput="gtdState.change['+i+'].version=this.value"/>'
-        +'<textarea oninput="gtdState.change['+i+'].text=this.value" placeholder="修改段落及內容…">'+esc(r.text||'')+'</textarea>'
-        +'<button class="gtd-del" onclick="gtdState.change.splice('+i+',1);renderGtdRows(\'change\')">&#215;</button>'
-        +'</div>';
-    }).join('');
-  }else if(tab==='ref'){
-    html=rows.map(function(r,i){
-      return '<div class="gtd-minirow ref">'
-        +'<input placeholder="標籤…" value="'+esc(r.label||'')+'" oninput="gtdState.ref['+i+'].label=this.value"/>'
-        +'<input placeholder="網址或說明…" value="'+esc(r.url||'')+'" oninput="gtdState.ref['+i+'].url=this.value"/>'
-        +'<button class="gtd-del" onclick="gtdState.ref.splice('+i+',1);renderGtdRows(\'ref\')">&#215;</button>'
-        +'</div>';
-    }).join('');
-  }
-  el.innerHTML=html;
-}
-
-function addGtdRow(tab){
-  if(!gtdState[tab])gtdState[tab]=[];
-  var defaults={next:{text:'',done:false},waiting:{who:'',text:'',followDate:'',done:false},inbox:{date:today(),source:'',text:''},change:{date:today(),version:'',section:'',text:'',reason:''},ref:{label:'',url:'',note:''}};
-  gtdState[tab].push(Object.assign({},defaults[tab]||{}));
-  renderGtdRows(tab);
-}
-
-function startAddTplGlobal(){
-  var name=prompt('輸入新例稿名稱：');
-  if(!name||!name.trim())return;
-  name=name.trim();
-  var cat=cats[0];
-  if(!tplMap[name])tplMap[name]=[];
-  if(tplMap[name].indexOf(cat)<0)tplMap[name].push(cat);
-  saveTplMap();
-  vaultOpenTpls.add(name);
-  vaultOpen.add(cat);
-  buildSel();renderVTree();
-  openVF(name);
-  toast('已新增例稿：'+name);
-}
-function renderWF(){
-  g('wfList').innerHTML=wfSteps.map(function(s,i){
-    return '<div class="wf-step"><input type="checkbox" class="wf-chk"'+(s.done?' checked':'')+' onchange="wfSteps['+i+'].done=this.checked"><span class="wf-stxt'+(s.done?' ck':'')+'">'+esc(s.text)+'</span><button class="wf-sdel" onclick="wfSteps.splice('+i+',1);renderWF()">&#215;</button></div>';
-  }).join('');
-}
-function addWfStep(){var inp=g('wfInput'),text=inp?inp.value.trim():'';if(!text)return;wfSteps.push({text:text,done:false});if(inp)inp.value='';renderWF();}
-function loadSop(){var t=g('fTemplate').value,sop=tpl.sop[t]||[];if(!sop.length){toast('此例稿尚未設定 SOP 步驟');return;}if(wfSteps.length&&!confirm('套用 SOP 將覆蓋目前步驟，確定嗎？'))return;wfSteps=sop.map(function(s){return{text:s,done:false};});renderWF();toast('已套用例稿 SOP');}
-
-function openSetup(){g('gasUrl').value=localStorage.getItem(GK)||'';g('gasToken').value=localStorage.getItem(TK)||'';g('gasTest').textContent='';renderCap();runDiag();g('setupBg').classList.add('show');}
-
-function runDiag(){
-  // localStorage 用量
-  var total=0;
-  var keys=[K,DK,CK,SK,PK,PTAG,AK,BK,BDK];
-  var details=[];
-  keys.forEach(function(k){
-    var v=localStorage.getItem(k)||'';
-    var bytes=new Blob([v]).size;
-    total+=bytes;
-    if(bytes>50000)details.push(k+'='+Math.round(bytes/1024)+'KB');
-  });
-  var maxBytes=5*1024*1024; // 5MB 估計上限
-  var pct=Math.min(100,Math.round(total/maxBytes*100));
-  var fill=g('storageFill'),note=g('storageNote');
-  if(fill)fill.style.width=pct+'%';
-  if(fill)fill.style.background=pct>80?'var(--red)':pct>50?'var(--orange)':'var(--primary)';
-  if(note)note.textContent='已用約 '+Math.round(total/1024)+'KB / 5MB（'+pct+'%）'+(details.length?' ｜ 大檔：'+details.join(', '):'');
-
-  // 健診項目
-  var items=[];
-
-  // 1. 公文資料完整性
-  var incomplete=docs.filter(function(d){return isIncomplete(d)&&d.status!=='done';});
-  if(incomplete.length===0){
-    items.push({ok:true,title:'公文欄位完整',detail:'所有進行中案件均已填寫期限、業務類別、來文單位、例稿分類'});
-  }else{
-    items.push({ok:false,warn:true,title:'有 '+incomplete.length+' 件公文資料不完整',
-      detail:'缺少期限/業務類別/來文單位/例稿分類：'+incomplete.slice(0,3).map(function(d){return d.title.slice(0,15);}).join('、')+(incomplete.length>3?'…等':'')});
-  }
-
-  // 2. GTD 結構
-  var gtdBad=docs.filter(function(d){return d.gtd&&typeof d.gtd!=='object';});
-  if(gtdBad.length===0){
-    items.push({ok:true,title:'GTD 結構正常',detail:'所有公文的 gtd 欄位格式正確'});
-  }else{
-    items.push({ok:false,warn:false,title:'GTD 結構異常（'+gtdBad.length+' 件）',detail:'請重新整理這些公文以修復'});
-  }
-
-  // 3. 例稿分類一致性（公文使用的例稿名稱是否都在 tplMap 裡）
-  var usedTpls={};docs.forEach(function(d){if(d.template)usedTpls[d.template]=true;});
-  var orphans=Object.keys(usedTpls).filter(function(t){return !tplMap[t];});
-  if(orphans.length===0){
-    items.push({ok:true,title:'例稿分類一致',detail:'所有公文使用的例稿名稱均已建立於例稿庫'});
-  }else{
-    items.push({ok:false,warn:true,title:'有 '+orphans.length+' 個例稿名稱未建立於例稿庫',
-      detail:orphans.slice(0,4).join('、')+(orphans.length>4?'…等':'')+'。可到例稿庫手動新增。'});
-  }
-
-  // 4. 備份狀態
-  var lastBk=localStorage.getItem(BK);
-  if(!lastBk){
-    items.push({ok:false,warn:true,title:'從未備份',detail:'建議設定 GAS 同步或定期匯出 CSV'});
-  }else{
-    var days=Math.floor((new Date(today())-new Date(lastBk))/86400000);
-    if(days<=3){
-      items.push({ok:true,title:'備份狀態良好',detail:'最後備份：'+lastBk+'（'+days+' 天前）'});
-    }else{
-      items.push({ok:false,warn:true,title:'距上次備份已 '+days+' 天',detail:'最後備份：'+lastBk+'。建議盡快同步或匯出。'});
-    }
-  }
-
-  // 5. 議題標籤孤兒（有 projectId 但不在 projectTags 裡）
-  var orphanPids=[];
-  docs.forEach(function(d){if(d.projectId&&projectTags.indexOf(d.projectId)<0&&orphanPids.indexOf(d.projectId)<0)orphanPids.push(d.projectId);});
-  if(orphanPids.length===0){
-    items.push({ok:true,title:'議題標籤一致',detail:'所有公文的議題標籤均已登錄'});
-  }else{
-    items.push({ok:false,warn:true,title:'有 '+orphanPids.length+' 個議題標籤未登錄',
-      detail:orphanPids.join('、')+'。儲存一次相關公文即可自動修復。'});
-  }
-
-  // 渲染
-  var el=g('diagList');
-  if(!el)return;
-  el.innerHTML=items.map(function(it){
-    var cls=it.ok?'diag-ok':it.warn?'diag-warn':'diag-err';
-    var icon=it.ok?'✅':it.warn?'⚠️':'❌';
-    return '<div class="diag-item">'
-      +'<span class="diag-icon">'+icon+'</span>'
-      +'<div class="diag-body">'
-        +'<div class="diag-title '+cls+'">'+it.title+'</div>'
-        +'<div class="diag-detail">'+it.detail+'</div>'
-      +'</div>'
-      +'</div>';
-  }).join('');
-}
-
-function renderCap(){
-  g('capCats').innerHTML=cats.map(function(c,i){return '<div class="cap-tag">'+esc(c)+'<button onclick="rmCap(\'cat\','+i+')">&#215;</button></div>';}).join('');
-  g('capSrcs').innerHTML=srcs.map(function(s,i){return '<div class="cap-tag">'+esc(s)+'<button onclick="rmCap(\'src\','+i+')">&#215;</button></div>';}).join('');
-}
-function addCap(type){var inp=g(type==='cat'?'newCatInp':'newSrcInp'),val=inp?inp.value.trim():'';if(!val)return;if(type==='cat'){if(cats.indexOf(val)<0){cats.push(val);saveCats();}}else{if(srcs.indexOf(val)<0){srcs.push(val);saveSrcs();}}if(inp)inp.value='';renderCap();buildSel();}
-function rmCap(type,i){if(type==='cat'){cats.splice(i,1);saveCats();}else{srcs.splice(i,1);saveSrcs();}renderCap();buildSel();}
-function saveSetup(){localStorage.setItem(GK,g('gasUrl').value.trim());localStorage.setItem(TK,g('gasToken').value.trim());dotS('ok');g('syncSt').textContent='已儲存同步設定';toast('設定已儲存');}
-async function testGas(){var url=g('gasUrl').value.trim(),tok=g('gasToken').value.trim();if(!url){toast('請先輸入 GAS URL');return;}g('gasTest').textContent='連線測試中…';try{var u=new URL(url);u.searchParams.set('action','ping');u.searchParams.set('token',tok);var r=await fetch(u.toString()),j=await r.json();g('gasTest').textContent=j.ok?'✅ 連線成功！':'❌ 格式異常：'+JSON.stringify(j);}catch(e){g('gasTest').textContent='❌ 連線失敗：'+e.message;}}
-
+// ── Select / Filter ──────────────────────────────
 function buildSel(){
-  fillS('catFilter',cats,'全部業務類別');fillS('tplFilter',allTpls(),'全部例稿分類');fillS('statusFilter',STS.map(function(s){return{v:s.id,t:s.lb};}),'全部狀態');
-  fillS('fCat',cats,null);fillS('fStatus',STS.map(function(s){return{v:s.id,t:s.lb};}),null);fillS('fTplState',TSS,null);
-  updateTplOpts();updateSrcDL();
+  fillS('catFilter',cats,'全部業務類別');
+  fillS('tplFilter',allTpls(),'全部例稿分類');
+  fillS('statusFilter',STS.map(function(s){return{v:s.id,t:s.lb};}),'全部狀態');
+  fillS('fCat',cats,null);
+  fillS('fStatus',STS.map(function(s){return{v:s.id,t:s.lb};}),null);
+  fillS('fTplState',TSS,null);
+  updateTplOpts();
+  updateSrcDL();
 }
-function fillS(id,arr,first){var el=g(id);if(!el)return;var cur=el.value;el.innerHTML=(first?'<option value="all">'+first+'</option>':'')+arr.map(function(x){return typeof x==='string'?'<option value="'+esc(x)+'">'+esc(x)+'</option>':'<option value="'+esc(x.v)+'">'+esc(x.t)+'</option>';}).join('');if(cur&&el.querySelector('option[value="'+cur+'"]'))el.value=cur;else if(first)el.value='all';}
+function fillS(id,arr,first){
+  var el=g(id);if(!el)return;
+  var cur=el.value;
+  el.innerHTML=(first?'<option value="all">'+first+'</option>':'')+arr.map(function(x){
+    return typeof x==='string'?'<option value="'+esc(x)+'">'+esc(x)+'</option>':'<option value="'+esc(x.v)+'">'+esc(x.t)+'</option>';
+  }).join('');
+  if(cur&&el.querySelector('option[value="'+cur+'"]'))el.value=cur;
+  else if(first)el.value='all';
+}
 function updateTplOpts(){
   var cat=g('fCat')?g('fCat').value:cats[0];
   var tpls=Object.keys(tplMap||{}).filter(function(t){
@@ -1526,43 +1581,286 @@ function updateTplOpts(){
   if(!tpls.length)tpls=Object.keys(tplMap||{});
   fillS('fTemplate',tpls,null);
 }
-function updateSrcDL(){var dl=g('srcList');if(!dl)return;dl.innerHTML=srcs.map(function(s){return'<option value="'+esc(s)+'">';}).join('');}
+function updateSrcDL(){
+  var dl=g('srcList');if(!dl)return;
+  dl.innerHTML=srcs.map(function(s){return'<option value="'+esc(s)+'">';}).join('');
+}
 
+// ── Setup / Cap ───────────────────────────────────
+function openSetup(){
+  g('gasUrl').value=localStorage.getItem(GK)||'';
+  g('gasToken').value=localStorage.getItem(TK)||'';
+  g('gasTest').textContent='';
+  renderCap();runDiag();
+  g('setupBg').classList.add('show');
+}
+function renderCap(){
+  g('capCats').innerHTML=cats.map(function(c,i){return'<div class="cap-tag">'+esc(c)+'<button onclick="rmCap(\'cat\','+i+')">&#215;</button></div>';}).join('');
+  g('capSrcs').innerHTML=srcs.map(function(s,i){return'<div class="cap-tag">'+esc(s)+'<button onclick="rmCap(\'src\','+i+')">&#215;</button></div>';}).join('');
+}
+function addCap(type){
+  var inp=g(type==='cat'?'newCatInp':'newSrcInp'),val=inp?inp.value.trim():'';
+  if(!val)return;
+  if(type==='cat'){if(cats.indexOf(val)<0){cats.push(val);saveCats();}}
+  else{if(srcs.indexOf(val)<0){srcs.push(val);saveSrcs();}}
+  if(inp)inp.value='';
+  renderCap();buildSel();
+}
+function rmCap(type,i){
+  if(type==='cat'){cats.splice(i,1);saveCats();}
+  else{srcs.splice(i,1);saveSrcs();}
+  renderCap();buildSel();
+}
+function saveSetup(){
+  localStorage.setItem(GK,g('gasUrl').value.trim());
+  localStorage.setItem(TK,g('gasToken').value.trim());
+  dotS('ok');g('syncSt').textContent='已儲存同步設定';toast('設定已儲存');
+}
+async function testGas(){
+  var url=g('gasUrl').value.trim(),tok=g('gasToken').value.trim();
+  if(!url){toast('請先輸入 GAS URL');return;}
+  g('gasTest').textContent='連線測試中…';
+  try{
+    var u=new URL(url);u.searchParams.set('action','ping');u.searchParams.set('token',tok);
+    var r=await fetch(u.toString()),j=await r.json();
+    g('gasTest').textContent=j.ok?'✅ 連線成功！':'❌ 格式異常：'+JSON.stringify(j);
+  }catch(e){g('gasTest').textContent='❌ 連線失敗：'+e.message;}
+}
+
+// ── 健診 ─────────────────────────────────────────
+function runDiag(){
+  var total=0;
+  [K,DK,CK,SK,PK,PTAG,AK,BK,BDK].forEach(function(k){
+    total+=new Blob([localStorage.getItem(k)||'']).size;
+  });
+  var pct=Math.min(100,Math.round(total/(5*1024*1024)*100));
+  var fill=g('storageFill'),note=g('storageNote');
+  if(fill){fill.style.width=pct+'%';fill.style.background=pct>80?'var(--red)':pct>50?'var(--orange)':'var(--primary)';}
+  if(note)note.textContent='已用約 '+Math.round(total/1024)+'KB / 5MB（'+pct+'%）';
+  var items=[];
+  var incomplete=docs.filter(function(d){return isIncomplete(d)&&d.status!=='done';});
+  items.push(incomplete.length===0
+    ?{ok:true,title:'公文欄位完整',detail:'所有進行中案件均已填寫必要欄位'}
+    :{ok:false,warn:true,title:'有 '+incomplete.length+' 件公文資料不完整',
+      detail:incomplete.slice(0,3).map(function(d){return d.title.slice(0,15);}).join('、')+(incomplete.length>3?'…等':'')});
+  var orphans=Object.keys(docs.reduce(function(m,d){if(d.template)m[d.template]=1;return m;},{}))
+    .filter(function(t){return !tplMap[t];});
+  items.push(orphans.length===0
+    ?{ok:true,title:'例稿分類一致',detail:'所有公文使用的例稿均已建立於例稿庫'}
+    :{ok:false,warn:true,title:'有 '+orphans.length+' 個例稿名稱未建立',detail:orphans.slice(0,4).join('、')});
+  var last=localStorage.getItem(BK);
+  if(!last)items.push({ok:false,warn:true,title:'從未備份',detail:'建議設定 GAS 同步或定期匯出 CSV'});
+  else{var days=Math.floor((new Date(today())-new Date(last))/86400000);
+    items.push(days<=3?{ok:true,title:'備份狀態良好',detail:'最後備份：'+last+'（'+days+' 天前）'}
+      :{ok:false,warn:true,title:'距上次備份已 '+days+' 天',detail:'最後備份：'+last});}
+  var el=g('diagList');if(!el)return;
+  el.innerHTML=items.map(function(it){
+    return '<div class="diag-item"><span class="diag-icon">'+(it.ok?'✅':it.warn?'⚠️':'❌')+'</span>'
+      +'<div class="diag-body"><div class="diag-title '+(it.ok?'diag-ok':it.warn?'diag-warn':'diag-err')+'">'+it.title+'</div>'
+      +'<div class="diag-detail">'+it.detail+'</div></div></div>';
+  }).join('');
+}
+
+// ── Modal helpers ─────────────────────────────────
 function closeM(id){g(id).classList.remove('show');}
+function currentProjectValue(){
+  var chips=document.querySelectorAll('#projectChipbox .project-chip.on');
+  return chips.length?chips[0].dataset.pid:'';
+}
+function autoDocNo(){
+  var yr=new Date().getFullYear();
+  var nums=docs.map(function(d){return d.docNo||'';})
+    .filter(function(n){return n.startsWith(yr+'-');})
+    .map(function(n){return parseInt(n.split('-')[1]||0,10);})
+    .filter(function(n){return !isNaN(n);});
+  var next=nums.length?Math.max.apply(null,nums)+1:1;
+  return yr+'-'+('00'+next).slice(-3);
+}
 
+// ── Save / Delete / Brief ─────────────────────────
+function saveDoc(){
+  var d=getDoc();if(!d.title){toast('請輸入主旨');return;}
+  if(d.projectId&&projectTags.indexOf(d.projectId)<0){projectTags.push(d.projectId);saveProjectTags();}
+  if(editId){var i=docs.findIndex(function(x){return x.id===editId;});if(i>=0)docs[i]=d;}
+  else docs.push(d);
+  save();closeM('docBg');toast('已儲存');render();
+}
+function deleteDoc(){
+  if(!editId)return;
+  if(!confirm('確定刪除此件公文？'))return;
+  docs=docs.filter(function(d){return d.id!==editId;});
+  save();closeM('docBg');toast('已刪除');render();
+}
+function copyBrief(){
+  var d=getDoc();
+  var sx=d.steps.length?'\nWorkflow：\n'+d.steps.map(function(s){return'  '+(s.done?'☑':'☐')+' '+s.text;}).join('\n'):'';
+  var lx=d.log.length?'\n承辦日誌：\n'+d.log.slice(-3).map(function(e){return'  ['+e.date+'] '+e.text;}).join('\n'):'';
+  navigator.clipboard.writeText(
+    d.title+'\n文號：'+(d.docNo||'未填')+'\n業務：'+d.cat
+    +'\n例稿：'+d.template+'（'+d.templateState+'）'
+    +'\n狀態：'+slb(d.status)+'\n期限：'+(d.due||'未填')
+    +'\n下一步：'+(d.next||'未填')+sx+lx
+  ).then(function(){toast('已複製摘要');});
+}
+
+// ── Workflow ──────────────────────────────────────
+function renderWF(){
+  g('wfList').innerHTML=wfSteps.map(function(s,i){
+    return '<div class="wf-step"><input type="checkbox" class="wf-chk"'+(s.done?' checked':'')+' onchange="wfSteps['+i+'].done=this.checked">'
+      +'<span class="wf-stxt'+(s.done?' ck':'')+'">'+esc(s.text)+'</span>'
+      +'<button class="wf-sdel" onclick="wfSteps.splice('+i+',1);renderWF()">&#215;</button></div>';
+  }).join('');
+}
+function addWfStep(){
+  var inp=g('wfInput'),text=inp?inp.value.trim():'';if(!text)return;
+  wfSteps.push({text:text,done:false});if(inp)inp.value='';renderWF();
+}
+function loadSop(){
+  var t=g('fTemplate').value,sop=tpl.sop[t]||[];
+  if(!sop.length){toast('此例稿尚未設定 SOP 步驟');return;}
+  if(wfSteps.length&&!confirm('套用 SOP 將覆蓋目前步驟，確定嗎？'))return;
+  wfSteps=sop.map(function(s){return{text:s,done:false};});renderWF();toast('已套用例稿 SOP');
+}
+
+// ── setDocMode ────────────────────────────────────
+function setDocMode(mode){
+  docMode=mode;
+  var modal=document.querySelector('#docBg .modal');
+  if(modal)modal.classList.toggle('quick-mode',mode==='quick');
+  var qBtn=g('modeQuick'),fBtn=g('modeFull'),hint=g('modeHint');
+  if(qBtn)qBtn.className='mode-pill '+(mode==='quick'?'active':'inactive');
+  if(fBtn)fBtn.className='mode-pill '+(mode==='full'?'active':'inactive');
+  if(hint)hint.textContent=mode==='quick'?'快速模式：只填必要欄位':'完整模式：填寫所有欄位';
+}
+
+// ── Export / Import ───────────────────────────────
 function exportCSV(){
-  var rows=[['主旨','議題','文號','來文單位','收文日期','辦理期限','業務類別','例稿分類','例稿狀態','流程狀態','速別','承辦人','等回復','下一步','連結','備註','WF進度','GTD下一步','待跟進']];
-  docs.forEach(function(d){var steps=d.steps||[],ds=steps.filter(function(s){return s.done;}).length;normalizeGtd(d);rows.push([d.title,d.projectId||'',d.docNo,d.source,d.received,d.due,d.cat,d.template,d.templateState,slb(d.status),d.speed,d.owner,d.waiting==='yes'?'是':'否',d.next,d.link,d.note,steps.length?ds+'/'+steps.length:'',(d.gtd.next||[]).map(function(x){return x.text;}).join('；'),(d.gtd.waiting||[]).map(function(x){return(x.who||'')+'：'+(x.text||'');}).join('；')]);});
+  var rows=[['主旨','案件類型','議題','文號','來文單位','收文日期','辦理期限','業務類別','例稿分類','例稿狀態','流程狀態','速別','承辦人','等回復','下一步','連結','備註','WF進度','待跟進筆數']];
+  docs.forEach(function(d){
+    normalizeDoc(d);
+    var steps=d.steps||[],ds=steps.filter(function(s){return s.done;}).length;
+    var followups=(d.log||[]).filter(function(e){return e.type==='followup'&&!e.done;}).length;
+    rows.push([d.title,d.caseType||'single',d.projectId||'',d.docNo,d.source,d.received,d.due,d.cat,d.template,d.templateState,slb(d.status),d.speed,d.owner,d.waiting==='yes'?'是':'否',d.next,d.link,d.note,steps.length?ds+'/'+steps.length:'',followups]);
+  });
   var csv='\ufeff'+rows.map(function(r){return r.map(function(v){return'"'+String(v==null?'':v).replace(/"/g,'""')+'"';}).join(',');}).join('\n');
   var url=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));
-  var a=document.createElement('a');a.href=url;a.download='公文承辦OS_'+today()+'.csv';document.body.appendChild(a);a.click();setTimeout(function(){a.remove();URL.revokeObjectURL(url);},200);
+  var a=document.createElement('a');a.href=url;a.download='公文承辦OS_'+today()+'.csv';
+  document.body.appendChild(a);a.click();
+  setTimeout(function(){a.remove();URL.revokeObjectURL(url);},200);
   toast('CSV 已匯出');markBK();
 }
-function importSample(){if(!confirm('載入範例資料會覆蓋目前本機資料，確定嗎？'))return;docs=sampleDocs();save();toast('已載入範例資料');render();}
+function importSample(){
+  if(!confirm('載入範例資料會覆蓋目前本機資料，確定嗎？'))return;
+  docs=sampleDocs();
+  docs.forEach(normalizeDoc);
+  save();toast('已載入範例資料');render();
+}
 
-function dotS(s){var d=g('syncDot');d.className='sdot'+(s==='ok'?' ok':s==='err'?' err':s==='ing'?' ing':'');}
-async function syncPush(){var url=localStorage.getItem(GK);if(!url){openSetup();return;}if(!confirm('將本機資料推送至 Google Sheet？'))return;dotS('ing');g('syncSt').textContent='同步中…';try{var r=await fetch(url,{method:'POST',headers:{'Content-Type':'text/plain'},body:JSON.stringify({action:'push',token:localStorage.getItem(TK)||'',data:docs,tplData:tpl,projectTags:projectTags})});var j=await r.json();if(j.ok){dotS('ok');g('syncSt').textContent='已同步至雲端 · '+new Date().toLocaleTimeString();toast('雲端同步完成');markBK();}else{dotS('err');toast('同步失敗：'+(j.error||'未知'));}}catch(e){dotS('err');toast('連線失敗');}}
-async function syncPull(){var url=localStorage.getItem(GK);if(!url){openSetup();return;}if(!confirm('從 Google Sheet 讀取並覆蓋本機資料？'))return;dotS('ing');g('syncSt').textContent='讀取中…';try{var u=new URL(url);u.searchParams.set('action','pull');u.searchParams.set('token',localStorage.getItem(TK)||'');var r=await fetch(u.toString()),j=await r.json();if(j.ok&&Array.isArray(j.data)){docs=j.data;save();if(j.tplData){tpl=j.tplData;saveTpl();}if(j.projectTags&&Array.isArray(j.projectTags)){projectTags=j.projectTags;saveProjectTags();}dotS('ok');g('syncSt').textContent='已讀取雲端資料 · '+new Date().toLocaleTimeString();toast('已讀取 '+docs.length+' 筆公文');render();}else{dotS('err');toast('讀取失敗：'+(j.error||'格式不符'));}}catch(e){dotS('err');toast('連線失敗');}}
+// ── GAS Sync ──────────────────────────────────────
+function dotS(s){
+  var d=g('syncDot');
+  d.className='sdot'+(s==='ok'?' ok':s==='err'?' err':s==='ing'?' ing':'');
+}
+async function syncPush(){
+  var url=localStorage.getItem(GK);if(!url){openSetup();return;}
+  if(!confirm('將本機資料推送至 Google Sheet？'))return;
+  dotS('ing');g('syncSt').textContent='同步中…';
+  try{
+    var r=await fetch(url,{method:'POST',headers:{'Content-Type':'text/plain'},
+      body:JSON.stringify({action:'push',token:localStorage.getItem(TK)||'',data:docs,tplData:tpl,projectTags:projectTags})});
+    var j=await r.json();
+    if(j.ok){dotS('ok');g('syncSt').textContent='已同步至雲端 · '+new Date().toLocaleTimeString();toast('雲端同步完成');markBK();}
+    else{dotS('err');toast('同步失敗：'+(j.error||'未知'));}
+  }catch(e){dotS('err');toast('連線失敗');}
+}
+async function syncPull(){
+  var url=localStorage.getItem(GK);if(!url){openSetup();return;}
+  if(!confirm('從 Google Sheet 讀取並覆蓋本機資料？'))return;
+  dotS('ing');g('syncSt').textContent='讀取中…';
+  try{
+    var u=new URL(url);u.searchParams.set('action','pull');u.searchParams.set('token',localStorage.getItem(TK)||'');
+    var r=await fetch(u.toString()),j=await r.json();
+    if(j.ok&&Array.isArray(j.data)){
+      docs=j.data;docs.forEach(normalizeDoc);save();
+      if(j.tplData){tpl=j.tplData;saveTpl();}
+      if(j.projectTags&&Array.isArray(j.projectTags)){projectTags=j.projectTags;saveProjectTags();}
+      dotS('ok');g('syncSt').textContent='已讀取雲端資料 · '+new Date().toLocaleTimeString();
+      toast('已讀取 '+docs.length+' 筆公文');render();
+    }else{dotS('err');toast('讀取失敗：'+(j.error||'格式不符'));}
+  }catch(e){dotS('err');toast('連線失敗');}
+}
 
-function checkAlerts(){var dis=[];try{dis=JSON.parse(localStorage.getItem(AK)||'[]');}catch(e){}var urg=docs.filter(function(d){if(d.status==='done')return false;if(dis.indexOf(String(d.id))>=0)return false;var l=lightOf(d);return l.id==='red'||l.id==='orange';});var banner=g('alertBanner');if(!urg.length){banner.classList.remove('show');return;}var late=urg.filter(function(d){return lightOf(d).id==='red';}).length,tod=urg.filter(function(d){return lightOf(d).id==='orange';}).length;g('alertTitle').textContent='⚠ 到期提醒：逾期 '+late+' 件、今日到期 '+tod+' 件';g('alertList').innerHTML=urg.slice(0,6).map(function(d){var l=lightOf(d);return'<div class="ab-item" onclick="openDoc('+d.id+')">'+'<span class="ab-badge '+l.id+'">'+l.lb+'</span><span>'+esc(d.title)+'</span></div>';}).join('');banner.classList.add('show');}
-function dismissAlert(){var urg=docs.filter(function(d){if(d.status==='done')return false;var l=lightOf(d);return l.id==='red'||l.id==='orange';});var ids=[];try{ids=JSON.parse(localStorage.getItem(AK)||'[]');}catch(e){}urg.forEach(function(d){if(ids.indexOf(String(d.id))<0)ids.push(String(d.id));});localStorage.setItem(AK,JSON.stringify(ids));g('alertBanner').classList.remove('show');}
-
-function checkBackup(){var dis=localStorage.getItem(BDK)||'';if(dis===today())return;var last=localStorage.getItem(BK),hasGas=!!localStorage.getItem(GK),banner=g('backupBanner'),msg=g('backupMsg');if(!last&&docs.length>0){msg.innerHTML='⚠ <b>資料從未備份</b>——localStorage 清除後將全部遺失。建議設定 GAS 同步或定期匯出 CSV。';banner.classList.add('show');return;}if(last){var days=Math.floor((new Date(today())-new Date(last))/86400000);if(days>=3){msg.innerHTML='📦 <b>距上次備份已 '+days+' 天</b>（'+last+'）——建議'+(hasGas?'同步雲端或匯出 CSV':'匯出 CSV')+'，避免資料遺失。';banner.classList.add('show');}}}
+// ── Alerts / Backup ───────────────────────────────
+function checkAlerts(){
+  var dis=[];try{dis=JSON.parse(localStorage.getItem(AK)||'[]');}catch(e){}
+  var urg=docs.filter(function(d){
+    if(d.status==='done')return false;
+    if(dis.indexOf(String(d.id))>=0)return false;
+    var l=lightOf(d);return l.id==='red'||l.id==='orange';
+  });
+  var banner=g('alertBanner');if(!urg.length){banner.classList.remove('show');return;}
+  var late=urg.filter(function(d){return lightOf(d).id==='red';}).length;
+  var tod=urg.filter(function(d){return lightOf(d).id==='orange';}).length;
+  g('alertTitle').textContent='⚠ 到期提醒：逾期 '+late+' 件、今日到期 '+tod+' 件';
+  g('alertList').innerHTML=urg.slice(0,6).map(function(d){
+    var l=lightOf(d);
+    return'<div class="ab-item" onclick="openDoc('+d.id+')">'
+      +'<span class="ab-badge '+l.id+'">'+l.lb+'</span><span>'+esc(d.title)+'</span></div>';
+  }).join('');
+  banner.classList.add('show');
+}
+function dismissAlert(){
+  var urg=docs.filter(function(d){if(d.status==='done')return false;var l=lightOf(d);return l.id==='red'||l.id==='orange';});
+  var ids=[];try{ids=JSON.parse(localStorage.getItem(AK)||'[]');}catch(e){}
+  urg.forEach(function(d){if(ids.indexOf(String(d.id))<0)ids.push(String(d.id));});
+  localStorage.setItem(AK,JSON.stringify(ids));
+  g('alertBanner').classList.remove('show');
+}
+function checkBackup(){
+  var dis=localStorage.getItem(BDK)||'';if(dis===today())return;
+  var last=localStorage.getItem(BK),hasGas=!!localStorage.getItem(GK);
+  var banner=g('backupBanner'),msg=g('backupMsg');
+  if(!last&&docs.length>0){
+    msg.innerHTML='⚠ <b>資料從未備份</b>——localStorage 清除後將全部遺失。';
+    banner.classList.add('show');return;
+  }
+  if(last){
+    var days=Math.floor((new Date(today())-new Date(last))/86400000);
+    if(days>=3){
+      msg.innerHTML='📦 <b>距上次備份已 '+days+' 天</b>（'+last+'）——建議'+(hasGas?'同步雲端或匯出 CSV':'匯出 CSV');
+      banner.classList.add('show');
+    }
+  }
+}
 function dismissBackup(){localStorage.setItem(BDK,today());g('backupBanner').classList.remove('show');}
 function markBK(){localStorage.setItem(BK,today());g('backupBanner').classList.remove('show');localStorage.setItem(BDK,today());}
 
-function toast(msg){var t=g('toast');t.textContent=msg;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(function(){t.classList.remove('show');},2300);}
+// ── Toast ─────────────────────────────────────────
+function toast(msg){
+  var t=g('toast');t.textContent=msg;t.classList.add('show');
+  clearTimeout(t._t);t._t=setTimeout(function(){t.classList.remove('show');},2300);
+}
+
+// ── startAddTplGlobal ─────────────────────────────
+function startAddTplGlobal(){
+  var name=prompt('輸入新例稿名稱：');
+  if(!name||!name.trim())return;
+  name=name.trim();
+  var cat=cats[0];
+  if(!tplMap[name])tplMap[name]=[];
+  if(tplMap[name].indexOf(cat)<0)tplMap[name].push(cat);
+  saveTplMap();vaultOpenTpls.add(name);vaultOpen.add(cat);
+  buildSel();renderVTree();openVF(name);toast('已新增例稿：'+name);
+}
 
 load();
+docs.forEach(normalizeDoc);
+save();
 buildSel();
 if(localStorage.getItem(GK))dotS('ok');
 setView('kanban');
 checkAlerts();
-checkBackup();function isIncomplete(d){
-  return !d.due || !d.cat || !d.template || !d.source;
-}
-
-
+checkBackup();
 </script>
 </body>
 </html>
