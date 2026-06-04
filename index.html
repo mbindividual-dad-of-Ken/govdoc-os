@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>公文承辦 OS v3</title>
+<title>公文承辦 OS v3.2｜GTD 議題管理版</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@400;700&display=swap" rel="stylesheet">
 <style>
@@ -244,6 +244,52 @@ tr:last-child td{border-bottom:none}
 .small-btn:hover{border-color:var(--primary);color:var(--primary)}
 .small-btn.pri{background:var(--primary);color:#fff;border-color:var(--primary)}
 .small-btn.pri:hover{background:var(--primary2)}
+
+/* GTD Project View */
+.project-view{display:none}
+.project-layout{display:grid;grid-template-columns:280px 1fr;gap:14px;align-items:start}
+.project-side{background:var(--card);border:1px solid var(--border);border-radius:12px;box-shadow:var(--sh);padding:12px;max-height:calc(100vh - 220px);overflow:auto;position:sticky;top:70px}
+.project-head{font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin:2px 0 10px}
+.project-item{border:1px solid var(--border);border-radius:9px;padding:9px 10px;margin-bottom:8px;background:var(--bg2);cursor:pointer;transition:.12s}
+.project-item:hover{border-color:var(--primary);background:var(--pbg)}
+.project-item.on{border-color:var(--primary);background:var(--pbg);box-shadow:inset 3px 0 0 var(--primary)}
+.project-name{font-size:13px;font-weight:700;margin-bottom:4px;line-height:1.35}
+.project-meta{display:flex;gap:5px;flex-wrap:wrap;font-size:10px;color:var(--muted)}
+.project-main{min-width:0}
+.project-hero{background:var(--card);border:1px solid var(--border);border-radius:12px;box-shadow:var(--sh);padding:16px 18px;margin-bottom:14px}
+.project-title{font-family:'Noto Serif TC',serif;font-size:22px;font-weight:700;margin-bottom:6px}
+.project-summary{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:12px}
+.project-stat{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:9px;text-align:center}
+.project-stat b{display:block;font-family:'Noto Serif TC',serif;font-size:20px;line-height:1.1}
+.project-stat span{font-size:10px;color:var(--sub)}
+.gtd-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.gtd-card{background:var(--card);border:1px solid var(--border);border-radius:12px;box-shadow:var(--sh);padding:14px 16px;min-height:120px}
+.gtd-card.wide{grid-column:1/-1}
+.gtd-title{font-size:12px;font-weight:700;color:var(--sub);letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.gtd-list{display:flex;flex-direction:column;gap:7px}
+.gtd-row{border:1px solid var(--border);background:var(--bg2);border-radius:8px;padding:8px 10px;font-size:12px;line-height:1.55}
+.gtd-row.done{opacity:.58;text-decoration:line-through}
+.gtd-row strong{color:var(--primary)}
+.gtd-empty{color:var(--muted);font-size:12px;padding:12px;border:1px dashed var(--border);border-radius:8px;text-align:center}
+.gtd-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.mode-pill{font-size:10px;border-radius:999px;padding:2px 7px;background:var(--blue-bg);color:var(--blue);border:1px solid #c6d8ec;font-weight:700}
+.project-tag{font-size:10px;border-radius:3px;padding:1px 5px;background:var(--blue-bg);color:var(--blue);border:1px solid #c6d8ec}
+.gtd-sec{margin-top:14px;border-top:1px solid var(--border);padding-top:14px;display:none}
+.gtd-sec.show{display:block}
+.gtd-tabs{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:10px}
+.gtd-tab{border:1px solid var(--border);background:var(--bg2);border-radius:6px;padding:5px 10px;font-size:11px;color:var(--sub);cursor:pointer;font-family:inherit}
+.gtd-tab.on{background:var(--primary);border-color:var(--primary);color:#fff}
+.gtd-pane{display:none}
+.gtd-pane.on{display:block}
+.gtd-minirow{display:grid;grid-template-columns:110px 1fr 110px 28px;gap:6px;align-items:center;margin-bottom:6px}
+.gtd-minirow.change{grid-template-columns:90px 70px 130px 1fr 28px}
+.gtd-minirow.ref{grid-template-columns:160px 1fr 28px}
+.gtd-minirow input,.gtd-minirow textarea{border:1px solid var(--border2);border-radius:6px;background:var(--bg2);padding:6px 8px;font-size:12px;font-family:inherit;outline:none;width:100%}
+.gtd-minirow textarea{min-height:36px;resize:vertical}
+.gtd-del{border:none;background:none;color:var(--muted);font-size:16px;cursor:pointer}
+.gtd-del:hover{color:var(--red)}
+@media(max-width:960px){.project-layout{grid-template-columns:1fr}.project-side{position:static;max-height:none}.gtd-grid{grid-template-columns:1fr}.project-summary{grid-template-columns:repeat(2,1fr)}.gtd-minirow,.gtd-minirow.change,.gtd-minirow.ref{grid-template-columns:1fr 28px}}
+
 .toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:#1e1c18;color:#fff;padding:9px 18px;border-radius:8px;font-size:13px;opacity:0;pointer-events:none;transition:.2s;z-index:500;white-space:nowrap;box-shadow:0 8px 24px rgba(0,0,0,.2)}
 .toast.show{opacity:1}
 .footer{margin-top:36px;color:var(--muted);font-size:11px;text-align:center}
@@ -257,7 +303,7 @@ tr:last-child td{border-bottom:none}
 <header class="hd">
   <div class="brand">
     <div class="bmark">文</div>
-    <div><div class="bname">公文承辦 OS</div><div class="bsub">職業安全衛生署・個人承辦版 v3</div></div>
+    <div><div class="bname">公文承辦 OS</div><div class="bsub">職業安全衛生署・個人承辦版 v3.2</div></div>
   </div>
   <div class="hd-r">
     <button class="sbtn" onclick="syncPull()"><div class="sdot" id="syncDot"></div>&#9729; 讀取</button>
@@ -267,6 +313,7 @@ tr:last-child td{border-bottom:none}
       <button class="vt on" data-view="kanban" onclick="setView('kanban')">看板</button>
       <button class="vt" data-view="list" onclick="setView('list')">清單</button>
       <button class="vt" data-view="todo" onclick="setView('todo')">待辦</button>
+      <button class="vt" data-view="projects" onclick="setView('projects')">議題</button>
       <button class="vt" data-view="templates" onclick="setView('templates')">例稿庫</button>
     </div>
   </div>
@@ -274,9 +321,9 @@ tr:last-child td{border-bottom:none}
 <div class="sync-st" id="syncSt"></div>
 <section class="dash">
   <div class="panel">
-    <div class="kicker">Official Document OS · v3</div>
+    <div class="kicker">Official Document OS · v3.2</div>
     <div class="hero">把每件公文，沉澱成下次可複用的例稿。</div>
-    <p class="hero-sub">業務類別主分類・來文單位對象標籤・Workflow 子任務・例稿版本迭代紀錄</p>
+    <p class="hero-sub">業務類別・Workflow 子任務・GTD 議題管理・例稿版本迭代紀錄</p>
     <div class="prog-wrap"><div class="prog" id="prog"></div></div>
     <div class="pnote" id="pnote">載入中…</div>
   </div>
@@ -332,14 +379,17 @@ tr:last-child td{border-bottom:none}
   </table></div>
 </main>
 <main id="todoView" style="display:none"><div id="todoContent"></div></main>
+<main id="projectsView" class="project-view"><div id="projectsContent"></div></main>
 <main id="templatesView" class="templates-view"></main>
-<div class="footer">公文承辦 OS v3 · localStorage + GAS 雙向同步 · 例稿知識庫 · Workflow · 拖拉看板</div>
+<div class="footer">公文承辦 OS v3.2 · localStorage + GAS 雙向同步 · GTD 議題管理 · 例稿知識庫 · Workflow</div>
 </div>
 <div class="mbg" id="docBg" onclick="if(event.target===this)closeM('docBg')">
   <div class="modal">
     <div class="mhd"><div><h2 id="docTitle">新增公文</h2><p>填「例稿分類」與「下一步」最能累積承辦知識。</p></div><button class="mbtn sec" onclick="closeM('docBg')">關閉</button></div>
     <div class="mform">
       <div class="field full"><label>主旨 / 案名</label><input id="fTitle"/></div>
+      <div class="field"><label>案件模式</label><select id="fCaseMode" onchange="toggleGtdSec()"><option value="single">單件公文</option><option value="project">議題型案件 / GTD</option><option value="template">例稿建置</option><option value="meeting">會議專案</option></select></div>
+      <div class="field"><label>議題 / 專案 ID</label><input id="fProjectId" placeholder="如：CRC國家報告修正案"/></div>
       <div class="field"><label>文號</label><input id="fDocNo"/></div>
       <div class="field"><label>來文單位</label><input id="fSource" list="srcList"/><datalist id="srcList"></datalist></div>
       <div class="field"><label>收文日期</label><input type="date" id="fReceived"/></div>
@@ -362,6 +412,27 @@ tr:last-child td{border-bottom:none}
         <input id="wfInput" placeholder="新增步驟…" onkeydown="if(event.key==='Enter')addWfStep()"/>
         <button class="small-btn pri" onclick="addWfStep()">＋</button>
         <button class="small-btn" onclick="loadSop()">套用 SOP</button>
+      </div>
+    </div>
+
+    <div class="gtd-sec" id="gtdSec">
+      <div class="wf-sec-t">GTD 議題管理</div>
+      <div class="gtd-tabs">
+        <button class="gtd-tab on" data-gtd="inbox" onclick="setGtdTab('inbox')">Inbox 新進來文</button>
+        <button class="gtd-tab" data-gtd="next" onclick="setGtdTab('next')">Next Actions</button>
+        <button class="gtd-tab" data-gtd="waiting" onclick="setGtdTab('waiting')">Waiting For</button>
+        <button class="gtd-tab" data-gtd="change" onclick="setGtdTab('change')">Change Log</button>
+        <button class="gtd-tab" data-gtd="ref" onclick="setGtdTab('ref')">Reference</button>
+      </div>
+      <div id="gtdPane_inbox" class="gtd-pane on"><div id="gtdInboxList"></div><div class="add-row"><input id="gtdInboxText" placeholder="新增新進來文 / 補充資料…" onkeydown="if(event.key==='Enter')addGtd('inbox')"/><button class="small-btn pri" onclick="addGtd('inbox')">＋</button></div></div>
+      <div id="gtdPane_next" class="gtd-pane"><div id="gtdNextList"></div><div class="add-row"><input id="gtdNextText" placeholder="新增下一步行動（要能直接做）…" onkeydown="if(event.key==='Enter')addGtd('next')"/><button class="small-btn pri" onclick="addGtd('next')">＋</button></div></div>
+      <div id="gtdPane_waiting" class="gtd-pane"><div id="gtdWaitingList"></div><div class="add-row"><input id="gtdWaitWho" placeholder="等待對象"/><input id="gtdWaitText" placeholder="等待事項"/><input id="gtdWaitDate" type="date"/><button class="small-btn pri" onclick="addGtd('waiting')">＋</button></div></div>
+      <div id="gtdPane_change" class="gtd-pane"><div id="gtdChangeList"></div><div class="add-row"><input id="gtdChVer" placeholder="版本，如 v3.2" style="max-width:90px"/><input id="gtdChSection" placeholder="修正段落"/><input id="gtdChText" placeholder="本次改了哪些內容"/><button class="small-btn pri" onclick="addGtd('change')">＋</button></div></div>
+      <div id="gtdPane_ref" class="gtd-pane"><div id="gtdRefList"></div><div class="add-row"><input id="gtdRefLabel" placeholder="參考資料名稱"/><input id="gtdRefUrl" placeholder="連結 / 檔案位置 / 備註"/><button class="small-btn pri" onclick="addGtd('ref')">＋</button></div></div>
+      <div class="gtd-actions">
+        <button class="small-btn" onclick="seedCrcGtd()">套用 CRC GTD 範例</button>
+        <button class="small-btn" onclick="copyGtdSummary()">複製 GTD 摘要</button>
+        <button class="small-btn" onclick="promoteGtdToWF()">Next Actions → Workflow</button>
       </div>
     </div>
     <div class="macts">
@@ -401,11 +472,12 @@ var TSS=['未分類','可套用','需微調','需新建','已迭代'];
 var TSSCLASS=['s0','s1','s2','s3','s4'];
 var COLORS=['#9b6a1a','#4a4598','#1d5c8a','#8a3020','#2d7060','#5f5e5a','#7a5a20','#3a6080'];
 var K='govdoc-os-v3',GK='govdoc-os-gas-url',TK='govdoc-os-gas-token';
-var DK='govdoc-os-tpl',CK='govdoc-os-cats',SK='govdoc-os-sources';
+var DK='govdoc-os-tpl',CK='govdoc-os-cats',SK='govdoc-os-sources',PK='govdoc-os-tplmap';
 var AK='govdoc-alert-dismissed',BK='govdoc-last-backup',BDK='govdoc-backup-dismissed';
 
-var docs,tpl,cats,srcs,editId=0,curView='kanban',wfSteps=[];
-var vaultOpen,vaultTpl=null,vaultTab='note',dragId=null;
+var docs,tpl,cats,srcs,tplMap,editId=0,curView='kanban',wfSteps=[];
+var gtd={inbox:[],next:[],waiting:[],change:[],ref:[]},curGtdTab='inbox',activeProjectId='';
+var vaultOpen,vaultOpenTpls,vaultTpl=null,vaultTab='note',dragId=null;
 
 function g(id){return document.getElementById(id);}
 function esc(s){if(s==null)return '';return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
@@ -446,10 +518,22 @@ function load(){
   if(!cats)cats=DCATS.slice();
   try{srcs=JSON.parse(localStorage.getItem(SK))||null;}catch(e){srcs=null;}
   if(!srcs)srcs=DSRCS.slice();
-  vaultOpen=new Set(cats.slice(0,2));
+  try{tplMap=JSON.parse(localStorage.getItem(PK))||null;}catch(e){tplMap=null;}
+  if(!tplMap){
+    // migrate 從 DTPLS 常數建立初始 tplMap
+    tplMap={};
+    Object.keys(DTPLS).forEach(function(cat){
+      (DTPLS[cat]||[]).forEach(function(t){
+        if(!tplMap[t])tplMap[t]=[];
+        if(tplMap[t].indexOf(cat)<0)tplMap[t].push(cat);
+      });
+    });
+  }
+  vaultOpen=new Set(cats.slice(0,2));vaultOpenTpls=new Set();
 }
 
 function save(){localStorage.setItem(K,JSON.stringify(docs));}
+function saveTplMap(){localStorage.setItem(PK,JSON.stringify(tplMap));}
 function saveTpl(){localStorage.setItem(DK,JSON.stringify(tpl));}
 function saveCats(){localStorage.setItem(CK,JSON.stringify(cats));}
 function saveSrcs(){localStorage.setItem(SK,JSON.stringify(srcs));}
@@ -461,7 +545,8 @@ function sampleDocs(){
     {id:3,title:'地方政府查處疑義函復案',docNo:'2026-003',source:'臺北市政府',received:addDays(-10),due:addDays(-1),cat:'一般行政',template:'地方政府權責說明稿',status:'revise',templateState:'需微調',speed:'普通件',owner:'我',waiting:'no',next:'依最新法規用語修正。',link:'',note:'',steps:[]},
     {id:4,title:'1955申訴管道兒少友善話務說明案',docNo:'2026-004',source:'跨司處會辦',received:addDays(-2),due:addDays(5),cat:'政策研析',template:'申訴/1955管道說明稿',status:'consult',templateState:'可套用',speed:'普通件',owner:'我',waiting:'yes',next:'等待相關單位確認話務訓練內容。',link:'',note:'',steps:[]},
     {id:5,title:'勞動條件專案檢查計畫第三季執行情形說明',docNo:'2026-005',source:'勞動部',received:addDays(-4),due:addDays(7),cat:'勞動檢查',template:'勞檢處理原則稿',status:'approve',templateState:'已迭代',speed:'普通件',owner:'我',waiting:'no',next:'等科長核閱後補新聞稿口徑。',link:'',note:'',steps:[{text:'初稿完成',done:true},{text:'補統計數據',done:true},{text:'陳核',done:true},{text:'發文',done:false}]},
-    {id:6,title:'民眾陳情工讀生加班費疑義案',docNo:'2026-006',source:'民眾陳情',received:addDays(-1),due:addDays(9),cat:'勞動檢查',template:'勞動條件說明稿',status:'new',templateState:'可套用',speed:'普通件',owner:'我',waiting:'no',next:'確認陳情內容是否具體。',link:'',note:'',steps:[]}
+    {id:6,title:'民眾陳情工讀生加班費疑義案',docNo:'2026-006',source:'民眾陳情',received:addDays(-1),due:addDays(9),cat:'勞動檢查',template:'勞動條件說明稿',status:'new',templateState:'可套用',speed:'普通件',owner:'我',waiting:'no',next:'確認陳情內容是否具體。',link:'',note:'',steps:[]},
+    {id:7,title:'CRC國家報告修正案：兒少勞動權益段落彙整與修正',caseMode:'project',projectId:'CRC國家報告修正案',docNo:'2026-CRC-001',source:'衛福部',received:addDays(-2),due:addDays(6),cat:'政策研析',template:'政策精進說明稿',status:'draft',templateState:'需微調',speed:'速件',owner:'我',waiting:'yes',next:'彙整本次修正點，追蹤教育部與職安組回復。',link:'',note:'議題型案件範例：適合 CRC、CEDAW、國家報告、跨部會追蹤等陸續來文案件。',steps:[{text:'比對前一版與本次修正意見',done:true},{text:'補充1955兒少申訴管道文字',done:false},{text:'追蹤教育部建教合作段落',done:false}],gtd:{inbox:[{date:addDays(-2),source:'衛福部',text:'來文請補充 CRC 國家報告兒少勞動權益段落與申訴管道說明'}],next:[{text:'整理本次改了哪些內容，形成修正摘要',done:false},{text:'將 1955 兒少友善話務訓練文字補入第43點',done:false},{text:'確認建教合作查核機制是否需納入第42點',done:false}],waiting:[{who:'教育部',text:'確認建教合作段落文字與資料來源',followDate:addDays(3),done:false},{who:'職安組',text:'確認青少年職場安全衛生段落',followDate:addDays(4),done:false}],change:[{date:today(),version:'v3.2',section:'第42點、第43點',text:'新增1955申訴管道、建教合作查核與地方勞政主管機關處理機制',reason:'回應國家報告修正意見'}],ref:[{label:'前版 CRC 國家報告回復稿',url:'請貼上雲端或公文系統連結',note:''},{label:'兒少勞動及職場安全衛生權益小組會議紀錄',url:'請貼上會議資料位置',note:''}]}}
   ];
 }
 
@@ -487,6 +572,7 @@ function setView(v){
   g('kanbanView').style.display=v==='kanban'?'block':'none';
   g('listView').style.display=v==='list'?'block':'none';
   g('todoView').style.display=v==='todo'?'block':'none';
+  g('projectsView').style.display=v==='projects'?'block':'none';
   g('templatesView').style.display=v==='templates'?'block':'none';
   render();
 }
@@ -496,6 +582,7 @@ function render(){
   if(curView==='kanban')renderKanban();
   else if(curView==='list')renderList();
   else if(curView==='todo')renderTodo();
+  else if(curView==='projects')renderProjects();
   else if(curView==='templates')renderTemplates();
 }
 
@@ -562,7 +649,7 @@ function cardHTML(d){
   return '<article class="dc'+(d.status==='done'?' done':'')+'" style="border-left-color:'+color+'" draggable="true" ondragstart="cDS(event,'+d.id+')" ondragend="cDE(event)" onclick="openDoc('+d.id+')">'
     +'<div class="ctop"><span class="dno">'+esc(d.docNo||'#'+d.id)+'</span><span class="lt '+l.id+'">'+l.lb+'</span></div>'
     +'<div class="dtitle">'+esc(d.title)+'</div>'
-    +'<div class="dtags"><span class="ctag" style="background:'+color+'18;color:'+color+'">'+esc(d.cat||'其他')+'</span>'+(d.source?'<span class="stag">'+esc(d.source)+'</span>':'')+spEl+'</div>'
+    +'<div class="dtags"><span class="ctag" style="background:'+color+'18;color:'+color+'">'+esc(d.cat||'其他')+'</span>'+(d.source?'<span class="stag">'+esc(d.source)+'</span>':'')+(d.projectId?'<span class="project-tag">議題</span>':'')+spEl+'</div>'
     +(d.next?'<div class="dnext">&#9654; '+esc(d.next)+'</div>':'')
     +wfEl
     +'<div class="dmeta"><span style="max-width:90px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+esc(d.template||'')+'</span><span class="pill">'+esc(d.templateState||'未分類')+'</span></div>'
@@ -642,6 +729,45 @@ function renderTodo(){
   }).join('')+'</div>';
 }
 
+
+function normalizeGtd(d){
+  d.caseMode=d.caseMode||((d.projectId&&d.projectId.trim())?'project':'single');
+  d.projectId=d.projectId||'';
+  d.gtd=d.gtd||{};
+  d.gtd.inbox=Array.isArray(d.gtd.inbox)?d.gtd.inbox:[];
+  d.gtd.next=Array.isArray(d.gtd.next)?d.gtd.next:[];
+  d.gtd.waiting=Array.isArray(d.gtd.waiting)?d.gtd.waiting:[];
+  d.gtd.change=Array.isArray(d.gtd.change)?d.gtd.change:[];
+  d.gtd.ref=Array.isArray(d.gtd.ref)?d.gtd.ref:[];
+  return d;
+}
+function projectGroups(){
+  var m={};docs.forEach(function(d){normalizeGtd(d);var pid=(d.projectId||'').trim();if(!pid&&d.caseMode==='project')pid=d.title;if(!pid)return;if(!m[pid])m[pid]=[];m[pid].push(d);});return m;
+}
+function renderProjects(){
+  var groups=projectGroups(),ids=Object.keys(groups).sort();var root=g('projectsContent');
+  if(!ids.length){root.innerHTML='<div class="vempty"><div><div style="font-size:32px;margin-bottom:8px">🗂️</div><div>尚無議題型案件</div><div style="font-size:11px;margin-top:4px">新增公文時將「案件模式」設為「議題型案件 / GTD」，並填入議題 ID。</div></div></div>';return;}
+  if(!activeProjectId||!groups[activeProjectId])activeProjectId=ids[0];
+  var side='<aside class="project-side"><div class="project-head">議題 / 專案</div>'+ids.map(function(pid){var arr=groups[pid],open=arr.filter(function(d){return d.status!=='done';}).length;var late=arr.filter(function(d){return lightOf(d).id==='red'||lightOf(d).id==='orange';}).length;return '<div class="project-item '+(pid===activeProjectId?'on':'')+'" onclick="activeProjectId=\''+pid.replace(/'/g,"\\'")+'\';renderProjects()"><div class="project-name">'+esc(pid)+'</div><div class="project-meta"><span>'+arr.length+' 件公文</span><span>'+open+' 未結</span>'+(late?'<span style="color:var(--red)">'+late+' 急件</span>':'')+'</div></div>';}).join('')+'</aside>';
+  var docsIn=groups[activeProjectId];
+  root.innerHTML='<div class="project-layout">'+side+'<section class="project-main">'+projectDetailHTML(activeProjectId,docsIn)+'</section></div>';
+}
+function flatGtd(arr,key){var out=[];arr.forEach(function(d){normalizeGtd(d);(d.gtd[key]||[]).forEach(function(x){out.push({doc:d,item:x});});});return out;}
+function projectDetailHTML(pid,arr){
+  var open=arr.filter(function(d){return d.status!=='done';}).length,wait=flatGtd(arr,'waiting').filter(function(x){return !x.item.done;}).length,next=flatGtd(arr,'next').filter(function(x){return !x.item.done;}).length,changes=flatGtd(arr,'change').length,refs=flatGtd(arr,'ref').length;
+  var hero='<div class="project-hero"><div class="project-title">'+esc(pid)+'</div><div class="hero-sub">長期議題管理：把多次來文、下一步、待跟進、修正紀錄與參考資料放在同一處。</div><div class="project-summary"><div class="project-stat"><b>'+arr.length+'</b><span>關聯公文</span></div><div class="project-stat"><b>'+open+'</b><span>未結案件</span></div><div class="project-stat"><b>'+next+'</b><span>下一步</span></div><div class="project-stat"><b>'+wait+'</b><span>待跟進</span></div><div class="project-stat"><b>'+changes+'</b><span>修正紀錄</span></div></div></div>';
+  var inbox=flatGtd(arr,'inbox'),nxt=flatGtd(arr,'next'),w=flatGtd(arr,'waiting'),ch=flatGtd(arr,'change'),rf=flatGtd(arr,'ref');
+  return hero+'<div class="gtd-grid">'
+    +gtdCard('Inbox 新進來文',inbox.map(function(x){return '<strong>'+esc(x.item.date||x.doc.received||'')+'</strong>｜'+esc(x.doc.title)+'<br>'+esc(x.item.text||'');}).join(''))
+    +gtdCard('Next Actions 下一步',nxt.map(function(x){return '<div class="gtd-row '+(x.item.done?'done':'')+'">☐ '+esc(x.item.text||'')+'<br><span style="color:var(--muted)">來源：'+esc(x.doc.title)+'</span></div>';}).join(''),true)
+    +gtdCard('Waiting For 待跟進',w.map(function(x){var due=x.item.followDate?'<span class="lt '+(new Date(x.item.followDate)<new Date(today())&&!x.item.done?'red':'yellow')+'">追蹤 '+esc(x.item.followDate)+'</span> ':'';return '<div class="gtd-row '+(x.item.done?'done':'')+'">'+due+'<strong>'+esc(x.item.who||'待確認')+'</strong>｜'+esc(x.item.text||'')+'<br><span style="color:var(--muted)">來源：'+esc(x.doc.title)+'</span></div>';}).join(''),true)
+    +gtdCard('Change Log 本次修正',ch.map(function(x){return '<div class="gtd-row"><strong>'+esc(x.item.version||'')+'</strong>｜'+esc(x.item.date||'')+'｜'+esc(x.item.section||'')+'<br>'+esc(x.item.text||'')+'</div>';}).join(''),true)
+    +gtdCard('Reference 參考資料',rf.map(function(x){return '<div class="gtd-row"><strong>'+esc(x.item.label||'參考資料')+'</strong><br>'+esc(x.item.url||'')+'</div>';}).join(''),false)
+    +gtdCard('關聯公文',arr.map(function(d){var l=lightOf(d);return '<div class="rdoc" onclick="openDoc('+d.id+')"><span class="lt '+l.id+'">'+l.lb+'</span><div class="rdoc-t">'+esc(d.title)+'</div><span class="stag">'+esc(slb(d.status))+'</span></div>';}).join(''),true)
+    +'</div>';
+}
+function gtdCard(title,html,wide){return '<section class="gtd-card '+(wide?'wide':'')+'"><div class="gtd-title"><span>'+title+'</span></div><div class="gtd-list">'+(html||'<div class="gtd-empty">尚無資料</div>')+'</div></section>';}
+
 function renderTemplates(){
   var root=g('templatesView');
   if(!root.querySelector('.vault')){
@@ -650,85 +776,239 @@ function renderTemplates(){
   renderVTree();
 }
 
+
+// ── Vault helpers ──
+// key 格式：「例稿名稱」或「例稿名稱::樣態名稱」
+function tplBase(key){return key.split('::')[0];}
+function tplVariant(key){var p=key.indexOf('::');return p>=0?key.slice(p+2):null;}
+function tplDisplayName(key){var v=tplVariant(key);return v?v:'（預設）';}
+
+// 取某例稿名稱下所有已存在的 key（包含預設＋各樣態）
+function variantKeysOf(base){
+  var keys=[];
+  // 預設 key
+  if(tpl.notes[base]!==undefined||tpl.sop[base]!==undefined||tpl.changelog[base]!==undefined) keys.push(base);
+  // 樣態 key
+  Object.keys(tpl.notes||{}).concat(Object.keys(tpl.sop||{})).concat(Object.keys(tpl.changelog||{})).forEach(function(k){
+    if(tplBase(k)===base&&k!==base&&keys.indexOf(k)<0) keys.push(k);
+  });
+  // 至少回傳預設
+  if(!keys.length) keys.push(base);
+  return keys;
+}
+
 function renderVTree(){
   var tree=g('vaultTree');if(!tree)return;
   tree.innerHTML=cats.map(function(cat){
-    var tpls=DTPLS[cat]||[],color=catColor(cat),isOpen=vaultOpen.has(cat);
-    var files=tpls.map(function(t){
-      var ts=topState(t),tsc=tssClass(ts);
-      var ia=vaultTpl===t;
-      return '<button class="vfilebtn'+(ia?' on':'')+'" onclick="openVF(\''+t.replace(/'/g,"\\'")+'\')">'
-        +'<div class="vdot '+tsc+'"></div>'
-        +'<span style="overflow:hidden;text-overflow:ellipsis">'+esc(t)+'</span>'
-        +'</button>';
+    var color=catColor(cat),isOpen=vaultOpen.has(cat);
+    // 此類別下的例稿
+    var tpls=Object.keys(tplMap||{}).filter(function(t){return(tplMap[t]||[]).indexOf(cat)>=0;});
+    var cs=cat.replace(/'/g,"\'");
+
+    var files=tpls.map(function(base){
+      var vkeys=variantKeysOf(base);
+      var bIsOpen=vaultOpenTpls.has(base);
+      var topTs=vkTopState(base+'_top'),topTsc=tssClass(topTs2(base));
+      var bs=base.replace(/'/g,"\'");
+
+      var variantRows=vkeys.map(function(vk){
+        var vn=tplDisplayName(vk),vtsc=tssClass(vkTopState(vk));
+        var ia=vaultTpl===vk;
+        var vks=vk.replace(/'/g,"\'");
+        return '<button class="vfilebtn'+(ia?' on':'')+'" onclick="openVF(\''+vks+'\')">'  
+          +'<div class="vdot '+vtsc+'"></div>'
+          +'<span style="overflow:hidden;text-overflow:ellipsis">'+esc(vn)+'</span>'
+          +'</button>';
+      }).join('');
+
+      var variantAdd='<div style="padding:2px 14px 4px 32px">'
+        +'<button class="small-btn" style="font-size:10px;padding:2px 8px" onclick="startAddVariant(\''+bs+'\')">＋ 新增樣態</button>'
+        +'</div>';
+
+      var nameBtn='<div style="display:flex;align-items:center">'
+        +'<button class="vfbtn'+(bIsOpen?' open':'')+'" style="flex:1;min-width:0" onclick="togTpl(\''+bs+'\')">'
+          +'<span class="vfarr'+(bIsOpen?' open':'')+'">&#9654;</span>'
+          +'<div class="vdot '+topTsc+'"></div>'
+          +'<span style="flex:1;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+esc(base)+'</span>'
+          +'<span style="font-size:10px;color:var(--muted);flex-shrink:0">'+vkeys.length+'</span>'
+        +'</button>'
+        +'<button style="border:none;background:none;color:var(--muted);cursor:pointer;padding:0 8px;font-size:13px;flex-shrink:0" onclick="delTplName(\''+bs+'\',\''+cs+'\')" title="從此類別移除">&#215;</button>'
+        +'</div>';
+
+      return '<div style="margin-bottom:1px">'
+        +nameBtn
+        +'<div class="vflist'+(bIsOpen?' open':'')+'">'+variantRows+variantAdd+'</div>'
+        +'</div>';
     }).join('');
-    return '<div><button class="vfbtn'+(isOpen?' open':'')+'" onclick="togF(\''+cat.replace(/'/g,"\\'")+'\')">'
-      +'<span class="vfarr'+(isOpen?' open':'')+'">&#9654;</span>'
-      +'<div class="vfclr" style="background:'+color+'"></div>'
-      +'<span style="flex:1">'+esc(cat)+'</span>'
-      +'<span style="font-size:10px;color:var(--muted)">'+tpls.length+'</span>'
+
+    // 新增例稿按鈕
+    var addTplBtn='<div style="padding:4px 14px 6px">'
+      +'<button class="small-btn" style="font-size:10px;padding:2px 8px;width:100%" onclick="startAddTpl(\''+cs+'\')">＋ 新增例稿</button>'
+      +'</div>';
+
+    return '<div>'
+      +'<button class="vfbtn'+(isOpen?' open':'')+'" onclick="togF(\''+cs+'\')">'
+        +'<span class="vfarr'+(isOpen?' open':'')+'">&#9654;</span>'
+        +'<div class="vfclr" style="background:'+color+'"></div>'
+        +'<span style="flex:1">'+esc(cat)+'</span>'
+        +'<span style="font-size:10px;color:var(--muted)">'+tpls.length+'</span>'
       +'</button>'
-      +'<div class="vflist'+(isOpen?' open':'')+'">'+files+'</div>'
+      +'<div class="vflist'+(isOpen?' open':'')+'">'
+        +files
+        +addTplBtn
+      +'</div>'
       +'</div>';
   }).join('');
+}
+
+// 例稿整體狀態（取各 variant 中最嚴重的）
+function topTs2(base){
+  var vkeys=variantKeysOf(base);
+  var states=vkeys.map(vkTopState);
+  if(states.indexOf('需新建')>=0)return '需新建';
+  if(states.indexOf('需微調')>=0)return '需微調';
+  // 從關聯案件取
+  var docStates=docs.filter(function(d){return d.template===base;}).map(function(d){return d.templateState;});
+  if(docStates.indexOf('需新建')>=0)return '需新建';
+  if(docStates.indexOf('需微調')>=0)return '需微調';
+  if(states.indexOf('已迭代')>=0||docStates.indexOf('已迭代')>=0)return '已迭代';
+  if(states.indexOf('可套用')>=0||docStates.indexOf('可套用')>=0)return '可套用';
+  return '未分類';
 }
 
 function togF(cat){if(vaultOpen.has(cat))vaultOpen.delete(cat);else vaultOpen.add(cat);renderVTree();}
+function togTpl(base){if(vaultOpenTpls.has(base))vaultOpenTpls.delete(base);else{vaultOpenTpls.add(base);}renderVTree();}
 
-function openVF(t){vaultTpl=t;renderVTree();renderVMain(t);}
+function openVF(key){
+  vaultTpl=key;
+  var base=tplBase(key);
+  vaultOpenTpls.add(base);
+  // 確保業務類別展開
+  cats.forEach(function(cat){if((DTPLS[cat]||[]).indexOf(base)>=0)vaultOpen.add(cat);});
+  renderVTree();
+  renderVMain(key);
+}
 
-function renderVMain(t){
+function startAddTpl(cat){
+  var name=prompt('輸入新例稿名稱：');
+  if(!name||!name.trim())return;
+  name=name.trim();
+  if(!tplMap[name])tplMap[name]=[];
+  if(tplMap[name].indexOf(cat)<0)tplMap[name].push(cat);
+  saveTplMap();
+  vaultOpen.add(cat);
+  vaultOpenTpls.add(name);
+  buildSel();renderVTree();
+  openVF(name);
+  toast('已新增例稿：'+name);
+}
+
+function delTplName(base,cat){
+  // 從某個類別移除；若已無類別則整個刪除
+  if(!tplMap[base])return;
+  var cats2=tplMap[base];
+  if(cats2.length<=1){
+    if(!confirm('確定完全刪除例稿「'+base+'」？其所有樣態和筆記資料將一併刪除，且無法復原。'))return;
+    delete tplMap[base];
+    // 清除 tplData 所有相關 key
+    Object.keys(tpl.notes||{}).forEach(function(k){if(tplBase(k)===base)delete tpl.notes[k];});
+    Object.keys(tpl.sop||{}).forEach(function(k){if(tplBase(k)===base)delete tpl.sop[k];});
+    Object.keys(tpl.changelog||{}).forEach(function(k){if(tplBase(k)===base)delete tpl.changelog[k];});
+    saveTpl();
+    if(vaultTpl&&tplBase(vaultTpl)===base){vaultTpl=null;g('vaultMain').innerHTML='<div class="vempty"><div><div style="font-size:32px;margin-bottom:8px">&#128194;</div><div>例稿已刪除</div></div></div>';}
+  }else{
+    if(!confirm('從「'+cat+'」移除例稿「'+base+'」？（例稿仍存在於其他類別）'))return;
+    tplMap[base]=cats2.filter(function(c){return c!==cat;});
+  }
+  saveTplMap();buildSel();renderVTree();toast('已移除');
+}
+
+function startAddVariant(base){
+  var name=prompt('輸入新樣態名稱（例如：一般查復版、申訴案版）：');
+  if(!name||!name.trim())return;
+  name=name.trim();
+  var newKey=base+'::'+name;
+  // 確保三個欄位都有 key（即使是空值）
+  if(!tpl.notes[newKey])tpl.notes[newKey]='';
+  if(!tpl.sop[newKey])tpl.sop[newKey]=[];
+  if(!tpl.changelog[newKey])tpl.changelog[newKey]=[];
+  saveTpl();
+  vaultOpenTpls.add(base);
+  openVF(newKey);
+  toast('已建立樣態：'+name);
+}
+
+function renderVMain(key){
   var main=g('vaultMain');if(!main)return;
-  var used=docs.filter(function(d){return d.template===t;});
-  var ts=topState(t),tsc=tssClass(ts),cl=tpl.changelog[t]||[],sop=tpl.sop[t]||[];
+  var base=tplBase(key),vname=tplDisplayName(key);
+  var used=docs.filter(function(d){return d.template===base;});
+  var ts=vkTopState(key),tsc=tssClass(ts);
+  var cl=tpl.changelog[key]||[],sop=tpl.sop[key]||[];
   var li=cl.length?cl[cl.length-1].date:'尚未迭代';
   var tabLabels={note:'筆記',preview:'預覽',sop:'SOP',log:'迭代紀錄',related:'關聯案件'};
+  var ks=key.replace(/'/g,"\\'");
   var tabs=['note','preview','sop','log','related'].map(function(tb){
-    return '<button class="vt2'+(vaultTab===tb?' on':'')+'" onclick="swVT(\''+tb+'\',\''+t.replace(/'/g,"\\'")+'\')">'+tabLabels[tb]+'</button>';
+    return '<button class="vt2'+(vaultTab===tb?' on':'')+'" onclick="swVT(\''+tb+'\',\''+ks+'\')">'+tabLabels[tb]+'</button>';
   }).join('');
-  main.innerHTML='<div class="vtbar"><div class="vtitle">'+esc(t)+'</div><span class="tpl-state '+tsc+'">'+esc(ts)+'</span><div class="vtabs2">'+tabs+'</div></div>'
+  // 標題：例稿名稱 > 樣態名稱
+  var titleHtml=tplVariant(key)
+    ?'<span style="color:var(--muted);font-size:13px">'+esc(base)+'</span><span style="color:var(--muted);margin:0 4px">›</span><span>'+esc(vname)+'</span>'
+    :'<span>'+esc(base)+'</span>';
+  // 刪除樣態按鈕（預設 key 不能刪）
+  var delBtn=tplVariant(key)
+    ?'<button class="small-btn" style="color:var(--red);border-color:#f0c8c4;font-size:10px" onclick="delVariant(\''+ks+'\')">刪除此樣態</button>'
+    :'';
+  main.innerHTML='<div class="vtbar"><div class="vtitle">'+titleHtml+'</div><span class="tpl-state '+tsc+'">'+esc(ts)+'</span>'+delBtn+'<div class="vtabs2">'+tabs+'</div></div>'
     +'<div class="vbody">'
       +'<div class="fm">'
-        +'<div class="fmi"><div class="fml">使用案件</div><div>'+used.length+' 件</div></div>'
-        +'<div class="fmi"><div class="fml">待迭代</div><div>'+used.filter(function(d){return d.templateState==='需微調'||d.templateState==='需新建';}).length+' 件</div></div>'
+        +'<div class="fmi"><div class="fml">關聯案件</div><div>'+used.length+' 件（例稿）</div></div>'
         +'<div class="fmi"><div class="fml">SOP 步驟</div><div>'+sop.length+' 步</div></div>'
         +'<div class="fmi"><div class="fml">迭代版本</div><div>v'+cl.length+'</div></div>'
         +'<div class="fmi"><div class="fml">最後迭代</div><div>'+esc(li)+'</div></div>'
-        +'<div class="fmi"><div class="fml">狀態</div><div>'+esc(ts)+'</div></div>'
+        +'<div class="fmi"><div class="fml">例稿狀態</div><div>'+esc(ts)+'</div></div>'
+        +'<div class="fmi"><div class="fml">樣態</div><div>'+esc(vname)+'</div></div>'
       +'</div>'
       +'<div id="vtc"></div>'
     +'</div>';
-  renderVTC(t);
+  renderVTC(key);
 }
 
-function swVT(tb,t){vaultTab=tb;renderVMain(t);}
+function delVariant(key){
+  if(!tplVariant(key)){toast('預設不可刪除');return;}
+  if(!confirm('確定刪除樣態「'+tplDisplayName(key)+'」？此操作不可復原。'))return;
+  delete tpl.notes[key];delete tpl.sop[key];delete tpl.changelog[key];
+  saveTpl();vaultTpl=tplBase(key);renderVTree();renderVMain(tplBase(key));toast('已刪除樣態');
+}
 
-function renderVTC(t){
+function swVT(tb,key){vaultTab=tb;renderVMain(key);}
+
+function renderVTC(key){
   var el=g('vtc');if(!el)return;
-  var sop=tpl.sop[t]||[],cl=tpl.changelog[t]||[],note=tpl.notes[t]||'';
-  var ts=t.replace(/'/g,"\\'");
+  var sop=tpl.sop[key]||[],cl=tpl.changelog[key]||[],note=tpl.notes[key]||'';
+  var ks=key.replace(/'/g,"\\'");
   if(vaultTab==='note'){
     el.innerHTML='<textarea class="veditor" id="ved" placeholder="使用 Markdown 記錄…&#10;支援 [[例稿名稱]] 語法&#10;&#10;## 適用情境&#10;## 常用法規依據&#10;## 標準段落">'+esc(note)+'</textarea>'
       +'<div class="veacts">'
-        +'<button class="small-btn pri" onclick="svNote(\''+ts+'\')">儲存</button>'
-        +'<button class="small-btn" onclick="swVT(\'preview\',\''+ts+'\')">預覽</button>'
-        +'<button class="small-btn" onclick="cpNote(\''+ts+'\')">複製</button>'
-        +'<button class="small-btn" onclick="ftTpl(\''+ts+'\')">篩選案件</button>'
-        +'<button class="small-btn" onclick="exMd(\''+ts+'\')">匯出 .md</button>'
+        +'<button class="small-btn pri" onclick="svNote(\''+ks+'\')">儲存</button>'
+        +'<button class="small-btn" onclick="swVT(\'preview\',\''+ks+'\')">預覽</button>'
+        +'<button class="small-btn" onclick="cpNote(\''+ks+'\')">複製</button>'
+        +'<button class="small-btn" onclick="ftTpl(\''+ks+'\')">篩選案件</button>'
+        +'<button class="small-btn" onclick="exMd(\''+ks+'\')">匯出 .md</button>'
       +'</div>';
   }else if(vaultTab==='preview'){
-    el.innerHTML='<div class="mdp">'+renderMd(note,t)+'</div><div style="margin-top:12px"><button class="small-btn" onclick="swVT(\'note\',\''+ts+'\')">&#8592; 返回編輯</button></div>';
+    el.innerHTML='<div class="mdp">'+renderMd(note,key)+'</div><div style="margin-top:12px"><button class="small-btn" onclick="swVT(\'note\',\''+ks+'\')">&#8592; 返回編輯</button></div>';
   }else if(vaultTab==='sop'){
     var sh=sop.map(function(s,i){
-      return '<div class="sop-step"><div class="sopnum">'+(i+1)+'</div><div class="soptext">'+esc(s)+'</div><button class="sopdel" onclick="dSop(\''+ts+'\','+i+')">&#215;</button></div>';
+      return '<div class="sop-step"><div class="sopnum">'+(i+1)+'</div><div class="soptext">'+esc(s)+'</div><button class="sopdel" onclick="dSop(\''+ks+'\','+i+')">&#215;</button></div>';
     }).join('');
     el.innerHTML=(sh||'<div style="color:var(--muted);font-size:12px;padding:8px 0">尚未設定 SOP 步驟</div>')
-      +'<div class="add-row"><input id="sopInp" placeholder="新增步驟…" onkeydown="if(event.key===\'Enter\')aSop(\''+ts+'\')"/><button class="small-btn pri" onclick="aSop(\''+ts+'\')">＋</button></div>';
+      +'<div class="add-row"><input id="sopInp" placeholder="新增步驟…" onkeydown="if(event.key===\'Enter\')aSop(\''+ks+'\')"/><button class="small-btn pri" onclick="aSop(\''+ks+'\')">＋</button></div>';
   }else if(vaultTab==='log'){
     var lh=cl.length?cl.map(function(e){return '<div class="cle"><span class="clv">'+esc(e.ver)+'</span>'+esc(e.date)+'｜'+esc(e.note)+'</div>';}).join(''):'<div style="color:var(--muted);font-size:12px">尚無迭代紀錄</div>';
-    el.innerHTML='<div class="cl">'+lh+'</div><div class="add-row" style="margin-top:10px"><input id="logInp" placeholder="本次修改摘要…"/><button class="small-btn pri" onclick="aLog(\''+ts+'\')">＋ 記錄</button></div>';
+    el.innerHTML='<div class="cl">'+lh+'</div><div class="add-row" style="margin-top:10px"><input id="logInp" placeholder="本次修改摘要…"/><button class="small-btn pri" onclick="aLog(\''+ks+'\')">＋ 記錄</button></div>';
   }else if(vaultTab==='related'){
-    var rel=docs.filter(function(d){return d.template===t;});
+    var base=tplBase(key);
+    var rel=docs.filter(function(d){return d.template===base;});
     el.innerHTML=rel.length?rel.map(function(d){
       var l=lightOf(d),color=catColor(d.cat||'');
       return '<div class="rdoc" onclick="openDoc('+d.id+')">'
@@ -753,22 +1033,57 @@ function renderMd(md,cur){
   return h;
 }
 
-function svNote(t){tpl.notes[t]=g('ved')?g('ved').value:'';saveTpl();toast('已儲存筆記');}
-function cpNote(t){navigator.clipboard.writeText(tpl.notes[t]||'').then(function(){toast('已複製');});}
-function ftTpl(t){g('tplFilter').value=t;setView('list');}
-function aSop(t){var inp=g('sopInp'),text=inp?inp.value.trim():'';if(!text)return;if(!tpl.sop[t])tpl.sop[t]=[];tpl.sop[t].push(text);saveTpl();if(inp)inp.value='';renderVTC(t);}
-function dSop(t,i){tpl.sop[t].splice(i,1);saveTpl();renderVTC(t);}
-function aLog(t){var inp=g('logInp'),note=inp?inp.value.trim():'';if(!note)return;if(!tpl.changelog[t])tpl.changelog[t]=[];var ver='v'+(tpl.changelog[t].length+1);tpl.changelog[t].push({ver:ver,date:today(),note:note});saveTpl();if(inp)inp.value='';renderVTC(t);toast('已記錄迭代紀錄');}
-function exMd(t){
-  var sop=tpl.sop[t]||[],cl=tpl.changelog[t]||[],note=tpl.notes[t]||'';
-  var used=docs.filter(function(d){return d.template===t;});
-  var fm='---\ntitle: '+t+'\nstate: '+topState(t)+'\nused: '+used.length+'\nexported: '+today()+'\n---\n\n';
+function svNote(key){tpl.notes[key]=g('ved')?g('ved').value:'';saveTpl();toast('已儲存筆記');}
+function cpNote(key){navigator.clipboard.writeText(tpl.notes[key]||'').then(function(){toast('已複製');});}
+function ftTpl(key){g('tplFilter').value=tplBase(key);setView('list');}
+function aSop(key){var inp=g('sopInp'),text=inp?inp.value.trim():'';if(!text)return;if(!tpl.sop[key])tpl.sop[key]=[];tpl.sop[key].push(text);saveTpl();if(inp)inp.value='';renderVTC(key);}
+function dSop(key,i){if(!tpl.sop[key])return;tpl.sop[key].splice(i,1);saveTpl();renderVTC(key);}
+function aLog(key){var inp=g('logInp'),note=inp?inp.value.trim():'';if(!note)return;if(!tpl.changelog[key])tpl.changelog[key]=[];var ver='v'+(tpl.changelog[key].length+1);tpl.changelog[key].push({ver:ver,date:today(),note:note});saveTpl();if(inp)inp.value='';renderVTC(key);toast('已記錄迭代紀錄');}
+function exMd(key){
+  var base=tplBase(key),vname=tplDisplayName(key);
+  var sop=tpl.sop[key]||[],cl=tpl.changelog[key]||[],note=tpl.notes[key]||'';
+  var used=docs.filter(function(d){return d.template===base;});
+  var fm='---\ntitle: '+base+(vname!=='（預設）'?'\nvariant: '+vname:'')+'\nstate: '+vkTopState(key)+'\nused: '+used.length+'\nexported: '+today()+'\n---\n\n';
   var ss=sop.length?'\n\n## SOP 步驟\n'+sop.map(function(s,i){return(i+1)+'. '+s;}).join('\n'):'';
   var ls=cl.length?'\n\n## 迭代紀錄\n'+cl.map(function(e){return '- **'+e.ver+'** '+e.date+'｜'+e.note;}).join('\n'):'';
   var full=fm+note+ss+ls;
+  var fname=base+(vname!=='（預設）'?'_'+vname:'')+'.md';
   var url=URL.createObjectURL(new Blob([full],{type:'text/markdown;charset=utf-8'}));
-  var a=document.createElement('a');a.href=url;a.download=t+'.md';document.body.appendChild(a);a.click();setTimeout(function(){a.remove();URL.revokeObjectURL(url);},200);toast('已匯出 .md');
+  var a=document.createElement('a');a.href=url;a.download=fname;document.body.appendChild(a);a.click();setTimeout(function(){a.remove();URL.revokeObjectURL(url);},200);toast('已匯出 .md');
 }
+
+
+function cloneGtd(src){src=src||{};return {inbox:(src.inbox||[]).map(function(x){return{date:x.date||today(),source:x.source||'',text:x.text||''};}),next:(src.next||[]).map(function(x){return{text:x.text||'',done:!!x.done};}),waiting:(src.waiting||[]).map(function(x){return{who:x.who||'',text:x.text||'',followDate:x.followDate||'',done:!!x.done};}),change:(src.change||[]).map(function(x){return{date:x.date||today(),version:x.version||'',section:x.section||'',text:x.text||'',reason:x.reason||''};}),ref:(src.ref||[]).map(function(x){return{label:x.label||'',url:x.url||'',note:x.note||''};})};}
+function toggleGtdSec(){var show=g('fCaseMode')&&g('fCaseMode').value==='project';g('gtdSec').classList.toggle('show',!!show);}
+function setGtdTab(k){curGtdTab=k;document.querySelectorAll('.gtd-tab').forEach(function(b){b.classList.toggle('on',b.dataset.gtd===k);});['inbox','next','waiting','change','ref'].forEach(function(x){g('gtdPane_'+x).classList.toggle('on',x===k);});}
+function renderGtdEditor(){renderGtdList('inbox');renderGtdList('next');renderGtdList('waiting');renderGtdList('change');renderGtdList('ref');toggleGtdSec();}
+function renderGtdList(k){
+  if(k==='inbox')g('gtdInboxList').innerHTML=gtd.inbox.map(function(x,i){return '<div class="gtd-minirow"><input value="'+esc(x.date||'')+'" onchange="gtd.inbox['+i+'].date=this.value" placeholder="日期"><input value="'+esc(x.text||'')+'" onchange="gtd.inbox['+i+'].text=this.value" placeholder="新進來文 / 資料"><input value="'+esc(x.source||'')+'" onchange="gtd.inbox['+i+'].source=this.value" placeholder="來源"><button class="gtd-del" onclick="gtd.inbox.splice('+i+',1);renderGtdEditor()">×</button></div>';}).join('')||'<div class="gtd-empty">尚無新進來文</div>';
+  if(k==='next')g('gtdNextList').innerHTML=gtd.next.map(function(x,i){return '<div class="gtd-minirow"><input type="checkbox" '+(x.done?'checked':'')+' onchange="gtd.next['+i+'].done=this.checked;renderGtdEditor()"><input value="'+esc(x.text||'')+'" onchange="gtd.next['+i+'].text=this.value" placeholder="下一步行動"><span style="font-size:11px;color:var(--muted)">'+(x.done?'已完成':'待辦')+'</span><button class="gtd-del" onclick="gtd.next.splice('+i+',1);renderGtdEditor()">×</button></div>';}).join('')||'<div class="gtd-empty">尚無下一步行動</div>';
+  if(k==='waiting')g('gtdWaitingList').innerHTML=gtd.waiting.map(function(x,i){return '<div class="gtd-minirow"><input value="'+esc(x.who||'')+'" onchange="gtd.waiting['+i+'].who=this.value" placeholder="等待對象"><input value="'+esc(x.text||'')+'" onchange="gtd.waiting['+i+'].text=this.value" placeholder="等待事項"><input type="date" value="'+esc(x.followDate||'')+'" onchange="gtd.waiting['+i+'].followDate=this.value"><button class="gtd-del" onclick="gtd.waiting.splice('+i+',1);renderGtdEditor()">×</button></div>';}).join('')||'<div class="gtd-empty">尚無待跟進事項</div>';
+  if(k==='change')g('gtdChangeList').innerHTML=gtd.change.map(function(x,i){return '<div class="gtd-minirow change"><input value="'+esc(x.date||'')+'" onchange="gtd.change['+i+'].date=this.value" placeholder="日期"><input value="'+esc(x.version||'')+'" onchange="gtd.change['+i+'].version=this.value" placeholder="版本"><input value="'+esc(x.section||'')+'" onchange="gtd.change['+i+'].section=this.value" placeholder="段落"><input value="'+esc(x.text||'')+'" onchange="gtd.change['+i+'].text=this.value" placeholder="修正內容"><button class="gtd-del" onclick="gtd.change.splice('+i+',1);renderGtdEditor()">×</button></div>';}).join('')||'<div class="gtd-empty">尚無修正紀錄</div>';
+  if(k==='ref')g('gtdRefList').innerHTML=gtd.ref.map(function(x,i){return '<div class="gtd-minirow ref"><input value="'+esc(x.label||'')+'" onchange="gtd.ref['+i+'].label=this.value" placeholder="資料名稱"><input value="'+esc(x.url||'')+'" onchange="gtd.ref['+i+'].url=this.value" placeholder="連結 / 檔案位置 / 備註"><button class="gtd-del" onclick="gtd.ref.splice('+i+',1);renderGtdEditor()">×</button></div>';}).join('')||'<div class="gtd-empty">尚無參考資料</div>';
+}
+function addGtd(k){
+  if(k==='inbox'){var t=g('gtdInboxText').value.trim();if(!t)return;gtd.inbox.push({date:today(),source:g('fSource').value||'',text:t});g('gtdInboxText').value='';}
+  if(k==='next'){var n=g('gtdNextText').value.trim();if(!n)return;gtd.next.push({text:n,done:false});g('gtdNextText').value='';}
+  if(k==='waiting'){var who=g('gtdWaitWho').value.trim(),txt=g('gtdWaitText').value.trim(),fd=g('gtdWaitDate').value;if(!txt)return;gtd.waiting.push({who:who,text:txt,followDate:fd,done:false});g('gtdWaitWho').value='';g('gtdWaitText').value='';g('gtdWaitDate').value='';}
+  if(k==='change'){var ver=g('gtdChVer').value.trim(),sec=g('gtdChSection').value.trim(),txt2=g('gtdChText').value.trim();if(!txt2)return;gtd.change.push({date:today(),version:ver||('v'+(gtd.change.length+1)),section:sec,text:txt2,reason:''});g('gtdChVer').value='';g('gtdChSection').value='';g('gtdChText').value='';}
+  if(k==='ref'){var lab=g('gtdRefLabel').value.trim(),url=g('gtdRefUrl').value.trim();if(!lab&&!url)return;gtd.ref.push({label:lab||'參考資料',url:url,note:''});g('gtdRefLabel').value='';g('gtdRefUrl').value='';}
+  renderGtdEditor();toast('已新增 GTD 項目');
+}
+function seedCrcGtd(){
+  if(!confirm('套用 CRC GTD 範例會加入範例項目，確定嗎？'))return;
+  g('fCaseMode').value='project'; if(!g('fProjectId').value)g('fProjectId').value='CRC國家報告修正案';
+  gtd.inbox.push({date:today(),source:'衛福部',text:'來文請補充兒少勞動權益、申訴管道與跨部會協作修正意見'});
+  gtd.next.push({text:'比對本次來文與前一版國家報告文字差異',done:false},{text:'補上 1955 兒少友善話務與申訴機制說明',done:false},{text:'整理建教合作機構查核與違規紀錄查復文字',done:false});
+  gtd.waiting.push({who:'教育部',text:'確認建教合作段落與查核機制文字',followDate:addDays(3),done:false},{who:'職安組',text:'確認職場安全衛生與青少年工作安全段落',followDate:addDays(4),done:false});
+  gtd.change.push({date:today(),version:'v3.2',section:'第42點、第43點',text:'新增 1955 申訴管道、建教合作查核、地方勞政主管機關處理機制',reason:'回應 CRC 國家報告修正意見'});
+  gtd.ref.push({label:'前版 CRC 國家報告本部回復文字',url:'請貼上雲端連結或公文系統位置',note:''},{label:'兒少勞動及職場安全衛生權益小組會議紀錄',url:'請貼上會議資料位置',note:''});
+  renderGtdEditor();toast('已套用 CRC GTD 範例');
+}
+function promoteGtdToWF(){var adds=gtd.next.filter(function(x){return !x.done;}).map(function(x){return{text:x.text,done:false};});if(!adds.length){toast('沒有可轉入 Workflow 的下一步');return;}wfSteps=wfSteps.concat(adds);renderWF();toast('已將 Next Actions 轉入 Workflow');}
+function copyGtdSummary(){var d=getDoc();var lines=['【'+(d.projectId||d.title)+'｜GTD 摘要】'];lines.push('本案：'+d.title);if(gtd.change.length){lines.push('\n本次修正：');gtd.change.forEach(function(x){lines.push('- '+(x.version||'')+' '+(x.section||'')+'：'+x.text);});}if(gtd.next.length){lines.push('\n下一步：');gtd.next.filter(function(x){return !x.done;}).forEach(function(x){lines.push('- '+x.text);});}if(gtd.waiting.length){lines.push('\n待跟進：');gtd.waiting.filter(function(x){return !x.done;}).forEach(function(x){lines.push('- '+(x.who||'待確認')+'｜'+x.text+(x.followDate?'（追蹤日：'+x.followDate+'）':''));});}navigator.clipboard.writeText(lines.join('\n')).then(function(){toast('已複製 GTD 摘要');});}
 
 function autoDocNo(){
   var yr=new Date().getFullYear(),nums=docs.map(function(d){return d.docNo||'';}).filter(function(n){return n.startsWith(yr+'-');}).map(function(n){return parseInt(n.split('-')[1]||0,10);}).filter(function(n){return !isNaN(n);});
@@ -779,10 +1094,11 @@ function autoDocNo(){
 function openDoc(id){
   editId=id||0;
   var d=id?docs.find(function(x){return x.id===id;}):null;
-  if(!d)d={title:'',docNo:autoDocNo(),source:'',received:today(),due:'',cat:cats[0],template:'',status:'new',templateState:'未分類',speed:'普通件',owner:'我',waiting:'no',next:'',link:'',note:'',steps:[]};
+  if(!d)d={title:'',caseMode:'single',projectId:'',docNo:autoDocNo(),source:'',received:today(),due:'',cat:cats[0],template:'',status:'new',templateState:'未分類',speed:'普通件',owner:'我',waiting:'no',next:'',link:'',note:'',steps:[],gtd:{inbox:[],next:[],waiting:[],change:[],ref:[]}};normalizeGtd(d);
   g('docTitle').textContent=id?'編輯公文':'新增公文';
   g('delBtn').style.display=id?'inline-block':'none';
-  ['Title','DocNo','Source','Received','Due','Next','Link','Note','Owner'].forEach(function(k){var el=g('f'+k);if(el)el.value=d[k.charAt(0).toLowerCase()+k.slice(1)]||'';});
+  ['Title','DocNo','Source','Received','Due','Next','Link','Note','Owner','ProjectId'].forEach(function(k){var el=g('f'+k);if(el)el.value=d[k.charAt(0).toLowerCase()+k.slice(1)]||'';});
+  g('fCaseMode').value=d.caseMode||'single';
   g('fCat').value=d.cat||cats[0];updateTplOpts();
   g('fTemplate').value=d.template||'';
   g('fStatus').value=d.status||'new';
@@ -790,15 +1106,16 @@ function openDoc(id){
   g('fSpeed').value=d.speed||'普通件';
   g('fWaiting').value=d.waiting||'no';
   wfSteps=(d.steps||[]).map(function(s){return{text:s.text,done:s.done};});
-  renderWF();
+  gtd=cloneGtd(d.gtd);
+  renderWF();renderGtdEditor();
   g('docBg').classList.add('show');
 }
 
 function getDoc(){
-  return{id:editId||Date.now(),title:g('fTitle').value.trim(),docNo:g('fDocNo').value.trim(),source:g('fSource').value.trim(),received:g('fReceived').value,due:g('fDue').value,cat:g('fCat').value,template:g('fTemplate').value,status:g('fStatus').value,templateState:g('fTplState').value,speed:g('fSpeed').value,owner:g('fOwner').value.trim()||'我',waiting:g('fWaiting').value,next:g('fNext').value.trim(),link:g('fLink').value.trim(),note:g('fNote').value.trim(),steps:wfSteps.map(function(s){return{text:s.text,done:s.done};})};
+  return{id:editId||Date.now(),title:g('fTitle').value.trim(),caseMode:g('fCaseMode').value,projectId:g('fProjectId').value.trim(),docNo:g('fDocNo').value.trim(),source:g('fSource').value.trim(),received:g('fReceived').value,due:g('fDue').value,cat:g('fCat').value,template:g('fTemplate').value,status:g('fStatus').value,templateState:g('fTplState').value,speed:g('fSpeed').value,owner:g('fOwner').value.trim()||'我',waiting:g('fWaiting').value,next:g('fNext').value.trim(),link:g('fLink').value.trim(),note:g('fNote').value.trim(),steps:wfSteps.map(function(s){return{text:s.text,done:s.done};}),gtd:cloneGtd(gtd)};
 }
 
-function saveDoc(){var d=getDoc();if(!d.title){toast('請輸入主旨');return;}if(editId){var i=docs.findIndex(function(x){return x.id===editId;});if(i>=0)docs[i]=d;}else docs.push(d);save();closeM('docBg');toast('已儲存');render();}
+function saveDoc(){var d=getDoc();if(!d.title){toast('請輸入主旨');return;}if(d.caseMode==='project'&&!d.projectId)d.projectId=d.title;if(editId){var i=docs.findIndex(function(x){return x.id===editId;});if(i>=0)docs[i]=d;}else docs.push(d);save();closeM('docBg');toast('已儲存');render();}
 function deleteDoc(){if(!editId)return;if(!confirm('確定刪除此件公文？'))return;docs=docs.filter(function(d){return d.id!==editId;});save();closeM('docBg');toast('已刪除');render();}
 function copyBrief(){var d=getDoc();var sx=d.steps.length?'\nWorkflow：\n'+d.steps.map(function(s){return'  '+(s.done?'☑':'☐')+' '+s.text;}).join('\n'):'';navigator.clipboard.writeText(d.title+'\n文號：'+(d.docNo||'未填')+'\n業務：'+d.cat+'\n例稿：'+d.template+'（'+d.templateState+'）\n狀態：'+slb(d.status)+'\n期限：'+(d.due||'未填')+'\n下一步：'+(d.next||'未填')+sx).then(function(){toast('已複製摘要');});}
 
@@ -826,14 +1143,21 @@ function buildSel(){
   updateTplOpts();updateSrcDL();
 }
 function fillS(id,arr,first){var el=g(id);if(!el)return;var cur=el.value;el.innerHTML=(first?'<option value="all">'+first+'</option>':'')+arr.map(function(x){return typeof x==='string'?'<option value="'+esc(x)+'">'+esc(x)+'</option>':'<option value="'+esc(x.v)+'">'+esc(x.t)+'</option>';}).join('');if(cur&&el.querySelector('option[value="'+cur+'"]'))el.value=cur;else if(first)el.value='all';}
-function updateTplOpts(){var cat=g('fCat')?g('fCat').value:cats[0],tpls=DTPLS[cat]||allTpls();fillS('fTemplate',tpls,null);}
+function updateTplOpts(){
+  var cat=g('fCat')?g('fCat').value:cats[0];
+  var tpls=Object.keys(tplMap||{}).filter(function(t){
+    return cat==='all'||(tplMap[t]&&tplMap[t].indexOf(cat)>=0);
+  });
+  if(!tpls.length)tpls=Object.keys(tplMap||{});
+  fillS('fTemplate',tpls,null);
+}
 function updateSrcDL(){var dl=g('srcList');if(!dl)return;dl.innerHTML=srcs.map(function(s){return'<option value="'+esc(s)+'">';}).join('');}
 
 function closeM(id){g(id).classList.remove('show');}
 
 function exportCSV(){
-  var rows=[['主旨','文號','來文單位','收文日期','辦理期限','業務類別','例稿分類','例稿狀態','流程狀態','速別','承辦人','等回復','下一步','連結','備註','WF進度']];
-  docs.forEach(function(d){var steps=d.steps||[],ds=steps.filter(function(s){return s.done;}).length;rows.push([d.title,d.docNo,d.source,d.received,d.due,d.cat,d.template,d.templateState,slb(d.status),d.speed,d.owner,d.waiting==='yes'?'是':'否',d.next,d.link,d.note,steps.length?ds+'/'+steps.length:'']);});
+  var rows=[['主旨','案件模式','議題ID','文號','來文單位','收文日期','辦理期限','業務類別','例稿分類','例稿狀態','流程狀態','速別','承辦人','等回復','下一步','連結','備註','WF進度','GTD下一步','待跟進','修正紀錄']];
+  docs.forEach(function(d){var steps=d.steps||[],ds=steps.filter(function(s){return s.done;}).length;normalizeGtd(d);rows.push([d.title,d.caseMode||'single',d.projectId||'',d.docNo,d.source,d.received,d.due,d.cat,d.template,d.templateState,slb(d.status),d.speed,d.owner,d.waiting==='yes'?'是':'否',d.next,d.link,d.note,steps.length?ds+'/'+steps.length:'',(d.gtd.next||[]).map(function(x){return x.text;}).join('；'),(d.gtd.waiting||[]).map(function(x){return (x.who||'')+'：'+(x.text||'');}).join('；'),(d.gtd.change||[]).map(function(x){return (x.version||'')+' '+(x.text||'');}).join('；')]);});
   var csv='\ufeff'+rows.map(function(r){return r.map(function(v){return'"'+String(v==null?'':v).replace(/"/g,'""')+'"';}).join(',');}).join('\n');
   var url=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));
   var a=document.createElement('a');a.href=url;a.download='公文承辦OS_'+today()+'.csv';document.body.appendChild(a);a.click();setTimeout(function(){a.remove();URL.revokeObjectURL(url);},200);
@@ -855,6 +1179,7 @@ function markBK(){localStorage.setItem(BK,today());g('backupBanner').classList.r
 function toast(msg){var t=g('toast');t.textContent=msg;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(function(){t.classList.remove('show');},2300);}
 
 load();
+docs.forEach(normalizeGtd);save();
 buildSel();
 if(localStorage.getItem(GK))dotS('ok');
 render();
