@@ -1346,7 +1346,7 @@ function exMd(key){
 }
 
 function autoDocNo(){
-  var yr=new Date().getFullYear(),nums=docs.map(function(d){return d.docNo||'';}).filter(function(n){return n.startsWith(yr+'-');}).map(function(n){return parseInt(n.split('-')[1]||0,10);}).filter(function(n){return !isNaN(n);});
+  var yr=new Date().getFullYear(),nums=docs.map(function(d){return String(d.docNo||'');}).filter(function(n){return n.startsWith(yr+'-');}).map(function(n){return parseInt(n.split('-')[1]||0,10);}).filter(function(n){return !isNaN(n);});
   var next=nums.length?Math.max.apply(null,nums)+1:1;
   return yr+'-'+('00'+next).slice(-3);
 }
@@ -1669,7 +1669,7 @@ function currentProjectValue(){
 }
 function autoDocNo(){
   var yr=new Date().getFullYear();
-  var nums=docs.map(function(d){return d.docNo||'';})
+  var nums=docs.map(function(d){return String(d.docNo||'');})
     .filter(function(n){return n.startsWith(yr+'-');})
     .map(function(n){return parseInt(n.split('-')[1]||0,10);})
     .filter(function(n){return !isNaN(n);});
