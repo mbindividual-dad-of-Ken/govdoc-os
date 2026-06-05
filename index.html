@@ -1516,7 +1516,7 @@ function renderLogList(){
       +'<span class="log-icon">'+icon+'</span>'
       +'<div class="log-body">'
         +'<div class="log-date">'+esc(e.date)+'</div>'
-        +'<div class="log-text'+(e.done?' "style="opacity:.55;text-decoration:line-through"':'" ')+'>'+esc(e.text)+'</div>'
+        +'<div class="log-text" style="'+(e.done?'opacity:.55;text-decoration:line-through':'')+'">'+esc(e.text)+'</div>'
         +extra
       +'</div>'
       +(e.type==='followup'?'<button class="log-del" onclick="toggleLogDone('+e.id+')" title="標記完成">'+( e.done?'↩':'✓')+'</button>':'')
