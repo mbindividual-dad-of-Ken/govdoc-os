@@ -377,6 +377,32 @@ tr:last-child td{border-bottom:none}
 .log-form .lf-row input:focus,.log-form .lf-row textarea:focus{border-color:var(--primary)}
 .log-form textarea{min-height:60px;resize:vertical;width:100%}
 .log-form .lf-acts{display:flex;gap:6px;justify-content:flex-end;margin-top:6px}
+
+/* ── 快速編輯 popover ── */
+.qedit-overlay{display:none;position:fixed;inset:0;z-index:140}
+.qedit-overlay.show{display:block}
+.qedit-pop{display:none;position:fixed;z-index:150;background:var(--card);border:1px solid var(--border);border-radius:12px;box-shadow:0 8px 28px rgba(20,18,14,.15);padding:14px 16px;width:286px}
+.qedit-pop.show{display:block}
+.qedit-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.qedit-title{font-size:12px;font-weight:700;color:var(--sub);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:220px}
+.qedit-close{border:none;background:none;color:var(--muted);cursor:pointer;font-size:16px;line-height:1;padding:0;flex-shrink:0}
+.qedit-row{display:flex;flex-direction:column;gap:3px;margin-bottom:8px}
+.qedit-row label{font-size:10px;font-weight:700;color:var(--muted);letter-spacing:.04em;text-transform:uppercase}
+.qedit-row input{border:1px solid var(--border2);border-radius:6px;padding:6px 8px;font-size:12px;font-family:inherit;outline:none;background:var(--bg2);color:var(--text);width:100%}
+.qedit-row input:focus{border-color:var(--primary);background:var(--card)}
+.qedit-log-bar{display:flex;gap:4px;margin-bottom:8px}
+.qedit-log-bar button{flex:1;border:1px solid var(--border2);background:var(--bg2);border-radius:5px;padding:4px 2px;font-size:10px;cursor:pointer;font-family:inherit;transition:.1s}
+.qedit-log-bar button:hover{border-color:var(--primary);color:var(--primary)}
+.qedit-log-form{display:none;margin-bottom:8px}
+.qedit-log-form.show{display:block}
+.qedit-log-inp{border:1px solid var(--border2);border-radius:6px;padding:5px 8px;font-size:11px;font-family:inherit;outline:none;background:var(--bg2);color:var(--text);width:100%}
+.qedit-log-inp:focus{border-color:var(--primary)}
+.qedit-acts{display:flex;gap:6px;justify-content:flex-end}
+/* ── 例稿搜尋 ── */
+.tpl-search-bar{display:flex;gap:6px;align-items:center;padding:6px 14px 8px;border-bottom:1px solid var(--border)}
+.tpl-search-bar input{flex:1;border:1px solid var(--border2);border-radius:7px;padding:6px 10px;font-size:12px;font-family:inherit;outline:none;background:var(--card);color:var(--text)}
+.tpl-search-bar input:focus{border-color:var(--primary)}
+#tplSearchResults{padding:4px 14px 6px;max-height:200px;overflow-y:auto}
 </style>
 </head>
 <body>
@@ -521,6 +547,7 @@ tr:last-child td{border-bottom:none}
         <input id="wfInput" placeholder="新增步驟…" onkeydown="if(event.key==='Enter')addWfStep()"/>
         <button class="small-btn pri" onclick="addWfStep()">＋</button>
         <button class="small-btn" onclick="loadSop()">套用 SOP</button>
+        <button class="small-btn" onclick="saveWfToSop()" title="存回例稿 SOP">&#8593; 存回</button>
       </div>
     </div>
     <!-- 承辦日誌 -->
@@ -578,6 +605,22 @@ tr:last-child td{border-bottom:none}
       <button class="small-btn" onclick="runDiag()">&#128300; 執行健診</button>
     </div>
   </div>
+</div>
+<div class="qedit-overlay" id="qeditOverlay" onclick="closeQEdit()"></div>
+<div class="qedit-pop" id="qeditPop">
+  <div class="qedit-head"><span class="qedit-title" id="qeditTitle"></span><button class="qedit-close" onclick="closeQEdit()">&#215;</button></div>
+  <div class="qedit-row"><label>辦理期限</label><input type="date" id="qeditDue"/></div>
+  <div class="qedit-row"><label>下一步行動</label><input id="qeditNext" placeholder="下一步…"/></div>
+  <div class="qedit-log-bar">
+    <button onclick="showQEditLog('note')">&#128221; 紀錄</button>
+    <button onclick="showQEditLog('followup')">&#9646; 待跟進</button>
+    <button onclick="showQEditLog('milestone')">&#10003; 里程碑</button>
+  </div>
+  <div class="qedit-log-form" id="qeditLogForm">
+    <input class="qedit-log-inp" id="qeditLogText" placeholder="內容…"/>
+    <div id="qeditLogExtra"></div>
+  </div>
+  <div class="qedit-acts"><button class="small-btn" onclick="closeQEdit()">取消</button><button class="small-btn pri" onclick="saveQEdit()">儲存</button></div>
 </div>
 <div class="toast" id="toast"></div>
 <script>
@@ -784,7 +827,7 @@ function cardHTML(d){
   var wBtn=(d.waiting!=='yes')
     ?'<button class="qb b" onclick="qWt('+d.id+',1)">&#9646; 等回復</button>'
     :'<button class="qb" onclick="qWt('+d.id+',0)">&#9654; 繼續</button>';
-  var quick='<div class="cquick" onclick="event.stopPropagation()">'+nBtn+dBtn+wBtn+'</div>';
+  var quick='<div class="cquick" onclick="event.stopPropagation()">'+nBtn+dBtn+wBtn+'<button class="qb" onclick="openQEdit(event,'+d.id+')">&#9998;</button></div>';
   return '<article class="dc'+(d.status==='done'?' done':'')+'" style="border-left-color:'+color+'" draggable="true" ondragstart="cDS(event,'+d.id+')" ondragend="cDE(event)" onclick="openDoc('+d.id+')">'
     +'<div class="ctop"><span class="dno">'+esc(d.docNo||'#'+d.id)+'</span>'+(isIncomplete(d)&&d.status!=='done'?'<span class="incomplete-badge">待補</span>':'')+'<span class="lt '+l.id+'">'+l.lb+'</span></div>'   +'<div class="dtitle">'+esc(d.title)+'</div>'
     +'<div class="dtags"><span class="ctag" style="background:'+color+'18;color:'+color+'">'+esc(d.cat||'其他')+'</span>'+(d.source?'<span class="stag">'+esc(d.source)+'</span>':'')+(d.projectId?'<span class="project-tag">'+esc(d.projectId)+'</span>':'')+spEl+'</div>'
@@ -840,7 +883,7 @@ function renderTodo(){
     {k:'green',lb:'&#128203; 承辦中',c:'var(--primary)',items:active.filter(function(d){return lightOf(d).id==='green'&&!(d.speed==='速件'||d.speed==='最速件');})}
   ];
   var root=g('todoContent');
-  var follow=followupsHTML();
+  var follow=followupsHTML()+todayActionsHTML();
   if(!active.length){root.innerHTML=follow+'<div class="todo-empty">&#127881; 目前沒有待辦案件</div>';return;}
   root.innerHTML=follow+'<div class="todo-wrap">'+groups.filter(function(gr){return gr.items.length;}).map(function(gr){
     return '<div class="tds">'
@@ -882,7 +925,7 @@ function renderTodo(){
     {k:'green',lb:'&#128203; 承辦中',c:'var(--primary)',items:active.filter(function(d){return lightOf(d).id==='green'&&!(d.speed==='速件'||d.speed==='最速件');})}
   ];
   var root=g('todoContent');
-  var follow=followupsHTML();
+  var follow=followupsHTML()+todayActionsHTML();
   if(!active.length){root.innerHTML=follow+'<div class="todo-empty">&#127881; 目前沒有待辦案件</div>';return;}
   root.innerHTML=follow+'<div class="todo-wrap">'+groups.filter(function(gr){return gr.items.length;}).map(function(gr){
     return '<div class="tds">'
@@ -1051,7 +1094,7 @@ function copyProjectSummary(pid){
 function renderTemplates(){
   var root=g('templatesView');
   if(!root.querySelector('.vault')){
-    root.innerHTML='<div class="vault"><div class="vsb"><div class="vsb-hd" style="display:flex;align-items:center;justify-content:space-between;gap:8px"><span>例稿知識庫</span><button class="small-btn pri" style="font-size:10px;padding:3px 8px" onclick="startAddTplGlobal()">＋ 新增</button></div><div id="vaultTree"></div></div><div class="vmain" id="vaultMain"><div class="vempty"><div><div style="font-size:32px;margin-bottom:8px">&#128194;</div><div>點選左側例稿開始編輯</div><div style="font-size:11px;margin-top:4px">支援 Markdown・[[雙向連結]]・SOP・迭代紀錄</div></div></div></div></div>';
+    root.innerHTML='<div class="vault"><div class="vsb"><div class="vsb-hd" style="display:flex;align-items:center;justify-content:space-between;gap:8px"><span>例稿知識庫</span><button class="small-btn pri" style="font-size:10px;padding:3px 8px" onclick="startAddTplGlobal()">＋ 新增</button></div><div class=\"tpl-search-bar\"><input id=\"tplSearchInp\" placeholder=\"&#128269; 搜尋筆記…\" oninput=\"renderTplSearch()\"/></div><div id=\"tplSearchResults\"></div><div id=\"vaultTree\"></div></div><div class="vmain" id="vaultMain"><div class="vempty"><div><div style="font-size:32px;margin-bottom:8px">&#128194;</div><div>點選左側例稿開始編輯</div><div style="font-size:11px;margin-top:4px">支援 Markdown・[[雙向連結]]・SOP・迭代紀錄</div></div></div></div></div>';
   }
   renderVTree();
 }
@@ -1476,8 +1519,10 @@ function submitLogEntry(){
     entry.followDate=g('lfFollowDate')?g('lfFollowDate').value:'';
   }
   logState.push(entry);
+  if(editId){var d=docs.find(function(x){return x.id===editId;});if(d){d.log=logState.map(function(e){return Object.assign({},e);});save();}}
   cancelLogForm();
   renderLogList();
+  toast('已新增'+({note:'紀錄',followup:'待跟進',milestone:'里程碑'}[logFormType]||'日誌')+'並自動儲存');
 }
 
 function toggleLogDone(id){
@@ -1662,6 +1707,130 @@ function runDiag(){
 }
 
 // ── Modal helpers ─────────────────────────────────
+
+// ── 快速編輯 popover ──────────────────────────────
+var qeditId=null,qeditLogType=null;
+function openQEdit(e,id){
+  e.stopPropagation();qeditId=id;qeditLogType=null;
+  var d=docs.find(function(x){return x.id===id;});if(!d)return;
+  normalizeDoc(d);
+  var pop=g('qeditPop'),ov=g('qeditOverlay');if(!pop||!ov)return;
+  g('qeditTitle').textContent=d.title.slice(0,28)+(d.title.length>28?'…':'');
+  g('qeditDue').value=d.due||'';g('qeditNext').value=d.next||'';
+  var lf=g('qeditLogForm');if(lf)lf.classList.remove('show');
+  var lt=g('qeditLogText');if(lt)lt.value='';
+  var le=g('qeditLogExtra');if(le)le.innerHTML='';
+  var rect=e.target.getBoundingClientRect();
+  var top=rect.bottom+6,left=rect.left;
+  if(top+320>window.innerHeight)top=Math.max(4,rect.top-326);
+  if(left+290>window.innerWidth)left=Math.max(4,window.innerWidth-295);
+  pop.style.top=top+'px';pop.style.left=left+'px';
+  pop.classList.add('show');ov.classList.add('show');
+}
+function closeQEdit(){
+  var pop=g('qeditPop'),ov=g('qeditOverlay');
+  if(pop)pop.classList.remove('show');
+  if(ov)ov.classList.remove('show');
+  qeditId=null;qeditLogType=null;
+}
+function showQEditLog(type){
+  qeditLogType=type;
+  var form=g('qeditLogForm'),extra=g('qeditLogExtra'),inp=g('qeditLogText');
+  if(!form||!extra||!inp)return;
+  inp.placeholder={note:'紀錄內容',followup:'等待事項',milestone:'里程碑'}[type]||'內容…';
+  inp.value='';
+  extra.innerHTML=type==='followup'
+    ?'<input class="qedit-log-inp" id="qeditWho" placeholder="等待對象…" style="margin-top:4px"/><input type="date" class="qedit-log-inp" id="qeditFollowDate" style="margin-top:4px"/>'
+    :'';
+  form.classList.add('show');
+  setTimeout(function(){inp.focus();},50);
+}
+function saveQEdit(){
+  if(!qeditId)return;
+  var d=docs.find(function(x){return x.id===qeditId;});if(!d)return;
+  normalizeDoc(d);
+  d.due=g('qeditDue').value;
+  d.next=(g('qeditNext')?g('qeditNext').value||'':'').trim();
+  var logForm=g('qeditLogForm');
+  if(logForm&&logForm.classList.contains('show')&&qeditLogType){
+    var text=(g('qeditLogText')?g('qeditLogText').value||'':'').trim();
+    if(text){
+      var entry={id:Date.now(),date:today(),type:qeditLogType,text:text,done:false};
+      if(qeditLogType==='followup'){
+        entry.who=g('qeditWho')?g('qeditWho').value.trim():'';
+        entry.followDate=g('qeditFollowDate')?g('qeditFollowDate').value:'';
+      }
+      d.log.push(entry);
+    }
+  }
+  save();render();closeQEdit();
+  toast('已更新：'+d.title.slice(0,15)+(d.title.length>15?'…':''));
+}
+
+// ── Workflow 存回 SOP ──────────────────────────────
+function saveWfToSop(){
+  var tplName=g('fTemplate')?g('fTemplate').value:'';
+  if(!tplName){toast('請先選擇例稿分類');return;}
+  if(!wfSteps.length){toast('目前沒有 Workflow 步驟');return;}
+  if(!confirm('將目前 '+wfSteps.length+' 個步驟存回「'+tplName+'」SOP？（覆蓋原有）'))return;
+  if(!tpl.sop)tpl.sop={};
+  tpl.sop[tplName]=wfSteps.map(function(s){return s.text;});
+  saveTpl();toast('已存回「'+tplName+'」SOP');
+}
+
+// ── 例稿筆記搜尋 ──────────────────────────────────
+function searchTplNotes(q){
+  if(!q||!q.trim())return [];
+  q=q.trim().toLowerCase();
+  var results=[];
+  Object.keys(tpl.notes||{}).forEach(function(key){
+    var note=tpl.notes[key]||'';
+    if(note.toLowerCase().indexOf(q)>=0){
+      var idx=note.toLowerCase().indexOf(q);
+      var snippet=note.slice(Math.max(0,idx-25),idx+55).replace(/[\n\r]/g,' ');
+      results.push({key:key,base:tplBase(key),variant:tplVariant(key),snippet:snippet});
+    }
+  });
+  return results;
+}
+function renderTplSearch(){
+  var q=g('tplSearchInp')?g('tplSearchInp').value:'';
+  var el=g('tplSearchResults');if(!el)return;
+  var res=searchTplNotes(q);
+  if(!q.trim()){el.innerHTML='';return;}
+  if(!res.length){el.innerHTML='<div style="color:var(--muted);font-size:12px;padding:6px 2px">找不到相關筆記</div>';return;}
+  el.innerHTML=res.map(function(r){
+    var ks=r.key.replace(/'/g,"\\'");
+    return '<div class="rdoc" onclick="openVF(\''+ks+'\')">'  
+      +'<div class="rdoc-t"><strong>'+esc(r.base)+'</strong>'+(r.variant?'<span style="color:var(--muted);margin-left:4px;font-size:10px">'+esc(r.variant)+'</span>':'')+'</div>'
+      +'<div style="font-size:11px;color:var(--sub);margin-top:2px">…'+esc(r.snippet)+'…</div>'
+      +'</div>';
+  }).join('');
+}
+
+// ── 今日行動清單 ──────────────────────────────────
+function todayActionsHTML(){
+  var items=[];
+  docs.forEach(function(d){
+    if(d.status==='done'||!d.next)return;
+    items.push({docId:d.id,title:d.title,text:d.next,light:lightOf(d).id});
+  });
+  var order={red:0,orange:1,yellow:2,green:3,blue:4,gray:5};
+  items.sort(function(a,b){return(order[a.light]||9)-(order[b.light]||9);});
+  if(!items.length)return '';
+  var lightLb={red:'逾期',orange:'今日',yellow:'3日內',green:'承辦中',blue:'等回復',gray:'結案'};
+  return '<section class="follow-table" style="margin-bottom:14px">'
+    +'<div class="follow-head"><b>&#9654; 今日行動清單</b><span style="font-size:11px;color:var(--muted)">來自各案件「下一步」欄位・點擊開啟</span></div>'
+    +items.slice(0,10).map(function(it){
+      return '<div class="follow-row" style="grid-template-columns:70px 1fr" onclick="openDoc('+it.docId+')">'
+        +'<div><span class="lt '+it.light+'">'+(lightLb[it.light]||it.light)+'</span></div>'
+        +'<div><div style="font-weight:600;font-size:12px">'+esc(it.text)+'</div>'
+        +'<div class="muted" style="font-size:10px">'+esc(it.title)+'</div></div>'
+        +'</div>';
+    }).join('')
+    +'</section>';
+}
+
 function closeM(id){g(id).classList.remove('show');}
 function currentProjectValue(){
   var chips=document.querySelectorAll('#projectChipbox .project-chip.on');
@@ -1767,7 +1936,7 @@ async function syncPush(){
   dotS('ing');g('syncSt').textContent='同步中…';
   try{
     var r=await fetch(url,{method:'POST',headers:{'Content-Type':'text/plain'},
-      body:JSON.stringify({action:'push',token:localStorage.getItem(TK)||'',data:docs,tplData:tpl,projectTags:projectTags})});
+      body:JSON.stringify({action:'push',token:localStorage.getItem(TK)||'',data:docs,tplData:tpl,projectTags:projectTags,tplMap:tplMap})});
     var j=await r.json();
     if(j.ok){dotS('ok');g('syncSt').textContent='已同步至雲端 · '+new Date().toLocaleTimeString();toast('雲端同步完成');markBK();}
     else{dotS('err');toast('同步失敗：'+(j.error||'未知'));}
@@ -1784,6 +1953,7 @@ async function syncPull(){
       docs=j.data;docs.forEach(normalizeDoc);save();
       if(j.tplData){tpl=j.tplData;saveTpl();}
       if(j.projectTags&&Array.isArray(j.projectTags)){projectTags=j.projectTags;saveProjectTags();}
+      if(j.tplMap&&typeof j.tplMap==='object'&&Object.keys(j.tplMap).length>0){tplMap=j.tplMap;saveTplMap();}
       dotS('ok');g('syncSt').textContent='已讀取雲端資料 · '+new Date().toLocaleTimeString();
       toast('已讀取 '+docs.length+' 筆公文');render();
     }else{dotS('err');toast('讀取失敗：'+(j.error||'格式不符'));}
