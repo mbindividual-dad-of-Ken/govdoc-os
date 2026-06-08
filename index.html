@@ -403,6 +403,13 @@ tr:last-child td{border-bottom:none}
 .tpl-search-bar input{flex:1;border:1px solid var(--border2);border-radius:7px;padding:6px 10px;font-size:12px;font-family:inherit;outline:none;background:var(--card);color:var(--text)}
 .tpl-search-bar input:focus{border-color:var(--primary)}
 #tplSearchResults{padding:4px 14px 6px;max-height:200px;overflow-y:auto}
+
+/* 快速收件 modal */
+.quick-intake-modal{max-width:420px}
+.qi-field{display:flex;flex-direction:column;gap:4px;margin-bottom:12px}
+.qi-field label{font-size:10px;font-weight:700;color:var(--muted);letter-spacing:.05em;text-transform:uppercase}
+.qi-field input,.qi-field select{border:1px solid var(--border2);border-radius:7px;padding:8px 10px;font-size:13px;font-family:inherit;outline:none;background:var(--bg2);color:var(--text)}
+.qi-field input:focus,.qi-field select:focus{border-color:var(--primary);background:var(--card)}
 </style>
 </head>
 <body>
@@ -415,6 +422,7 @@ tr:last-child td{border-bottom:none}
   <div class="hd-r">
     <button class="sbtn" onclick="syncPull()"><div class="sdot" id="syncDot"></div>&#9729; 讀取</button>
     <button class="sbtn push" onclick="syncPush()">&#8679; 同步</button>
+    <button class="sbtn" onclick="syncRestore()" title="還原上次備份">↩ 還原</button>
     <button class="sbtn" onclick="openSetup()">&#9881; 設定</button>
     <div class="vtabs">
       <button class="vt on" data-view="kanban" onclick="setView('kanban')">看板</button>
@@ -447,10 +455,20 @@ tr:last-child td{border-bottom:none}
 </section>
 <section class="insight">
   <div class="ic"><h3>業務類別</h3><div id="catBars"></div></div>
+  <div id="stuckBanner" style="display:none;margin-top:12px;background:#fdf6ef;border:1px solid #f0d8c0;border-radius:9px;padding:10px 14px"><div style="font-size:12px;font-weight:700;color:var(--orange);margin-bottom:6px">⏰ 卡住案件（同狀態停留超過門檻天數）</div><div id="stuckList" style="font-size:12px;line-height:1.8"></div></div>
   <div class="ic"><h3>例稿迭代狀態</h3><div id="iterBars"></div></div>
   <div class="ic"><h3>狀態卡點</h3><div id="statusBars"></div></div>
   <div class="ic"><h3>承辦負荷</h3><div id="ownerBars"></div></div>
 </section>
+<!-- 同步危險警告 Banner（資料不安全時顯示）-->
+<div id="syncDangerBanner" style="display:none;background:#fdf0ef;border:1px solid #f0c8c4;border-radius:10px;padding:12px 16px;margin-bottom:14px;align-items:center;gap:12px;flex-wrap:wrap">
+  <div style="flex:1;font-size:13px;font-weight:700;color:var(--red)">⚠ 本機資料是空的——Chrome 重開後資料已清除</div>
+  <div style="font-size:12px;color:var(--sub);flex-basis:100%">請先「☁ 讀取」從雲端拉回資料，<strong>不要直接按同步</strong>，否則會用空資料覆蓋雲端。</div>
+  <div style="display:flex;gap:7px;flex-shrink:0">
+    <button class="tbtn" onclick="syncPull()">☁ 立即讀取</button>
+    <button class="tbtn sec" onclick="syncRestore()">↩ 還原上次備份</button>
+  </div>
+</div>
 <div class="backup-banner" id="backupBanner">
   <div class="bb-txt" id="backupMsg"></div>
   <div class="bb-actions">
@@ -474,8 +492,11 @@ tr:last-child td{border-bottom:none}
     <option value="yellow">3日內</option><option value="blue">等回復</option>
     <option value="green">正常</option><option value="gray">結案</option>
   </select>
+  <button class="tbtn sec" onclick="openQuickIntake()">⚡ 快速收件</button>
   <button class="tbtn" onclick="openDoc(0)">＋ 新增公文</button>
   <button class="tbtn sec" onclick="exportCSV()">匯出 CSV</button>
+  <button class="tbtn sec" onclick="exportJSON()">備份 JSON</button>
+  <button class="tbtn sec" onclick="importJSON()">還原 JSON</button>
   <button class="tbtn sec" onclick="importSample()">範例</button>
 </div>
 <main id="kanbanView"><div class="kanban" id="kanban"></div></main>
@@ -560,6 +581,7 @@ tr:last-child td{border-bottom:none}
         <button onclick="showLogForm('note')">📝 紀錄</button>
         <button onclick="showLogForm('followup')">⏸ 待跟進</button>
         <button onclick="showLogForm('milestone')">✅ 里程碑</button>
+        <button onclick="precipitateToVault()" title="將備註/日誌沉澱到例稿知識庫">📥 沉澱</button>
       </div>
       <!-- 日誌輸入表單（動態顯示） -->
       <div class="log-form" id="logForm">
@@ -575,7 +597,25 @@ tr:last-child td{border-bottom:none}
     <div class="macts">
       <button class="mbtn del" id="delBtn" style="display:none" onclick="deleteDoc()">刪除</button>
       <button class="mbtn sec" onclick="copyBrief()">複製摘要</button>
+      <button class="mbtn sec" onclick="copyHandover()" title="產出交接摘要">交接</button>
       <button class="mbtn pri" onclick="saveDoc()">儲存</button>
+    </div>
+  </div>
+</div>
+<div class="mbg" id="quickIntakeBg" onclick="if(event.target===this)closeM('quickIntakeBg')">
+  <div class="modal quick-intake-modal">
+    <div class="mhd"><div><h2>⚡ 快速收件</h2></div><button class="mbtn sec" onclick="closeM('quickIntakeBg')">關閉</button></div>
+    <div style="padding:0 2px">
+      <div class="qi-field"><label>主旨 / 案名 *</label><input id="qiTitle" placeholder="請輸入主旨…"/></div>
+      <div class="qi-field"><label>業務類別</label><select id="qiCat"></select></div>
+      <div class="qi-field"><label>辦理期限</label><input type="date" id="qiDue"/></div>
+      <div class="qi-field"><label>來文單位</label><input id="qiSource" list="qiSrcList"/><datalist id="qiSrcList"></datalist></div>
+      <div class="qi-field"><label>例稿分類</label><select id="qiTemplate"></select></div>
+    </div>
+    <div class="macts">
+      <button class="mbtn sec" onclick="closeM('quickIntakeBg')">取消</button>
+      <button class="mbtn pri" onclick="saveQuickIntake()">收件並開啟完整編輯</button>
+      <button class="mbtn sec" onclick="saveQuickIntakeOnly()">僅收件</button>
     </div>
   </div>
 </div>
@@ -638,6 +678,7 @@ if(localStorage.getItem(GK))dotS('ok');
 setView('kanban');
 checkAlerts();
 checkBackup();
+updateSyncSafetyUI(); // 檢查資料安全性，不安全時顯示警告
 </script>
 </body>
 </html>
