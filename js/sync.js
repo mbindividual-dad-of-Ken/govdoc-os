@@ -7,7 +7,15 @@ function dotS(s){
 
 async function syncPush(){
   var url=localStorage.getItem(GK);if(!url){openSetup();return;}
-  if(!confirm('將本機資料推送至 Google Sheet？'))return;
+  // 第一層：空資料或全範例資料，禁止推送
+  if(!isDataSafe()){
+    toast('⚠ 本機資料是空的或全為範例資料，請先「☁ 讀取」再同步！');
+    dotS('err');
+    g('syncSt').textContent='⚠ 禁止推送：本機資料不安全，請先讀取雲端資料';
+    return;
+  }
+  // 第二層：件數比較警告（先查雲端件數）
+  if(!confirm('將本機 '+docs.length+' 件公文推送至 Google Sheet？\n\n⚠ 推送將覆蓋雲端資料（推送前會自動備份）'))return;
   dotS('ing');g('syncSt').textContent='同步中…';
   try{
     var r=await fetch(url,{method:'POST',headers:{'Content-Type':'text/plain'},
@@ -32,6 +40,8 @@ async function syncPull(){
       if(j.tplMap&&typeof j.tplMap==='object'&&Object.keys(j.tplMap).length>0){tplMap=j.tplMap;saveTplMap();}
       dotS('ok');g('syncSt').textContent='已讀取雲端資料 · '+new Date().toLocaleTimeString();
       toast('已讀取 '+docs.length+' 筆公文');render();
+      // 讀取後自動檢查資料安全性
+      updateSyncSafetyUI();
     }else{dotS('err');toast('讀取失敗：'+(j.error||'格式不符'));}
   }catch(e){dotS('err');toast('連線失敗');}
 }
@@ -166,6 +176,45 @@ function runDiag(){
 // ── 快速編輯 popover ──────────────────────────────
 var qeditId=null,qeditLogType=null;
 
+
+// ── 第三層：還原上次備份 ──────────────────────
+async function syncRestore(){
+  var url=localStorage.getItem(GK);if(!url){openSetup();return;}
+  if(!confirm('從 GAS 還原上次備份的公文資料？\n（例稿庫和設定不受影響）\n\n注意：這會覆蓋本機和雲端目前的公文資料'))return;
+  dotS('ing');g('syncSt').textContent='還原中…';
+  try{
+    var u=new URL(url);
+    u.searchParams.set('action','restore');
+    u.searchParams.set('token',localStorage.getItem(TK)||'');
+    var r=await fetch(u.toString()),j=await r.json();
+    if(j.ok&&Array.isArray(j.data)&&j.data.length>0){
+      docs=j.data;docs.forEach(normalizeDoc);save();
+      dotS('ok');
+      g('syncSt').textContent='已還原備份 '+docs.length+' 筆公文 · '+new Date().toLocaleTimeString();
+      toast('✅ 已還原備份（'+docs.length+' 件）');
+      render();updateSyncSafetyUI();
+    }else if(j.ok&&(!j.data||j.data.length===0)){
+      dotS('err');toast('備份是空的，無法還原');
+    }else{
+      dotS('err');toast('還原失敗：'+(j.error||'未知'));
+    }
+  }catch(e){dotS('err');toast('連線失敗');}
+}
+
+// ── 同步安全 UI 更新 ─────────────────────────
+function updateSyncSafetyUI(){
+  var safe=isDataSafe();
+  var pushBtn=document.querySelector('.sbtn.push');
+  var banner=g('syncDangerBanner');
+  if(pushBtn){
+    pushBtn.style.opacity=safe?'1':'0.4';
+    pushBtn.title=safe?'':'⚠ 本機資料不安全，請先讀取';
+  }
+  if(banner){
+    banner.style.display=safe?'none':'flex';
+  }
+}
+
 function checkAlerts(){
   var dis=[];try{dis=JSON.parse(localStorage.getItem(AK)||'[]');}catch(e){}
   var urg=docs.filter(function(d){
@@ -215,6 +264,60 @@ function dismissBackup(){localStorage.setItem(BDK,today());g('backupBanner').cla
 function markBK(){localStorage.setItem(BK,today());g('backupBanner').classList.remove('show');localStorage.setItem(BDK,today());}
 
 // ── Toast ─────────────────────────────────────────
+
+
+// ── JSON 完整備份/還原 ────────────────────────
+function exportJSON(){
+  var backup={
+    version: SCHEMA_VERSION,
+    exportedAt: today(),
+    docs: docs,
+    tpl: tpl,
+    cats: cats,
+    srcs: srcs,
+    tplMap: tplMap,
+    projectTags: projectTags
+  };
+  var json=JSON.stringify(backup, null, 2);
+  var url=URL.createObjectURL(new Blob([json],{type:'application/json;charset=utf-8'}));
+  var a=document.createElement('a');
+  a.href=url;
+  a.download='公文承辦OS_備份_'+today()+'.json';
+  document.body.appendChild(a);a.click();
+  setTimeout(function(){a.remove();URL.revokeObjectURL(url);},200);
+  markBK();
+  toast('✅ JSON 完整備份已匯出');
+}
+
+function importJSON(){
+  var inp=document.createElement('input');
+  inp.type='file';inp.accept='.json';
+  inp.onchange=function(e){
+    var file=e.target.files[0];if(!file)return;
+    var reader=new FileReader();
+    reader.onload=function(ev){
+      try{
+        var backup=JSON.parse(ev.target.result);
+        if(!backup.docs||!Array.isArray(backup.docs)){
+          toast('❌ 格式錯誤：找不到公文資料');return;
+        }
+        if(!confirm('確定從備份還原？\n備份日期：'+( backup.exportedAt||'未知')+'\n公文數量：'+backup.docs.length+' 件\n\n這會覆蓋目前所有資料。'))return;
+        docs=backup.docs;docs.forEach(normalizeDoc);save();
+        if(backup.tpl){tpl=backup.tpl;saveTpl();}
+        if(backup.cats&&backup.cats.length){cats=backup.cats;saveCats();}
+        if(backup.srcs&&backup.srcs.length){srcs=backup.srcs;saveSrcs();}
+        if(backup.tplMap&&Object.keys(backup.tplMap).length){tplMap=backup.tplMap;saveTplMap();}
+        if(backup.projectTags&&backup.projectTags.length){projectTags=backup.projectTags;saveProjectTags();}
+        buildSel();render();updateSyncSafetyUI();
+        toast('✅ 已從 JSON 備份還原（'+docs.length+' 件公文）');
+        markBK();
+      }catch(err){toast('❌ 解析失敗：'+err.message);}
+    };
+    reader.readAsText(file,'UTF-8');
+  };
+  document.body.appendChild(inp);inp.click();
+  setTimeout(function(){inp.remove();},1000);
+}
 
 function exportCSV(){
   var rows=[['主旨','案件類型','議題','文號','來文單位','收文日期','辦理期限','業務類別','例稿分類','例稿狀態','流程狀態','速別','承辦人','等回復','下一步','連結','備註','WF進度','待跟進筆數']];
