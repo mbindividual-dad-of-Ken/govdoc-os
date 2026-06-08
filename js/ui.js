@@ -35,6 +35,20 @@ function renderStats(){
   bars('iterBars',countBy(all,function(d){return d.templateState;}));
   bars('statusBars',countBy(all,function(d){return slb(d.status);}));
   bars('ownerBars',countBy(all,function(d){return d.owner||'我';}));
+  // 卡住案件
+  var stuck=docs.filter(isStuck);
+  var sb=g('stuckBanner'),sl=g('stuckList');
+  if(sb)sb.style.display=stuck.length?'block':'none';
+  if(sl)sl.innerHTML=stuck.slice(0,6).map(function(d){
+    var days=daysInStatus(d);
+    var l=lightOf(d);
+    return '<div style="display:flex;align-items:center;gap:8px;padding:3px 0;cursor:pointer" onclick="openDoc('+d.id+')">'
+      +'<span class="lt '+l.id+'">'+l.lb+'</span>'
+      +'<span style="color:var(--orange);font-weight:700;font-size:11px">'+days+'天</span>'
+      +'<span>'+esc(d.title.slice(0,25))+(d.title.length>25?'…':'')+'</span>'
+      +'<span style="color:var(--muted);font-size:10px">（'+esc(slb(d.status))+'）</span>'
+      +'</div>';
+  }).join('');
 }
 
 function bars(id,data){
@@ -274,8 +288,18 @@ function getDoc(){
 function saveDoc(){
   var d=getDoc();if(!d.title){toast('請輸入主旨');return;}
   if(d.projectId&&projectTags.indexOf(d.projectId)<0){projectTags.push(d.projectId);saveProjectTags();}
-  if(editId){var i=docs.findIndex(function(x){return x.id===editId;});if(i>=0)docs[i]=d;}
-  else docs.push(d);
+  if(editId){
+    var i=docs.findIndex(function(x){return x.id===editId;});
+    if(i>=0){
+      // 狀態變更時記錄時間
+      if(docs[i].status!==d.status)d.statusChangedAt=today();
+      else d.statusChangedAt=docs[i].statusChangedAt||today();
+      docs[i]=d;
+    }
+  }else{
+    d.statusChangedAt=today();
+    docs.push(d);
+  }
   save();closeM('docBg');toast('已儲存');render();
 }
 
@@ -299,6 +323,156 @@ function copyBrief(){
 }
 
 // ── Workflow ──────────────────────────────────────
+
+function copyHandover(){
+  var d=getDoc();
+  var steps=d.steps||[];
+  var done=steps.filter(function(s){return s.done;});
+  var todo=steps.filter(function(s){return !s.done;});
+  var logs=d.log||[];
+  var followups=logs.filter(function(e){return e.type==='followup'&&!e.done;});
+  var notes=logs.filter(function(e){return e.type==='note';}).slice(-3);
+  var milestones=logs.filter(function(e){return e.type==='milestone';});
+  var lastMilestone=milestones.length?milestones[milestones.length-1]:null;
+
+  var lines=[
+    '【交接摘要】'+d.title,
+    '═'.repeat(40),
+    '一、目前狀態：'+slb(d.status)+(d.statusChangedAt?' （'+daysInStatus(d)+'天）':''),
+    '二、辦理期限：'+(d.due||'未設定'),
+    '三、例稿分類：'+(d.template||'未設定')+'（'+d.templateState+'）',
+    '',
+    '四、已處理事項：',
+  ];
+  if(done.length){done.forEach(function(s){lines.push('  ☑ '+s.text);});}
+  else{lines.push('  （尚無已完成步驟）');}
+  lines.push('');
+  lines.push('五、待辦事項：');
+  if(todo.length){todo.forEach(function(s){lines.push('  ☐ '+s.text);});}
+  else{lines.push('  （Workflow 已全部完成）');}
+  lines.push('');
+  lines.push('六、待跟進對象：');
+  if(followups.length){
+    followups.forEach(function(e){
+      lines.push('  ・'+(e.who||'待確認')+'：'+e.text+(e.followDate?' → 追蹤日 '+e.followDate:''));
+    });
+  }else{lines.push('  （無待跟進事項）');}
+  lines.push('');
+  lines.push('七、目前卡點：'+(d.next||'無'));
+  lines.push('');
+  if(lastMilestone){lines.push('八、最近里程碑（'+lastMilestone.date+'）：'+lastMilestone.text);lines.push('');}
+  if(notes.length){
+    lines.push('九、近期承辦紀錄：');
+    notes.forEach(function(e){lines.push('  ['+e.date+'] '+e.text.slice(0,60)+(e.text.length>60?'…':''));});
+    lines.push('');
+  }
+  lines.push('十、參考連結：'+(d.link||'無'));
+  lines.push('十一、備註：'+(d.note||'無'));
+  lines.push('');
+  lines.push('── 產出時間：'+today()+' ──');
+
+  navigator.clipboard.writeText(lines.join('\n'))
+    .then(function(){toast('✅ 交接摘要已複製到剪貼簿');});
+}
+
+
+function precipitateToVault(){
+  var d=getDoc();
+  var tplName=g('fTemplate')?g('fTemplate').value:'';
+  if(!tplName){toast('請先選擇例稿分類');return;}
+  // 收集備註文字
+  var noteText=d.note?d.note.trim():'';
+  var logNotes=(d.log||[]).filter(function(e){return e.type==='note';})
+    .map(function(e){return '['+e.date+'] '+e.text;}).join('\n');
+  var candidate=(noteText+(noteText&&logNotes?'\n\n---\n\n':'')+logNotes).trim();
+  if(!candidate){toast('沒有可沉澱的備註或日誌紀錄');return;}
+
+  // 選擇沉澱方式
+  var choice=prompt(
+    '沉澱到例稿「'+tplName+'」\n\n請選擇方式：\n1 加到筆記末尾\n2 覆蓋筆記\n3 加到 SOP\n\n輸入 1、2 或 3：'
+  );
+  if(!choice)return;
+  var key=tplName; // 沉澱到例稿名稱層（非樣態）
+  if(choice==='1'){
+    var existing=tpl.notes[key]||'';
+    tpl.notes[key]=(existing?existing+'\n\n---\n\n'+today()+'\n':today()+'\n')+candidate;
+    saveTpl();toast('✅ 已附加到例稿筆記');
+  }else if(choice==='2'){
+    if(!confirm('確定覆蓋「'+tplName+'」的筆記？'))return;
+    tpl.notes[key]=today()+'\n'+candidate;
+    saveTpl();toast('✅ 已覆蓋例稿筆記');
+  }else if(choice==='3'){
+    var sopLines=candidate.split('\n').filter(function(l){return l.trim();});
+    if(!tpl.sop)tpl.sop={};
+    tpl.sop[key]=(tpl.sop[key]||[]).concat(sopLines.slice(0,5));
+    saveTpl();toast('✅ 已加入例稿 SOP（最多 5 步）');
+  }else{
+    toast('輸入無效，請輸入 1、2 或 3');
+  }
+}
+
+// ── 快速收件 ──────────────────────────────────
+function openQuickIntake(){
+  // 填充 select
+  var catSel=g('qiCat'),tplSel=g('qiTemplate'),srcDl=g('qiSrcList');
+  if(catSel){
+    catSel.innerHTML=cats.map(function(c){return'<option value="'+esc(c)+'">'+esc(c)+'</option>';}).join('');
+  }
+  if(tplSel){
+    var tpls=Object.keys(tplMap||{});
+    tplSel.innerHTML='<option value="">（不指定）</option>'+tpls.map(function(t){return'<option value="'+esc(t)+'">'+esc(t)+'</option>';}).join('');
+  }
+  if(srcDl){
+    srcDl.innerHTML=srcs.map(function(s){return'<option value="'+esc(s)+'">';}).join('');
+  }
+  // 清空欄位
+  ['qiTitle','qiSource','qiDue'].forEach(function(id){var el=g(id);if(el)el.value='';});
+  g('quickIntakeBg').classList.add('show');
+  setTimeout(function(){var t=g('qiTitle');if(t)t.focus();},100);
+}
+
+function getQuickIntakeDoc(){
+  var title=(g('qiTitle').value||'').trim();
+  if(!title){toast('請輸入主旨');return null;}
+  return {
+    id: Date.now(),
+    title: title,
+    docNo: autoDocNo(),
+    source: (g('qiSource').value||'').trim(),
+    received: today(),
+    due: g('qiDue').value||'',
+    cat: g('qiCat').value||cats[0],
+    template: g('qiTemplate').value||'',
+    status: 'new',
+    templateState: '未分類',
+    speed: '普通件',
+    owner: '我',
+    waiting: 'no',
+    next: '',link:'',note:'',
+    steps:[],log:[],
+    caseType:'single',projectId:'',
+    statusChangedAt: today(),
+    meta:{}
+  };
+}
+
+function saveQuickIntake(){
+  var d=getQuickIntakeDoc();if(!d)return;
+  normalizeDoc(d);
+  docs.push(d);save();
+  closeM('quickIntakeBg');
+  // 直接開啟完整編輯
+  openDoc(d.id);
+  toast('已收件，請補充完整資料');
+}
+
+function saveQuickIntakeOnly(){
+  var d=getQuickIntakeDoc();if(!d)return;
+  normalizeDoc(d);
+  docs.push(d);save();render();
+  closeM('quickIntakeBg');
+  toast('✅ 已收件：'+d.title.slice(0,20)+(d.title.length>20?'…':''));
+}
 
 function setCaseType(ct, silent){
   caseType=ct;
@@ -516,6 +690,7 @@ function saveQEdit(){
   save();render();closeQEdit();
   toast('已更新：'+d.title.slice(0,15)+(d.title.length>15?'…':''));
 }
+
 
 // ── Workflow 存回 SOP ──────────────────────────────
 
