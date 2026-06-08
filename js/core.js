@@ -200,10 +200,40 @@ function normalizeDoc(d){
   if(!Array.isArray(d.log))d.log=[];
   if(!d.caseType)d.caseType=d.projectId?'project':'single';
   if(!d.meta)d.meta={}; // 保留擴充欄位
+  if(!d.statusChangedAt)d.statusChangedAt=d.received||today(); // 狀態變更日
   d._sv=SCHEMA_VERSION; // 版本標記
 }
 // 向後相容別名
 
 function normalizeGtd(d){normalizeDoc(d);}
+
+function isDataSafe(){
+  // 空資料
+  if(!docs||docs.length===0)return false;
+  // 全是範例資料
+  var realDocs=docs.filter(function(d){return !d._isSample;});
+  if(realDocs.length===0)return false;
+  return true;
+}
+
+function isDataSuspicious(){
+  // 件數明顯偏少（可能是重開機後空載入）
+  if(!docs||docs.length===0)return true;
+  var realDocs=docs.filter(function(d){return !d._isSample;});
+  return realDocs.length===0;
+}
+
+function daysInStatus(d){
+  var from=d.statusChangedAt||d.received||today();
+  return Math.floor((new Date(today())-new Date(from))/86400000);
+}
+
+function isStuck(d){
+  if(d.status==='done')return false;
+  var days=daysInStatus(d);
+  var limits={new:3,research:5,draft:7,consult:7,revise:5,approve:5,ready:3};
+  var limit=limits[d.status]||7;
+  return days>limit;
+}
 
 function g(id){return document.getElementById(id);}
